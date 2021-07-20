@@ -11,5 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Amido.Stacks.Application.CQRS.Events" Version="0.2.3"/>
+    <PackageReference Include="Amido.Stacks.Messaging.Azure.ServiceBus" Version="0.2.1"/>
   </ItemGroup>
 </Project>
