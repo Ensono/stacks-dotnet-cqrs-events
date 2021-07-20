@@ -1,0 +1,1 @@
+stacks-dotnet-cqrs-events
