@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
+using Amido.Stacks.Application.CQRS.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using xxAMIDOxx.xxSTACKSxx.API.Authentication;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
 using xxAMIDOxx.xxSTACKSxx.Application.Integration;
-using xxAMIDOxx.xxSTACKSxx.CQRS.ApplicationEvents;
 
 namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Fixtures
 {
@@ -27,7 +27,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Fixtures
         {
             base.RegisterDependencies(collection);
 
-            // Mocked external dependencies, the setup should 
+            // Mocked external dependencies, the setup should
             // come later according to the scenarios
             repository = Substitute.For<IMenuRepository>();
             applicationEventPublisher = Substitute.For<IApplicationEventPublisher>();
@@ -84,12 +84,12 @@ namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Fixtures
 
         internal void ThenAMenuCreatedEventIsRaised()
         {
-            applicationEventPublisher.Received(1).PublishAsync(Arg.Any<MenuCreated>());
+            applicationEventPublisher.Received(1).PublishAsync(Arg.Any<MenuCreatedEvent>());
         }
 
         internal void ThenAMenuCreatedEventIsNotRaised()
         {
-            applicationEventPublisher.DidNotReceive().PublishAsync(Arg.Any<MenuCreated>());
+            applicationEventPublisher.DidNotReceive().PublishAsync(Arg.Any<MenuCreatedEvent>());
         }
     }
 }

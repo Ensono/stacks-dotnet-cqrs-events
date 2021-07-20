@@ -2,8 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Amido.Stacks.Application.CQRS.Commands;
+using Amido.Stacks.Application.CQRS.Events;
 using xxAMIDOxx.xxSTACKSxx.Application.Integration;
-using xxAMIDOxx.xxSTACKSxx.CQRS.ApplicationEvents;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
 using xxAMIDOxx.xxSTACKSxx.Domain;
 
@@ -42,7 +42,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Application.CommandHandlers
 
             await repository.SaveAsync(newMenu);
 
-            await applicationEventPublisher.PublishAsync(new MenuCreated(command, id));
+            await applicationEventPublisher.PublishAsync(new MenuCreatedEvent(command, id));
 
             return id;
         }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
+using Amido.Stacks.Application.CQRS.Events;
 using Amido.Stacks.Testing.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -11,7 +12,6 @@ using xxAMIDOxx.xxSTACKSxx.API.Authentication;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Responses;
 using xxAMIDOxx.xxSTACKSxx.Application.Integration;
-using xxAMIDOxx.xxSTACKSxx.CQRS.ApplicationEvents;
 
 namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Fixtures
 {
@@ -35,7 +35,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Fixtures
         {
             base.RegisterDependencies(collection);
 
-            // Mocked external dependencies, the setup should 
+            // Mocked external dependencies, the setup should
             // come later according to each scenario
             repository = Substitute.For<IMenuRepository>();
             applicationEventPublisher = Substitute.For<IApplicationEventPublisher>();
@@ -129,22 +129,22 @@ namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Fixtures
 
         internal void ThenAMenuUpdatedEventIsRaised()
         {
-            applicationEventPublisher.Received(1).PublishAsync(Arg.Any<MenuUpdated>());
+            applicationEventPublisher.Received(1).PublishAsync(Arg.Any<MenuUpdatedEvent>());
         }
 
         internal void ThenAMenuUpdatedEventIsNotRaised()
         {
-            applicationEventPublisher.DidNotReceive().PublishAsync(Arg.Any<MenuCreated>());
+            applicationEventPublisher.DidNotReceive().PublishAsync(Arg.Any<MenuCreatedEvent>());
         }
 
         internal void ThenACategoryCreatedEventIsRaised()
         {
-            applicationEventPublisher.Received(1).PublishAsync(Arg.Any<CategoryCreated>());
+            applicationEventPublisher.Received(1).PublishAsync(Arg.Any<CategoryCreatedEvent>());
         }
 
         internal void ThenACategoryCreatedEventIsNotRaised()
         {
-            applicationEventPublisher.DidNotReceive().PublishAsync(Arg.Any<CategoryCreated>());
+            applicationEventPublisher.DidNotReceive().PublishAsync(Arg.Any<CategoryCreatedEvent>());
         }
     }
 }

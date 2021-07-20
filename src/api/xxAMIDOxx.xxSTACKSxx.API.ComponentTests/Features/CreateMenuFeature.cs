@@ -1,7 +1,7 @@
-﻿using Xbehave;
+﻿using Amido.Stacks.Application.CQRS.Events;
+using Xbehave;
 using Xunit;
 using xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Fixtures;
-using xxAMIDOxx.xxSTACKSxx.CQRS.ApplicationEvents;
 
 namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Features
 {
@@ -9,8 +9,8 @@ namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Features
     public class CreateMenuFeature
     {
         /* SCENARIOS: Create a menu
-          
-             Examples: 
+
+             Examples:
              -----------------------------------------------------------------
             | AsRole              | Menu Condition     | Outcome              |
             |---------------------|--------------------|----------------------|
@@ -32,7 +32,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Features
             "And the response code is CREATED".x(fixture.ThenACreatedResponseIsReturned);
             "And the id of the new menu is returned".x(fixture.ThenTheResourceCreatedResponseIsReturned);
             "And the menu data is submitted correctly to the database".x(fixture.ThenTheMenuIsSubmittedToDatabase);
-            $"And an event of type {nameof(MenuCreated)} is raised".x(fixture.ThenAMenuCreatedEventIsRaised);
+            $"And an event of type {nameof(MenuCreatedEvent)} is raised".x(fixture.ThenAMenuCreatedEventIsRaised);
         }
 
         [Scenario, CustomAutoData]
@@ -44,7 +44,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Features
             "When the menu is submitted".x(fixture.WhenTheMenuCreationIsSubmitted);
             "Then a failure response is returned".x(fixture.ThenAFailureResponseIsReturned);
             "And the menu is not submitted to the database".x(fixture.ThenTheMenuIsNotSubmittedToDatabase);
-            $"And an event of type {nameof(MenuCreated)} should not be raised".x(fixture.ThenAMenuCreatedEventIsNotRaised);
+            $"And an event of type {nameof(MenuCreatedEvent)} should not be raised".x(fixture.ThenAMenuCreatedEventIsNotRaised);
         }
 
         [Scenario(Skip = "Only works when Auth is implemented")]
@@ -59,7 +59,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Features
             "When the menu is submitted".x(fixture.WhenTheMenuCreationIsSubmitted);
             "Then a Forbidden response is returned".x(fixture.ThenAForbiddenResponseIsReturned);
             "And the menu is not submitted to the database".x(fixture.ThenTheMenuIsNotSubmittedToDatabase);
-            $"And an event of type {nameof(MenuCreated)} should not be raised".x(fixture.ThenAMenuCreatedEventIsNotRaised);
+            $"And an event of type {nameof(MenuCreatedEvent)} should not be raised".x(fixture.ThenAMenuCreatedEventIsNotRaised);
         }
     }
 }
