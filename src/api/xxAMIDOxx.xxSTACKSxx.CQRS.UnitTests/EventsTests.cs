@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
+using Amido.Stacks.Application.CQRS.Events;
 using Amido.Stacks.Core.Operations;
 using Amido.Stacks.DependencyInjection;
 using AutoFixture;
@@ -9,7 +10,6 @@ using NSubstitute;
 using Shouldly;
 using Xunit;
 using xxAMIDOxx.xxSTACKSxx.Common.Events;
-using xxAMIDOxx.xxSTACKSxx.CQRS.ApplicationEvents;
 
 namespace xxAMIDOxx.xxSTACKSxx.CQRS.UnitTests
 {
@@ -22,7 +22,7 @@ namespace xxAMIDOxx.xxSTACKSxx.CQRS.UnitTests
         [Fact]
         public void EventsShouldHaveUniqueIds()
         {
-            var assembly = typeof(MenuCreated).Assembly;
+            var assembly = typeof(MenuCreatedEvent).Assembly;
             var definitions = assembly.GetImplementationsOf(typeof(IApplicationEvent));
 
             var duplicateCodes = definitions.Select(d => new
@@ -43,13 +43,13 @@ namespace xxAMIDOxx.xxSTACKSxx.CQRS.UnitTests
 
         public void EventNameShouldMatchOperationName()
         {
-            var definitions = typeof(MenuCreated).Assembly.GetImplementationsOf(typeof(IApplicationEvent));
+            var definitions = typeof(MenuCreatedEvent).Assembly.GetImplementationsOf(typeof(IApplicationEvent));
             foreach (var definition in definitions)
             {
                 var eventCode = GetEventCode(definition.implementation);
                 var eventName = GetEventName(eventCode);
 
-                // If the user intend to use the type as part of the name for convention, 
+                // If the user intend to use the type as part of the name for convention,
                 // the convention should be nameApplicationEvent not nameEvent
                 // Event is generic and can mislead with DomainEvents
                 definition.implementation.Name.ShouldBeOneOf(eventName, $"{eventName}ApplicationEvent");
@@ -60,7 +60,7 @@ namespace xxAMIDOxx.xxSTACKSxx.CQRS.UnitTests
 
         public void EventCodeShouldHaveOneImplementation()
         {
-            var definitions = typeof(MenuCreated).Assembly.GetImplementationsOf(typeof(IApplicationEvent));
+            var definitions = typeof(MenuCreatedEvent).Assembly.GetImplementationsOf(typeof(IApplicationEvent));
             foreach (EventCode code in Enum.GetValues(typeof(EventCode)))
             {
                 var implementation = definitions.Select(d => d.implementation).SingleOrDefault(o => GetEventCode(o) == (int)code);
