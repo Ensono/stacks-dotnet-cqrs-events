@@ -9,6 +9,7 @@ using Amido.Stacks.DependencyInjection;
 using Amido.Stacks.Messaging.Azure.ServiceBus.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Serilog;
 using xxAMIDOxx.xxSTACKSxx.Application.CommandHandlers;
 using xxAMIDOxx.xxSTACKSxx.Application.Integration;
@@ -40,7 +41,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
         /// <param name="services"></param>
         public static void ConfigureProductionDependencies(WebHostBuilderContext context, IServiceCollection services)
         {
-            services.Configure<CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDB"));
+            services.Configure<CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDb"));
 
             services.AddSecrets();
             services.AddCosmosDB();
@@ -49,8 +50,8 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             // AddEventPublishers(context, services);
 
             // Azure Service Bus
-            services.Configure<ServiceBusSenderConfiguration>(context.Configuration.GetSection("ServiceBusSender"))
-                .AddServiceBus();
+            services.Configure<ServiceBusConfiguration>(context.Configuration.GetSection("ServiceBusConfiguration"));
+            services.AddServiceBus();
 
             if (Environment.GetEnvironmentVariable("USE_MEMORY_STORAGE") == null)
                 services.AddTransient<IMenuRepository, MenuRepository>();
