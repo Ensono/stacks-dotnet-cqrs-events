@@ -30,6 +30,8 @@ namespace xxAMIDOxx.xxSTACKSxx.API.FunctionalTests.Tests.Functional
                 .And(s => steps.GivenAMenuAlreadyExists())
                 .When(s => steps.WhenISendAnUpdateMenuRequest())
                 .Then(s => steps.ThenTheMenuIsUpdatedCorrectly())
+                //Then(step => categorySteps.ThenSomeActionIsMade())
+                //This step is to verify the outcome of the event in the Subcriber. (e.g. a field is updated in DB, blob is created and so on).
                 .BDDfy();
         }
     }

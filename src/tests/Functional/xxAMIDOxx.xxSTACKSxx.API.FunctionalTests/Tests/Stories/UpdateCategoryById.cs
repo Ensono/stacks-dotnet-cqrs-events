@@ -32,6 +32,8 @@ namespace xxAMIDOxx.xxSTACKSxx.API.FunctionalTests.Tests.Functional
                 .Then(step => categorySteps.ThenTheCategoryHasBeenCreated())
                 .When(s => categorySteps.WhenISendAnUpdateCategoryRequest())
                 .Then(s => categorySteps.ThenTheCategoryIsUpdatedCorrectly())
+                //Then(step => categorySteps.ThenSomeActionIsMade())
+                //This step is to verify the outcome of the event in the Subcriber. (e.g. a field is updated in DB, blob is created and so on).
                 .BDDfy();
         }
     }

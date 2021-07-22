@@ -31,6 +31,8 @@ namespace xxAMIDOxx.xxSTACKSxx.API.FunctionalTests.Tests.Functional
                 .Given(step => steps.GivenIHaveSpecfiedAFullMenu())
                 .When(step => steps.WhenICreateTheMenu())
                 .Then(step => steps.ThenTheMenuHasBeenCreated())
+                //.Then(step => steps.ThenSomeActionIsMade())
+                //This step is to verify the outcome of the event in the Subcriber. (e.g. a field is updated in DB, blob is created and so on).
                 .BDDfy();
         }
     }
