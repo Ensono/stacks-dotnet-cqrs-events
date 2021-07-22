@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
+using Amido.Stacks.Application.CQRS.Events;
 using xxAMIDOxx.xxSTACKSxx.Application.Integration;
-using xxAMIDOxx.xxSTACKSxx.CQRS.ApplicationEvents;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
 using xxAMIDOxx.xxSTACKSxx.Domain;
 
@@ -33,8 +33,8 @@ namespace xxAMIDOxx.xxSTACKSxx.Application.CommandHandlers
         public override IEnumerable<IApplicationEvent> RaiseApplicationEvents(Menu menu, CreateCategory command)
         {
             return new IApplicationEvent[] {
-                new MenuUpdated(command, command.MenuId),
-                new CategoryCreated(command, command.MenuId, id)
+                new MenuUpdatedEvent(command, command.MenuId),
+                new CategoryCreatedEvent(command, command.MenuId, id)
             };
         }
     }
