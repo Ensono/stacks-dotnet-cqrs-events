@@ -26,5 +26,10 @@ namespace xxAMIDOxx.xxSTACKSxx.API.FunctionalTests.Tests.Fixtures
         {
             Dispose(true);
         }
+
+        internal void PreviousTestIsSuccesfullyExecuted()
+        {
+           //todo: 
+        }
     }
 }
