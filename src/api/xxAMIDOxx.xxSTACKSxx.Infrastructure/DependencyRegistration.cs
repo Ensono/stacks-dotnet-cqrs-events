@@ -6,6 +6,7 @@ using Amido.Stacks.Configuration.Extensions;
 using Amido.Stacks.Data.Documents.CosmosDB;
 using Amido.Stacks.Data.Documents.CosmosDB.Extensions;
 using Amido.Stacks.DependencyInjection;
+using Amido.Stacks.Messaging.Azure.ServiceBus.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -39,13 +40,17 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
         /// <param name="services"></param>
         public static void ConfigureProductionDependencies(WebHostBuilderContext context, IServiceCollection services)
         {
-            services.Configure<CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDB"));
+            services.Configure<CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDb"));
 
             services.AddSecrets();
             services.AddCosmosDB();
 
             //TODO: Evaluate if event publishers should be generic, probably not, EventHandler are generic tough
-            AddEventPublishers(services);
+            // AddEventPublishers(context, services);
+
+            // Azure Service Bus
+            services.Configure<ServiceBusConfiguration>(context.Configuration.GetSection("ServiceBusConfiguration"));
+            services.AddServiceBus();
 
             if (Environment.GetEnvironmentVariable("USE_MEMORY_STORAGE") == null)
                 services.AddTransient<IMenuRepository, MenuRepository>();
@@ -79,7 +84,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             }
         }
 
-        private static void AddEventPublishers(IServiceCollection services)
+        private static void AddEventPublishers(WebHostBuilderContext context, IServiceCollection services)
         {
             log.Information("Loading implementations of {interface}", typeof(IApplicationEventPublisher).Name);
             var definitions = typeof(DummyEventPublisher).Assembly.GetImplementationsOf(typeof(IApplicationEventPublisher));
