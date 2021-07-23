@@ -1,3 +1,6 @@
+using Amido.Stacks.Configuration;
+using Amido.Stacks.Configuration.Extensions;
+using Amido.Stacks.Messaging.Azure.ServiceBus.Configuration;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +35,13 @@ namespace xxAMIDOxx.xxSTACKSxx.Worker
                 .Configure<ChangeFeedListener>(configuration.GetSection(nameof(ChangeFeedListener)))
                 .AddLogging(l => { l.AddSerilog(CreateLogger(configuration)); })
                 .AddTransient(typeof(ILogger<>), typeof(LogAdapter<>));
+
+            builder.Services.AddSecrets();
+
+            // Add service bus
+            builder.Services
+                .Configure<ServiceBusConfiguration>(configuration.GetSection("ServiceBusConfiguration"))
+                .AddServiceBus();
         }
 
         private static IConfiguration LoadConfiguration(IFunctionsHostBuilder builder)
