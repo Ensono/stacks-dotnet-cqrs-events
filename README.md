@@ -21,25 +21,25 @@ Now that you have your CosmosDB all set, you can point the API project to it. In
 
 ```json
 "CosmosDb": {
-	"DatabaseAccountUri": "https://localhost:8081/",
-	"DatabaseName": "Stacks",
-	"SecurityKeySecret": {
-		"Identifier": "COSMOSDB_KEY",
-		"Source": "Environment"
-	}
+    "DatabaseAccountUri": "https://localhost:8081/",
+    "DatabaseName": "Stacks",
+    "SecurityKeySecret": {
+        "Identifier": "COSMOSDB_KEY",
+        "Source": "Environment"
+    }
 },
 "ServiceBusConfiguration": {
-	"Sender": {
-		"Topics": [
-			{
-				"Name": "servicebus-topic-lius",
-				"ConnectionStringSecret": {
-					"Identifier": "SERVICEBUS_CONNECTIONSTRING",
-					"Source": "Environment"
-				}
-			}
-		]
-	}
+    "Sender": {
+        "Topics": [
+            {
+                "Name": "servicebus-topic-lius",
+                "ConnectionStringSecret": {
+                    "Identifier": "SERVICEBUS_CONNECTIONSTRING",
+                    "Source": "Environment"
+                }
+            }
+        ]
+    }
 }
 ```
 
@@ -47,9 +47,9 @@ The `SecurityKeySecret` and `ConnectionStringSecret` sections are needed because
 
 ```json
 "env": {
-	"ASPNETCORE_ENVIRONMENT": "Development",
-	"COSMOSDB_KEY": "YOUR_COSMOSDB_PRIMARY_KEY",
-	"SERVICEBUS_CONNECTIONSTRING": "YOUR_SERVICE_BUS_CONNECTION_STRING"
+    "ASPNETCORE_ENVIRONMENT": "Development",
+    "COSMOSDB_KEY": "YOUR_COSMOSDB_PRIMARY_KEY",
+    "SERVICEBUS_CONNECTIONSTRING": "YOUR_SERVICE_BUS_CONNECTION_STRING"
 }
 ```
 
@@ -76,16 +76,16 @@ Running the Worker function locally is pretty straightforward. You'll have to se
 
 ```json
 {
-	"IsEncrypted": false,
-	"Values": {
-		"AzureWebJobsStorage": "UseDevelopmentStorage=true",
-		"FUNCTIONS_WORKER_RUNTIME": "dotnet",
-		"SERVICEBUS_CONNECTIONSTRING": "SERVICE_BUS_CONNECTION_STRING",
-		"DatabaseName": "Stacks",
-		"CollectionName": "Menu",
-		"LeaseCollectionName": "Leases",
-		"CosmosDbConnectionString": "COSMOS_DB_CONNECTION_STRING",
-		"CreateLeaseCollectionIfNotExists": true
-	}
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+        "SERVICEBUS_CONNECTIONSTRING": "SERVICE_BUS_CONNECTION_STRING",
+        "DatabaseName": "Stacks",
+        "CollectionName": "Menu",
+        "LeaseCollectionName": "Leases",
+        "CosmosDbConnectionString": "COSMOS_DB_CONNECTION_STRING",
+        "CreateLeaseCollectionIfNotExists": true
+    }
 }
 ```
