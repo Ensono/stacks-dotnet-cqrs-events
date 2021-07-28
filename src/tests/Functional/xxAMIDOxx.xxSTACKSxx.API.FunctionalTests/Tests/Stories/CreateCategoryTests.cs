@@ -31,6 +31,8 @@ namespace xxAMIDOxx.xxSTACKSxx.API.FunctionalTests.Tests.Stories
                 .And(step => categorySteps.GivenIHaveSpecfiedAFullCategory())
                 .When(step => categorySteps.WhenICreateTheCategoryForAnExistingMenu())
                 .Then(step => categorySteps.ThenTheCategoryHasBeenCreated())
+                // .Then(step => categorySteps.ThenSomeActionIsMade())
+                //This step is to verify the outcome of the event in the Subcriber. (e.g. a field is updated in DB, blob is created and so on).
                 .BDDfy();
         }
     }

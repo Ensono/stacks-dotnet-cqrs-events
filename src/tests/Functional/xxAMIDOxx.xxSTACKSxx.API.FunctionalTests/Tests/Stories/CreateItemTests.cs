@@ -31,6 +31,8 @@ namespace xxAMIDOxx.xxSTACKSxx.API.FunctionalTests.Tests.Stories
                 .And(step => itemSteps.GivenIHaveSpecfiedAFullItem())
                 .When(step => itemSteps.WhenICreateTheItemForAnExistingMenuAndCategory())
                 .Then(step => itemSteps.ThenTheItemHasBeenCreated())
+                //.Then(step => itemSteps.ThenSomeActionIsMade())
+                //This step is to verify the outcome of the event in the Subcriber. (e.g. a field is updated in DB, blob is created and so on).
                 .BDDfy();
         }
     }
