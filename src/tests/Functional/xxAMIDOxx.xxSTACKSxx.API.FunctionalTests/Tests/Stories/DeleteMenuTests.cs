@@ -29,6 +29,8 @@ namespace xxAMIDOxx.xxSTACKSxx.API.FunctionalTests.Tests.Functional
                 .And(step => steps.GivenAMenuAlreadyExists())
                 .When(step => steps.WhenIDeleteAMenu())
                 .Then(step => steps.ThenTheMenuHasBeenDeleted())
+                //Then(step => steps.ThenSomeActionIsMade())
+                //This step is to verify the outcome of the event in the Subcriber. (e.g. a field is updated in DB).
                 .BDDfy();
         }
     }

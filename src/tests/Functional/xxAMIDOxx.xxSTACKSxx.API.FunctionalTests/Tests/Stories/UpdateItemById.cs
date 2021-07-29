@@ -30,8 +30,10 @@ namespace xxAMIDOxx.xxSTACKSxx.API.FunctionalTests.Tests.Functional
                 .And(step => itemSteps.GivenIHaveSpecfiedAFullItem())
                 .When(step => itemSteps.WhenICreateTheItemForAnExistingMenuAndCategory())
                 .Then(step => itemSteps.ThenTheItemHasBeenCreated())
-                .When(s => itemSteps.WhenISendAnUpdateItemRequest())
-                .Then(s => itemSteps.ThenTheItemIsUpdatedCorrectly())
+                .When(step => itemSteps.WhenISendAnUpdateItemRequest())
+                .Then(step => itemSteps.ThenTheItemIsUpdatedCorrectly())
+                //Then(step => itemSteps.ThenSomeActionIsMade())
+                //This step is to verify the outcome of the event in the Subcriber. (e.g. a field is updated in DB, blob is created and so on).
                 .BDDfy();
         }
     }
