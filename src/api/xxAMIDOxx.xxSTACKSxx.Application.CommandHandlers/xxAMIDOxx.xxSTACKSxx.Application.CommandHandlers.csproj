@@ -10,7 +10,7 @@
     <ProjectReference Include="..\xxAMIDOxx.xxSTACKSxx.Domain\xxAMIDOxx.xxSTACKSxx.Domain.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Amido.Stacks.Application.CQRS.Events" Version="0.2.3"/>
+    <PackageReference Include="Amido.Stacks.Application.CQRS.Events" Version="0.2.8"/>
     <PackageReference Include="Amido.Stacks.Messaging.Azure.ServiceBus" Version="0.2.8"/>
   </ItemGroup>
 </Project>
