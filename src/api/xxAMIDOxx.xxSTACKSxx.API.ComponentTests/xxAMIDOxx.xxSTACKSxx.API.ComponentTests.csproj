@@ -24,7 +24,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Amido.Stacks.Application.CQRS.Events" Version="0.2.3"/>
+    <PackageReference Include="Amido.Stacks.Application.CQRS.Events" Version="0.2.8"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\xxAMIDOxx.xxSTACKSxx.API\xxAMIDOxx.xxSTACKSxx.API.csproj"/>
