@@ -1,15 +1,20 @@
 
-# create a random strng to be used for the name of the storage account
-resource "random_string" "sa_name" {
+# create a random strng to be used for the name of the storage accounts
+resource "random_string" "sa_name_publisher" {
     length = 16
     upper = false
     special = false
 }
 
-# Create a new storage account to store TF state for future deployments
-resource "azurerm_storage_account" "sa" {
-    count = var.function_count
-    name = "${random_string.sa_name.result}${count.index}"
+resource "random_string" "sa_name_listener" {
+    length = 16
+    upper = false
+    special = false
+}
+
+# Create a new storage accounts to store TF state for future deployments
+resource "azurerm_storage_account" "sa_publisher" {
+    name = "${random_string.sa_name_publisher.result}"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
 
@@ -17,10 +22,18 @@ resource "azurerm_storage_account" "sa" {
     account_replication_type = "LRS"
 }
 
-# The app plan for the function
-resource "azurerm_app_service_plan" "app_sp" {
-    count = var.function_count
-    name = "service-plan-${random_string.seed.result}-${count.index}"
+resource "azurerm_storage_account" "sa_listener" {
+    name = "${random_string.sa_name_listener.result}"
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+
+    account_tier = "Standard"
+    account_replication_type = "LRS"
+}
+
+# The app plans for the functions
+resource "azurerm_app_service_plan" "app_sp_publisher" {
+    name = "service-plan-${var.function-publisher-name}"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
 
@@ -30,14 +43,45 @@ resource "azurerm_app_service_plan" "app_sp" {
     }
 }
 
-# The function app
-resource "azurerm_function_app" "function" {
-    count = var.function_count
-    name = "function-${random_string.seed.result}-${count.index}"
+resource "azurerm_app_service_plan" "app_sp_listener" {
+    name = "service-plan-${var.function-listener-name}"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
 
-    app_service_plan_id = azurerm_app_service_plan.app_sp[count.index].id
-    storage_account_name = azurerm_storage_account.sa[count.index].name
-    storage_account_access_key = azurerm_storage_account.sa[count.index].primary_access_key
+    sku {
+        tier = "Standard"
+        size = "S1"
+    }
+}
+
+# The function apps
+resource "azurerm_function_app" "function_publisher" {
+    name = var.function-publisher-name
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+
+    app_service_plan_id = azurerm_app_service_plan.app_sp_publisher.id
+    storage_account_name = azurerm_storage_account.sa_publisher.name
+    storage_account_access_key = azurerm_storage_account.sa_publisher.primary_access_key
+}
+
+resource "azurerm_function_app" "function_listener" {
+    name = var.function-listener-name
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+
+    app_service_plan_id = azurerm_app_service_plan.app_sp_listener.id
+    storage_account_name = azurerm_storage_account.sa_listener.name
+    storage_account_access_key = azurerm_storage_account.sa_listener.primary_access_key
+}
+
+# Data for the function apps
+data "azurerm_function_app_host_keys" "publisher" {
+    name = azurerm_function_app.function_publisher.name
+    resource_group_name = azurerm_resource_group.rg.name
+}
+
+data "azurerm_function_app_host_keys" "listener" {
+    name = azurerm_function_app.function_listener.name
+    resource_group_name = azurerm_resource_group.rg.name
 }
