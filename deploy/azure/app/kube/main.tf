@@ -38,3 +38,13 @@ module "app" {
   # Alternatively if you want you can pass in the IP directly and remove the need for a lookup
   # dns_a_records                        = ["0.1.23.45"]
 }
+
+module "servicebus" {
+  source = "../servicebus"
+  resource_namer                       = module.default_label.id
+  resource_group_location              = var.resource_group_location
+  name_company                         = var.name_company
+  name_project                         = var.name_project
+  name_domain                          = var.name_domain
+  stage                                = var.stage
+}

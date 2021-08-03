@@ -1,4 +1,11 @@
+
+
 # Required variables
+
+variable "resource_namer" {
+  type        = string
+  description = "User defined naming convention applied to all resources created as part of this module"
+}
 
 variable "resource_group_location" {
     type = string
@@ -71,11 +78,6 @@ variable "sb_subscription_name" {
 variable "sb_max_delivery_count" {
     type = number
     default = 1
-}
-
-variable "create_resource_group" {
-    type = bool
-    default = false
 }
 
 variable "seed_length" {
