@@ -293,6 +293,8 @@ stages:
                     # Terraform Basic Config
                     terraform_working_dir: '${{ variables.self_repo_tf_servicebus_dir }}'
 
+                    terraform_output_artefact: 'tfoutputs_sb'
+
                     # Terraform State Config
                     terraform_backend_client_id: $(ARM_CLIENT_ID)
                     terraform_backend_client_secret: $(ARM_CLIENT_SECRET)
@@ -522,6 +524,8 @@ stages:
                   parameters:
                     # Terraform Basic Config
                     terraform_working_dir: '${{ variables.self_repo_tf_servicebus_dir }}'
+
+                    terraform_output_artefact: 'tfoutputs_sb'
 
                     # Terraform State Config
                     terraform_backend_client_id: $(ARM_CLIENT_ID)
