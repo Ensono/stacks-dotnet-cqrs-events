@@ -326,7 +326,7 @@ stages:
                     terraform_output_commands: |
                       raw_tf=$(terraform output -json | jq -r 'keys[] as $k | "##vso[task.setvariable variable=\($k);isOutput=true]\(.[$k] | .value)"')
                       readarray -t outputs <<<"$raw_tf"
-                      for i in "${outputs[@]}"; do echo "$i"; done                                          
+                      for i in "${outputs[@]}"; do echo "$i"; done
 
       - deployment: DeployDev
         dependsOn: AppInfraDev
@@ -558,7 +558,7 @@ stages:
                     terraform_output_commands: |
                       raw_tf=$(terraform output -json | jq -r 'keys[] as $k | "##vso[task.setvariable variable=\($k);isOutput=true]\(.[$k] | .value)"')
                       readarray -t outputs <<<"$raw_tf"
-                      for i in "${outputs[@]}"; do echo "$i"; done                       
+                      for i in "${outputs[@]}"; do echo "$i"; done
 
       - deployment: PromotionProd
         dependsOn: AppInfraProd
