@@ -73,6 +73,11 @@ variable "sb_max_delivery_count" {
     default = 1
 }
 
+variable "create_resource_group" {
+    type = bool
+    default = false
+}
+
 variable "seed_length" {
     type = number
     default = 4
