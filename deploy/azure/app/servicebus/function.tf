@@ -77,11 +77,17 @@ resource "azurerm_function_app" "function_listener" {
 
 # Data for the function apps
 data "azurerm_function_app_host_keys" "publisher" {
+    depends_on = [
+        azurerm_function_app.publisher
+    ]
     name = azurerm_function_app.function_publisher.name
     resource_group_name = azurerm_resource_group.rg.name
 }
 
 data "azurerm_function_app_host_keys" "listener" {
+    depends_on = [
+        azurerm_function_app.listener
+    ]
     name = azurerm_function_app.function_listener.name
     resource_group_name = azurerm_resource_group.rg.name
 }
