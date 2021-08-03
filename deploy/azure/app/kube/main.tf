@@ -41,7 +41,7 @@ module "app" {
 
 module "servicebus" {
   source                  = "../servicebus"
-  resource_namer          = module.default_label.id
+  resource_group_name     = module.default_label.id
   resource_group_location = var.resource_group_location
   name_company            = var.name_company
   name_project            = var.name_project

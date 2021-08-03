@@ -15,8 +15,8 @@ resource "random_string" "sa_name_listener" {
 # Create a new storage accounts to store TF state for future deployments
 resource "azurerm_storage_account" "sa_publisher" {
   name                = random_string.sa_name_publisher.result
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
 
   account_tier             = "Standard"
   account_replication_type = "LRS"
@@ -24,8 +24,8 @@ resource "azurerm_storage_account" "sa_publisher" {
 
 resource "azurerm_storage_account" "sa_listener" {
   name                = random_string.sa_name_listener.result
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
 
   account_tier             = "Standard"
   account_replication_type = "LRS"
@@ -34,8 +34,8 @@ resource "azurerm_storage_account" "sa_listener" {
 # The app plans for the functions
 resource "azurerm_app_service_plan" "app_sp_publisher" {
   name                = "service-plan-${var.function-publisher-name}"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
 
   sku {
     tier = "Standard"
@@ -45,8 +45,8 @@ resource "azurerm_app_service_plan" "app_sp_publisher" {
 
 resource "azurerm_app_service_plan" "app_sp_listener" {
   name                = "service-plan-${var.function-listener-name}"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
 
   sku {
     tier = "Standard"
@@ -57,8 +57,8 @@ resource "azurerm_app_service_plan" "app_sp_listener" {
 # The function apps
 resource "azurerm_function_app" "function_publisher" {
   name                = var.function-publisher-name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
 
   app_service_plan_id        = azurerm_app_service_plan.app_sp_publisher.id
   storage_account_name       = azurerm_storage_account.sa_publisher.name
@@ -67,8 +67,8 @@ resource "azurerm_function_app" "function_publisher" {
 
 resource "azurerm_function_app" "function_listener" {
   name                = var.function-listener-name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
 
   app_service_plan_id        = azurerm_app_service_plan.app_sp_listener.id
   storage_account_name       = azurerm_storage_account.sa_listener.name
@@ -81,7 +81,7 @@ data "azurerm_function_app_host_keys" "publisher" {
     azurerm_function_app.function_publisher
   ]
   name                = azurerm_function_app.function_publisher.name
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = var.resource_group_name
 }
 
 data "azurerm_function_app_host_keys" "listener" {
@@ -89,5 +89,5 @@ data "azurerm_function_app_host_keys" "listener" {
     azurerm_function_app.function_listener
   ]
   name                = azurerm_function_app.function_listener.name
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = var.resource_group_name
 }

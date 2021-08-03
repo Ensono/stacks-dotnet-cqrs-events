@@ -2,9 +2,9 @@
 
 # Required variables
 
-variable "resource_namer" {
+variable "resource_group_name" {
   type        = string
-  description = "User defined naming convention applied to all resources created as part of this module"
+  description = "Name of hte resource grup holding the resources"
 }
 
 variable "resource_group_location" {
