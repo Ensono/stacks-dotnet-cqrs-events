@@ -40,11 +40,14 @@ module "app" {
 }
 
 module "servicebus" {
-  source                  = "../servicebus"
-  resource_group_name     = module.default_label.id
-  resource_group_location = var.resource_group_location
-  name_company            = var.name_company
-  name_project            = var.name_project
-  name_domain             = var.name_domain
-  stage                   = var.stage
+  source                     = "../servicebus"
+  resource_group_name        = module.default_label.id
+  resource_group_location    = var.resource_group_location
+  name_company               = var.name_company
+  name_project               = var.name_project
+  name_domain                = var.name_domain
+  stage                      = var.stage
+  cosmosdb_database_name     = module.app.cosmosdb_database_name
+  cosmosdb_collection_name   = var.cosmosdb_sql_container
+  cosmosdb_connection_string = module.app.cosmosdb_endpoint
 }

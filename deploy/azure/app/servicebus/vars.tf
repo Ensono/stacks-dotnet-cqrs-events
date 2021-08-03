@@ -39,6 +39,23 @@ variable "tags" {
   default = {}
 }
 
+variable "cosmosdb_database_name" {
+  type = string
+}
+
+variable "cosmosdb_collection_name" {
+  type = string
+}
+
+variable "cosmosdb_connection_string" {
+  type = string
+}
+
+variable "cosmosdb_lease_collection_name" {
+  type = string
+  default = "Leases"
+}
+
 # Optional variables
 # These have default values that can be overriden as required
 variable "function-publisher-name" {
