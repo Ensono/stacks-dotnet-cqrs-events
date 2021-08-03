@@ -72,7 +72,7 @@ resource "azurerm_function_app" "function_publisher" {
     COSMOSDB_CONNECTIONSTRING      = var.cosmosdb_connection_string
     COSMOSDB_DATABASE_NAME         = var.cosmosdb_database_name
     COSMOSDB_LEASE_COLLECTION_NAME = var.cosmosdb_lease_collection_name
-    SERVICEBUS_CONNECTIONSTRING    = azurerm_servicebus_namespace.db.default_primary_connection_string
+    SERVICEBUS_CONNECTIONSTRING    = azurerm_servicebus_namespace.sb.default_primary_connection_string
     SUBSCRIPTION_NAME              = azurerm_servicebus_subscription.sb_sub_1.name
     TOPIC_NAME                     = azurerm_servicebus_topic.sb_topic.name
   }
@@ -91,7 +91,7 @@ resource "azurerm_function_app" "function_listener" {
   storage_account_access_key = azurerm_storage_account.sa_listener.primary_access_key
 
   app_settings = {
-    SERVICEBUS_CONNECTIONSTRING = azurerm_servicebus_namespace.db.default_primary_connection_string
+    SERVICEBUS_CONNECTIONSTRING = azurerm_servicebus_namespace.sb.default_primary_connection_string
     SUBSCRIPTION_NAME           = azurerm_servicebus_subscription.sb_sub_2.name
     TOPIC_NAME                  = azurerm_servicebus_topic.sb_topic.name
   }
