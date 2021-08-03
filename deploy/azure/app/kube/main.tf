@@ -40,11 +40,11 @@ module "app" {
 }
 
 module "servicebus" {
-  source = "../servicebus"
-  resource_namer           = module.default_label.id
-  resource_group_location  = var.resource_group_location
-  name_company             = var.name_company
-  name_project             = var.name_project
-  name_domain              = var.name_domain
-  stage                    = var.stage
+  source                  = "../servicebus"
+  resource_namer          = module.default_label.id
+  resource_group_location = var.resource_group_location
+  name_company            = var.name_company
+  name_project            = var.name_project
+  name_domain             = var.name_domain
+  stage                   = var.stage
 }
