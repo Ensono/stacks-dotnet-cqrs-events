@@ -272,8 +272,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: appsecrets
-                  key: servicebus_connectionstring                  
-
+                  key: servicebus_connectionstring
           ports:
             - name: http
               containerPort: 80
