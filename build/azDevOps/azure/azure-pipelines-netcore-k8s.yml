@@ -396,7 +396,7 @@ stages:
 
   - stage: Prod
     dependsOn: Build
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-prod
       - group: stacks-credentials-prod-kv
@@ -548,6 +548,10 @@ stages:
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.app_insights_instrumentation_key'] ]
           - name: namespace
             value: "$(Environment.ShortName)-${{ variables.domain }}"
+          - name: servicebus_topic_name
+            value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.servicebus_topic_name'] ]
+          - name: servicebus_connectionstring
+            value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.servicebus_connectionstring'] ]
         strategy:
           runOnce:
             deploy:
@@ -593,7 +597,9 @@ stages:
                           jwtbearerauthentication_enabled: false,
                           jwtbearerauthentication_openapiauthorizationurl: "<TODO>",
                           jwtbearerauthentication_openapiclientid: "<TODO>",
-                          jwtbearerauthentication_openapitokenurl: "<TODO>"
+                          jwtbearerauthentication_openapitokenurl: "<TODO>",
+                          servicebus_topic_name: $(servicebus_topic_name),
+                          servicebus_connectionstring: $(servicebus_connectionstring)
                         },
                         # -no-unset is present by default
                         args: "-no-empty",
