@@ -90,6 +90,7 @@ type: Opaque
 stringData:
   cosmos_key: ${cosmosdb_key}
   app_insights: ${app_insights_key}
+  servicebus_connectionstring: ${servicebus_connection_string}
 
 ---
 
@@ -267,6 +268,11 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: app_insights
+            - name: SERVICEBUS_CONNECTIONSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: servicebus_connectionstring                  
 
           ports:
             - name: http
