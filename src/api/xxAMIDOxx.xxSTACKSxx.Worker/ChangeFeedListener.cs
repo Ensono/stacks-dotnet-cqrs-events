@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Microsoft.Azure.Documents;
@@ -23,19 +23,27 @@ namespace xxAMIDOxx.xxSTACKSxx.Worker
 
         [FunctionName(Constants.FunctionNames.CosmosDbChangeFeedListener)]
         public void Run([CosmosDBTrigger(
-            databaseName: "%DatabaseName%",
-            collectionName: "%CollectionName%",
-            ConnectionStringSetting = "CosmosDbConnectionString",
-            LeaseCollectionName = "%LeaseCollectionName%",
+            databaseName: "%COSMOSDB_DATABASE_NAME%",
+            collectionName: "%COSMOSDB_COLLECTION_NAME%",
+            ConnectionStringSetting = "COSMOSDB_CONNECTIONSTRING",
+            LeaseCollectionName = "%COSMOSDB_LEASE_COLLECTION_NAME%",
             CreateLeaseCollectionIfNotExists = true)]IReadOnlyList<Document> input)
         {
             if (input != null && input.Count > 0)
             {
                 logger.LogInformation("Documents modified " + input.Count);
-                logger.LogInformation("First document Id " + input[0].Id);
+                foreach(var changedItem in input)
+                { 
+                    logger.LogInformation("Document read. Id: " + changedItem.Id);
 
-                // TODO: This event is here for demo purposes!
-                appEventPublisher.PublishAsync(new ItemChangedEvent(1, Guid.NewGuid()));
+                    // TODO: Raising a ItemChangedEvent for demo purposes!
+                    var itemChangedEvent = new ItemChangedEvent(
+                        1, Guid.NewGuid(), 
+                        changedItem.Id,
+                        changedItem.ETag);
+
+                    appEventPublisher.PublishAsync(itemChangedEvent);
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using Amido.Stacks.Application.CQRS.Events;
 using Amido.Stacks.Messaging.Azure.ServiceBus.Serializers;
@@ -21,13 +21,15 @@ namespace xxAMIDOxx.xxSTACKSxx.Listener
 
         [FunctionName("StacksListener")]
         public void Run([ServiceBusTrigger(
-            "%TOPIC%",
-            "%TOPIC_SUBSCRIPTION%",
+            "%TOPIC_NAME%",
+            "%SUBSCRIPTION_NAME%",
             Connection = "SERVICEBUS_CONNECTIONSTRING")] Message mySbMsg)
         {
             var appEvent = msgReader.Read<StacksCloudEvent<MenuCreatedEvent>>(mySbMsg);
 
-            // TODO: Log the data field of appEvent
+            // TODO: work with appEvent
+            logger.LogInformation($"Message read. Menu Id: {appEvent.Data.MenuId}");
+
             logger.LogInformation($"C# ServiceBus topic trigger function processed message: {appEvent}");
         }
     }
