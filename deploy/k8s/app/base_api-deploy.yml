@@ -151,6 +151,19 @@ data:
           "Item B from congig",
           "Item C from config"
         ]
+      },
+      "ServiceBusConfiguration": {
+        "Sender": {
+          "Topics": [
+            {
+              "Name": "${servicebus_topic_name}",
+              "ConnectionStringSecret": {
+                  "Identifier": "SERVICEBUS_CONNECTIONSTRING",
+                  "Source": "Environment"
+              }
+            }
+          ]
+        }
       }
     }
 

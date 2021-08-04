@@ -52,7 +52,7 @@ variable "cosmosdb_connection_string" {
 }
 
 variable "cosmosdb_lease_collection_name" {
-  type = string
+  type    = string
   default = "Leases"
 }
 

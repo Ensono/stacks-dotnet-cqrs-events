@@ -3,9 +3,18 @@ output "servicebus_namespace" {
   value       = azurerm_servicebus_namespace.sb.name
 }
 
+output "servicebus_topic_name" {
+  description = "Name of the topic"
+  value       = azurerm_servicebus_topic.sb_topic.name
+}
+
 output "servicebus_subscription_name" {
   description = "Servicebus Subscription name"
   value       = azurerm_servicebus_subscription.sb_sub_1.name
+}
+
+output "servicebus_connectionstring" {
+  value = azurerm_servicebus_namespace.sb.default_primary_connection_string
 }
 
 output "servicebus_subscription_filtered_name" {
