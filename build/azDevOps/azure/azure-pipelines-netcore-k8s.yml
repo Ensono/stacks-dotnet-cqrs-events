@@ -86,7 +86,7 @@ variables:
   k8s_docker_registry_nonprod: $(docker_container_registry_name_nonprod).azurecr.io
   docker_container_registry_name_prod: amidostacksprodeuwcore
   k8s_docker_registry_prod: $(docker_container_registry_name_prod).azurecr.io
-  resource_def_name: dotnet-api-cqrs-events
+  resource_def_name: dotnet-api
   # Scripts directory used by pipeline steps
   scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
   # Infra
