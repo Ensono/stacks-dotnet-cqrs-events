@@ -62,7 +62,7 @@ output "servicebus_connectionstring" {
 
 output "servicebus_subscription_filtered_name" {
   description = "Servicebus Subscription filtered name"
-  value       = module.servicebus.servicebis_subscription_filtered_name
+  value       = module.servicebus.servicebus_subscription_filtered_name
 }
 
 output "servicebus_subscription_id" {
@@ -72,7 +72,7 @@ output "servicebus_subscription_id" {
 
 output "servicebus_subscription_filtered_id" {
   description = "Servicebus Subscription filtered ID"
-  value       = module.servicebus.servicebus_subscription_service_id
+  value       = module.servicebus.servicebus_subscription_filtered_id
 }
 
 output "function_publisher_id" {
@@ -80,11 +80,11 @@ output "function_publisher_id" {
 }
 
 output "function_listener_id" {
-  value = module.servicebus.function_listener.id
+  value = module.servicebus.function_listener_id
 }
 
 output "function_publisher_key" {
-  value = module.servicebus.publisher_function_key
+  value = module.servicebus.function_publisher_key
 }
 
 output "function_listener_key" {
