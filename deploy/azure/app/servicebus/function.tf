@@ -37,6 +37,7 @@ resource "azurerm_app_service_plan" "app_sp_publisher" {
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   kind                = "linux"
+  reserved            = true
 
   sku {
     tier = "ElasticPremium"
@@ -49,6 +50,7 @@ resource "azurerm_app_service_plan" "app_sp_listener" {
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   kind                = "linux"
+  reserved            = true
 
   sku {
     tier = "ElasticPremium"
