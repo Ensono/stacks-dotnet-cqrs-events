@@ -56,7 +56,7 @@ resource "azurerm_app_service_plan" "app_sp_listener" {
 
 # The function apps
 resource "azurerm_function_app" "function_publisher" {
-  name                = var.function-publisher-name
+  name                = "${var.function-publisher-name}-${random_string.seed.result}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   depends_on = [
@@ -79,7 +79,7 @@ resource "azurerm_function_app" "function_publisher" {
 }
 
 resource "azurerm_function_app" "function_listener" {
-  name                = var.function-listener-name
+  name                = "${var.function-listener-name}-${random_string.seed.result}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   depends_on = [

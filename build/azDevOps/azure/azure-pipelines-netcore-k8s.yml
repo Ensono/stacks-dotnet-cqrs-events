@@ -42,7 +42,7 @@ resources:
 variables:
   company: amido
   project: stacks
-  domain: netcore-api-cqrs-events
+  domain: netcore-api-cqrs-evnts
   component: api
   role: backend
   #
