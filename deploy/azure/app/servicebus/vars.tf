@@ -99,7 +99,7 @@ variable "sb_max_delivery_count" {
 
 variable "seed_length" {
   type    = number
-  default = 4
+  default = 6
 }
 
 variable "servicebus_sku" {
