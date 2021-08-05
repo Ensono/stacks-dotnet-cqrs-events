@@ -83,8 +83,8 @@ variables:
   # Docker Config
   docker_dockerfile_path: "src/api"
   docker_image_name: $(self_generic_name)
-  dpcker_worker_function_image_name: stacks-api-events-worker-function
-  dpcker_listener_function_image_name: stacks-api-events-listener-function
+  docker_worker_function_image_name: stacks-api-events-worker-function
+  docker_listener_function_image_name: stacks-api-events-listener-function
   docker_image_tag: "$(version_major).$(version_minor).$(version_revision)-$(Build.SourceBranchName)"
   docker_container_registry_name_nonprod: amidostacksnonprodeuwcore
   k8s_docker_registry_nonprod: $(docker_container_registry_name_nonprod).azurecr.io
