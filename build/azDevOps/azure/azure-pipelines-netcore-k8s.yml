@@ -205,7 +205,7 @@ stages:
               project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)
 
           # Build listener function image
-          - template: templates/steps/build/build-netcore.yml
+          - template: templates/steps/build/build-function.yml
             parameters:
               dotnet_core_version: "3.1.x"
               # Docker Config
@@ -217,7 +217,7 @@ stages:
               docker_containerregistryname: $(docker_container_registry_name_nonprod)
 
           # Build worker function image
-          - template: templates/steps/build/build-netcore.yml
+          - template: templates/steps/build/build-function.yml
             parameters:
               dotnet_core_version: "3.1.x"
               # Docker Config
