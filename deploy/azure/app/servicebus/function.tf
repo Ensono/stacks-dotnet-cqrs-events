@@ -36,6 +36,7 @@ resource "azurerm_app_service_plan" "app_sp_publisher" {
   name                = "service-plan-${var.function-publisher-name}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
+  kind                = "Container"
 
   sku {
     tier = "Standard"
@@ -47,6 +48,7 @@ resource "azurerm_app_service_plan" "app_sp_listener" {
   name                = "service-plan-${var.function-listener-name}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
+  kind                = "Container"
 
   sku {
     tier = "Standard"

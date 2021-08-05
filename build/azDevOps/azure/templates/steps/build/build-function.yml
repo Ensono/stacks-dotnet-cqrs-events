@@ -1,0 +1,41 @@
+parameters:
+  pool:
+    vmImage: "ubuntu-latest"
+  docker_build: true
+  dotnet_core_version: "3.1.x"
+  docker_build_additional_args: ""
+  docker_workdir: ""
+  docker_imagename: ""
+  docker_imagetag: ""
+  docker_containerregistryname: ""
+
+steps:
+  # Login to Azure/AKS
+  - template: azDevOps/azure/templates/v2/steps/login-services.yml@templates
+    parameters:
+      container: "host"
+      azure_tenant_id: "$(azure_tenant_id)"
+      azure_subscription_id: "$(azure_subscription_id)"
+      azure_client_id: "$(azure_client_id)"
+      azure_client_secret: "$(azure_client_secret)"
+      login_azure: true
+
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core SDK ${{ parameters.dotnet_core_version }}'
+    inputs:
+      packageType: sdk
+      version: ${{ parameters.dotnet_core_version }}
+      installationPath: $(Agent.ToolsDirectory)/dotnet
+
+  - script: dotnet --list-sdks
+    displayName: 'Check dotnet sdks installed'
+
+  # Build Docker Image, Scan and Push to Repository
+  - ${{ if eq(parameters.docker_build, true) }}:
+      - template: azDevOps/azure/templates/v2/steps/build-container-image.yml@templates
+        parameters:
+          workingDirectory: ${{ parameters.docker_workdir }}
+          docker_build_additional_args: ${{ parameters.docker_build_additional_args }}
+          docker_imagename: ${{ parameters.docker_imagename }}
+          docker_imagetag: ${{ parameters.docker_imagetag }}
+          docker_containerregistryname: ${{ parameters.docker_containerregistryname }}
