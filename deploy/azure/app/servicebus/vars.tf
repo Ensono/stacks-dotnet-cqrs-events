@@ -52,7 +52,7 @@ variable "cosmosdb_connection_string" {
 }
 
 variable "cosmosdb_lease_collection_name" {
-  type = string
+  type    = string
   default = "Leases"
 }
 
@@ -99,7 +99,7 @@ variable "sb_max_delivery_count" {
 
 variable "seed_length" {
   type    = number
-  default = 4
+  default = 6
 }
 
 variable "servicebus_sku" {

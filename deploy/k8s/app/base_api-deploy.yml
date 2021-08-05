@@ -90,6 +90,7 @@ type: Opaque
 stringData:
   cosmos_key: ${cosmosdb_key}
   app_insights: ${app_insights_key}
+  servicebus_connectionstring: ${servicebus_connectionstring}
 
 ---
 
@@ -151,6 +152,19 @@ data:
           "Item B from congig",
           "Item C from config"
         ]
+      },
+      "ServiceBusConfiguration": {
+        "Sender": {
+          "Topics": [
+            {
+              "Name": "${servicebus_topic_name}",
+              "ConnectionStringSecret": {
+                  "Identifier": "SERVICEBUS_CONNECTIONSTRING",
+                  "Source": "Environment"
+              }
+            }
+          ]
+        }
       }
     }
 
@@ -254,7 +268,11 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: app_insights
-
+            - name: SERVICEBUS_CONNECTIONSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: servicebus_connectionstring
           ports:
             - name: http
               containerPort: 80
