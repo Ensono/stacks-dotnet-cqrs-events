@@ -82,3 +82,11 @@ output "function_publisher_id" {
 output "function_listener_id" {
   value = module.servicebus.function_listener_id
 }
+
+output "function_publisher_name" {
+  value = module.servicebus.function_publisher.name
+}
+
+output "function_listener_name" {
+  value = module.servicebus.function_listener.name
+}
