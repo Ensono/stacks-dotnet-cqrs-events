@@ -84,9 +84,9 @@ output "function_listener_id" {
 }
 
 output "function_publisher_name" {
-  value = module.servicebus.function_publisher.name
+  value = module.servicebus.function_publisher_name
 }
 
 output "function_listener_name" {
-  value = module.servicebus.function_listener.name
+  value = module.servicebus.function_listener_name
 }
