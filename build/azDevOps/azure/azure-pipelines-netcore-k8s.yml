@@ -100,7 +100,7 @@ variables:
   base_domain_prod: prod.amidostacks.com
   base_domain_internal_prod: prod.amidostacks.internal
   # Service connection
-  azure_service_connection: amido.stacks
+  azure_service_connection: "amido.stacks (719637e5-aedd-4fb1-b231-5101b45f8bb5)"
 
   # DEFAULT IMAGE RUNNER
   pool_vm_image: ubuntu-20.04
