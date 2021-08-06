@@ -15,6 +15,7 @@
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.1.0"/>
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1"/>
     <PackageReference Include="Amido.Stacks.Messaging.Azure.ServiceBus" Version="0.2.8"/>
+    <PackageReference Include="Amido.Stacks.Application.CQRS.Events" Version="0.2.10"/>
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">

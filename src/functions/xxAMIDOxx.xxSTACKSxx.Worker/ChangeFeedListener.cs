@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
+using Amido.Stacks.Application.CQRS.Events;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
 namespace xxAMIDOxx.xxSTACKSxx.Worker
@@ -32,17 +32,17 @@ namespace xxAMIDOxx.xxSTACKSxx.Worker
             if (input != null && input.Count > 0)
             {
                 logger.LogInformation("Documents modified " + input.Count);
-                foreach(var changedItem in input)
-                { 
+                foreach (var changedItem in input)
+                {
                     logger.LogInformation("Document read. Id: " + changedItem.Id);
 
-                    // TODO: Raising a ItemChangedEvent for demo purposes!
-                    var itemChangedEvent = new ItemChangedEvent(
-                        1, Guid.NewGuid(), 
-                        changedItem.Id,
+                    var cosmosDbEvent = new CosmosDbChangeFeedEvent(
+                        operationCode: 999,
+                        correlationId: Guid.NewGuid(),
+                        Guid.Parse(changedItem.Id),
                         changedItem.ETag);
 
-                    appEventPublisher.PublishAsync(itemChangedEvent);
+                    appEventPublisher.PublishAsync(cosmosDbEvent);
                 }
             }
         }
