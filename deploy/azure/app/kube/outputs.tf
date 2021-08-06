@@ -83,10 +83,10 @@ output "function_listener_id" {
   value = module.servicebus.function_listener_id
 }
 
-output "function_publisher_key" {
-  value = module.servicebus.function_publisher_key
+output "function_publisher_name" {
+  value = module.servicebus.function_publisher_name
 }
 
-output "function_listener_key" {
-  value = module.servicebus.function_listener_key
+output "function_listener_name" {
+  value = module.servicebus.function_listener_name
 }

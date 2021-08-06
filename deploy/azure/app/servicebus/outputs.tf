@@ -40,10 +40,10 @@ output "function_listener_id" {
   value = azurerm_function_app.function_listener.id
 }
 
-output "function_publisher_key" {
-  value = data.azurerm_function_app_host_keys.publisher.default_function_key
+output "function_publisher_name" {
+  value = azurerm_function_app.function_publisher.name
 }
 
-output "function_listener_key" {
-  value = data.azurerm_function_app_host_keys.listener.default_function_key
+output "function_listener_name" {
+  value = azurerm_function_app.function_listener.name
 }

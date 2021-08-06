@@ -36,10 +36,12 @@ resource "azurerm_app_service_plan" "app_sp_publisher" {
   name                = "service-plan-${var.function-publisher-name}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
+  kind                = "linux"
+  reserved            = true
 
   sku {
-    tier = "Standard"
-    size = "S1"
+    tier = "ElasticPremium"
+    size = "EP1"
   }
 }
 
@@ -47,10 +49,12 @@ resource "azurerm_app_service_plan" "app_sp_listener" {
   name                = "service-plan-${var.function-listener-name}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
+  kind                = "linux"
+  reserved            = true
 
   sku {
-    tier = "Standard"
-    size = "S1"
+    tier = "ElasticPremium"
+    size = "EP1"
   }
 }
 
@@ -97,19 +101,3 @@ resource "azurerm_function_app" "function_listener" {
   }
 }
 
-# Data for the function apps
-data "azurerm_function_app_host_keys" "publisher" {
-  depends_on = [
-    azurerm_function_app.function_publisher
-  ]
-  name                = azurerm_function_app.function_publisher.name
-  resource_group_name = var.resource_group_name
-}
-
-data "azurerm_function_app_host_keys" "listener" {
-  depends_on = [
-    azurerm_function_app.function_listener
-  ]
-  name                = azurerm_function_app.function_listener.name
-  resource_group_name = var.resource_group_name
-}
