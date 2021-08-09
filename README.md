@@ -6,18 +6,18 @@ stacks-dotnet-cqrs-events
 stacks-dotnet-cqrs-events
 │   README.md
 └─── src
-│   └─── api
-│   │    └─── xxAMIDOxx.xxSTACKSxx.API
-│   │    └─── other API related projects
-│   │
-│   └─── functions
-│   │    └─── xxAMIDOxx.xxSTACKSxx.Listner
-│   │    └─── xxAMIDOxx.xxSTACKSxx.Worker
-│   │
-│   └─── tests
-│   │
-│   └─── worker
-│        └─── xxAMIDOxx.xxSTACKSxx.BackgroundWorker
+│    └─── api
+│    │    └─── xxAMIDOxx.xxSTACKSxx.API
+│    │    └─── other API related projects
+│    │
+│    └─── functions
+│    │    └─── xxAMIDOxx.xxSTACKSxx.Listner
+│    │    └─── xxAMIDOxx.xxSTACKSxx.Worker
+│    │
+│    └─── tests
+│    │
+│    └─── worker
+│         └─── xxAMIDOxx.xxSTACKSxx.BackgroundWorker
 ```
 
 - The `api` folder contains everything related to the API and is a standalone executable
