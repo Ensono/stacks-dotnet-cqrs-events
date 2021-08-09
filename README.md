@@ -2,7 +2,7 @@ stacks-dotnet-cqrs-events
 
 ### Folders of interest in this repository
 
-```
+```shell
 stacks-dotnet-cqrs-events
 │   README.md
 └─── src
@@ -22,8 +22,8 @@ stacks-dotnet-cqrs-events
 
 - The `api` folder contains everything related to the API and is a standalone executable
 - The `functions` folder contains two Azure Functions
-	- `Listener` is an Azure Service Bus subscription (filtered) trigger that listens for `MenuCreatedEvent`
-	- `Worker` is a CosmosDB change feed trigger function that publishes a `CosmosDbChangeFeedEvent` when a new entity has been added or was changed to CosmosDB
+    - `Listener` is an Azure Service Bus subscription (filtered) trigger that listens for `MenuCreatedEvent`
+    - `Worker` is a CosmosDB change feed trigger function that publishes a `CosmosDbChangeFeedEvent` when a new entity has been added or was changed to CosmosDB
 - The `worker` folder contains a background worker that listens to all event types from the ASB topic and shows example handlers for them and the use of the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) package.
 
 The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) package for their communication with ASB.
