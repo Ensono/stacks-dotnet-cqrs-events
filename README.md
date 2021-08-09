@@ -7,15 +7,15 @@ stacks-dotnet-cqrs-events
 │   README.md
 └─── src
 │   └─── api
-│	│    └─── xxAMIDOxx.xxSTACKSxx.API
-│	│    └─── other API related projects
-│	│
+│   │    └─── xxAMIDOxx.xxSTACKSxx.API
+│   │    └─── other API related projects
+│   │
 │   └─── functions
-│	│	 └─── xxAMIDOxx.xxSTACKSxx.Listner
-│	│    └─── xxAMIDOxx.xxSTACKSxx.Worker
-│	│
+│   │    └─── xxAMIDOxx.xxSTACKSxx.Listner
+│   │    └─── xxAMIDOxx.xxSTACKSxx.Worker
+│   │
 │   └─── tests
-│	│
+│   │
 │   └─── worker
 │        └─── xxAMIDOxx.xxSTACKSxx.BackgroundWorker
 ```
