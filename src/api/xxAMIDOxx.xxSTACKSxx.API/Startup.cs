@@ -30,7 +30,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API
         private readonly string pathBase;
         private readonly bool useAppInsights;
 
-        private const string projectUrl = "https://github.com/amido/stacks-dotnet";
+        private const string projectUrl = "https://github.com/amido/stacks-dotnet-cqrs-events";
 
         public Startup(IWebHostEnvironment env, IConfiguration configuration, ILogger<Startup> logger)
         {
