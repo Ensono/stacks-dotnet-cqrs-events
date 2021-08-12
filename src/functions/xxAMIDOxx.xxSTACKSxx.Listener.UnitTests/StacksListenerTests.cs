@@ -65,15 +65,4 @@ namespace xxAMIDOxx.xxSTACKSxx.Listener.UnitTests
             return ctx?.CorrelationId ?? Guid.NewGuid();
         }
     }
-
-    public class TestOperationContext : IOperationContext
-    {
-        public TestOperationContext()
-        {
-        }
-
-        public int OperationCode => 999;
-
-        public Guid CorrelationId => Guid.NewGuid();
-    }
 }

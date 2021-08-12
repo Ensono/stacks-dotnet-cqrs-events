@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using Amido.Stacks.Application.CQRS.Events;
+﻿using Amido.Stacks.Application.CQRS.Events;
 using Amido.Stacks.Messaging.Azure.ServiceBus.Serializers;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
