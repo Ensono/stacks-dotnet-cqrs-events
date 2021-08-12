@@ -5,8 +5,7 @@
 		"Stacks",
 		"WebAPI",
 		"CQRS",
-		"Events",
-		"api"
+		"Events"
 	],
 	"name": "Amido Stacks Application (.Net Core 3.1)",
 	"identity": "Amido.Stacks.App.CSharp",
@@ -14,7 +13,7 @@
 	"shortName": "stacks-app-cqrs-events",
 	"tags": {
 		"language": "C#",
-		"type": "solution"
+		"type": "project"
 	},
 	"sourceName": "xxAMIDOxx.xxSTACKSxx",
 	"preferNameDirectory": true,
@@ -31,6 +30,21 @@
 					"lowerCase"
 				]
 			}
+		},
+		"enableFunctionWorker": {
+			"type": "parameter",
+			"dataType": "bool",
+			"defaultValue": "true"
+		},
+		"enableFunctionListener": {
+			"type": "parameter",
+			"dataType": "bool",
+			"defaultValue": "true"
+		},
+		"enableBackgroundWorker": {
+			"type": "parameter",
+			"dataType": "bool",
+			"defaultValue": "true"
 		}
 	},
 	"sources": [
@@ -58,7 +72,33 @@
 				"_gitignore": ".gitignore",
 				"_gitattributes": ".gitattributes"
 			},
-			"modifiers": []
+			"modifiers": [
+				{
+					"condition": "(!enableFunctionWorker)",
+					"exclude": [
+						"**/src/functions/xxAMIDOxx.xxSTACKSxx.Worker/**"
+					]
+				},
+				{
+					"condition": "(!enableFunctionListener)",
+					"exclude": [
+						"**/src/functions/xxAMIDOxx.xxSTACKSxx.Listener/**"
+					]
+				},
+				{
+					"condition": "(!enableFunctionListener && !enableFunctionWorker)",
+					"exclude": [
+						"**/src/functions/**",
+						"**/build/azDevOps/azure/templates/steps/build/build-function.yml"
+					]
+				},
+				{
+					"condition": "(!enableBackgroundWorker)",
+					"exclude": [
+						"**/src/worker/**"
+					]
+				}
+			]
 		}
 	],
 	"SpecialCustomOperations": {
