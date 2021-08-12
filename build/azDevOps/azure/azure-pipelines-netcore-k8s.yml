@@ -52,7 +52,8 @@ variables:
   self_repo: stacks-dotnet-cqrs-events
   self_repo_src: src/api
   self_repo_dir: "$(Agent.BuildDirectory)/s/$(self_repo)"
-  self_repo_functions_src: src/functions
+  self_repo_functions_listener_src: src/functions/function-listener
+  self_repo_functions_worker_src: src/functions/function-worker
   self_repo_functions_dir: "$(Agent.BuildDirectory)/s/$(self_functions_src)"
   self_repo_tf_src: deploy/azure/app/kube
   self_repo_tf_dir: "$(self_repo_dir)/$(self_repo_tf_src)"
@@ -211,7 +212,7 @@ stages:
               # Docker Config
               docker_build: true
               docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener ."
-              docker_workdir: $(self_repo_dir)/$(self_repo_functions_src)
+              docker_workdir: $(self_repo_dir)/$(self_repo_functions_listener_src)
               docker_imagename: $(docker_listener_function_image_name)
               docker_imagetag: $(docker_image_tag)
               docker_containerregistryname: $(docker_container_registry_name_nonprod)
@@ -223,7 +224,7 @@ stages:
               # Docker Config
               docker_build: true
               docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Worker ."
-              docker_workdir: $(self_repo_dir)/$(self_repo_functions_src)
+              docker_workdir: $(self_repo_dir)/$(self_repo_functions_worker_src)
               docker_imagename: $(docker_worker_function_image_name)
               docker_imagetag: $(docker_image_tag)
               docker_containerregistryname: $(docker_container_registry_name_nonprod)
