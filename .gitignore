@@ -354,6 +354,5 @@ reportgenerator
 **/terraform.tfvars
 
 local
-/src/api/xxAMIDOxx.xxSTACKSxx.Listener/local.settings.json
-/src/api/xxAMIDOxx.xxSTACKSxx.Worker/local.settings.json
-/src/api/xxAMIDOxx.xxSTACKSxx.BackgroundWorker/local.appsettings.json
+**/local.settings.json
+**/local.appsettings.json
