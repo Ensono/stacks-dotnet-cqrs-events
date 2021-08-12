@@ -28,7 +28,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Listener
             var appEvent = msgReader.Read<StacksCloudEvent<MenuCreatedEvent>>(mySbMsg);
 
             // TODO: work with appEvent
-            logger.LogInformation($"Message read. Menu Id: {appEvent.Data.MenuId}");
+            logger.LogInformation($"Message read. Menu Id: {appEvent?.Data?.MenuId}");
 
             logger.LogInformation($"C# ServiceBus topic trigger function processed message: {appEvent}");
         }
