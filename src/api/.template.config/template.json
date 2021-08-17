@@ -7,7 +7,7 @@
         "CQRS",
         "Events"
     ],
-    "name": "Amido Stacks Application (.Net Core 3.1)",
+    "name": "Amido Stacks CQRS Events WebAPI",
     "identity": "Amido.Stacks.Api.Cqrs.Events.CSharp",
     "groupIdentity": "Amido.Stacks.Api.Cqrs.Events",
     "shortName": "stacks-api-cqrs-events",

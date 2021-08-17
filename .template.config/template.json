@@ -4,10 +4,11 @@
 	"classifications": [
 		"Stacks",
 		"WebAPI",
+		"Infrastructure",
 		"CQRS",
 		"Events"
 	],
-	"name": "Amido Stacks Application (.Net Core 3.1)",
+	"name": "Amido Stacks CQRS Events",
 	"identity": "Amido.Stacks.App.Cqrs.Events.CSharp",
 	"groupIdentity": "Amido.Stacks.App.Cqrs.Events",
 	"shortName": "stacks-app-cqrs-events",
