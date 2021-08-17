@@ -8,8 +8,8 @@
 		"Events"
 	],
 	"name": "Amido Stacks Application (.Net Core 3.1)",
-	"identity": "Amido.Stacks.App.CSharp",
-	"groupIdentity": "Amido.Stacks",
+	"identity": "Amido.Stacks.App.Cqrs.Events.CSharp",
+	"groupIdentity": "Amido.Stacks.App.Cqrs.Events",
 	"shortName": "stacks-app-cqrs-events",
 	"tags": {
 		"language": "C#",
