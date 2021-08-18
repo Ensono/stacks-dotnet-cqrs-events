@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Amido.Stacks.Application.CQRS.Events;
@@ -10,6 +10,7 @@ using NSubstitute;
 using Shouldly;
 using Xunit;
 using xxAMIDOxx.xxSTACKSxx.Common.Events;
+using xxAMIDOxx.xxSTACKSxx.Domain.Events;
 
 namespace xxAMIDOxx.xxSTACKSxx.CQRS.UnitTests
 {
@@ -43,13 +44,13 @@ namespace xxAMIDOxx.xxSTACKSxx.CQRS.UnitTests
 
         public void EventNameShouldMatchOperationName()
         {
-            var definitions = typeof(MenuCreatedEvent).Assembly.GetImplementationsOf(typeof(IApplicationEvent));
+            var definitions = typeof(MenuCreated).Assembly.GetImplementationsOf(typeof(IApplicationEvent));
             foreach (var definition in definitions)
             {
                 var eventCode = GetEventCode(definition.implementation);
                 var eventName = GetEventName(eventCode);
 
-                // If the user intend to use the type as part of the name for convention,
+                // If the user intend to use the type as part of the name for convention, 
                 // the convention should be nameApplicationEvent not nameEvent
                 // Event is generic and can mislead with DomainEvents
                 definition.implementation.Name.ShouldBeOneOf(eventName, $"{eventName}ApplicationEvent");
