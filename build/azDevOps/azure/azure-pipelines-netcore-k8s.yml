@@ -724,7 +724,7 @@ stages:
 
   - stage: Release
     jobs:
-      - job: Create Packages
+      - job: CreatePackages
         pool:
           vmImage: $(pool_vm_image)
         steps:
