@@ -721,3 +721,15 @@ stages:
                     azure_client_secret: $(ARM_CLIENT_SECRET)
                     azure_tenant_id: $(ARM_TENANT_ID)
                     azure_subscription_id: $(ARM_SUBSCRIPTION_ID)
+
+  - stage: Release
+    jobs:
+      - job: Create Packages
+        pool:
+          vmImage: $(pool_vm_image)
+        steps:
+
+          # Call the template to create the packages
+          - template: templates/steps/build/build-and-release-packages.yml
+            parameters:
+              root_src_dir: $(Agent.BuildDirectory)/s

@@ -1,0 +1,41 @@
+parameters:
+  pool:
+    vmImage: "ubuntu-latest"
+  root_src_dir: ""
+  repo_name: stacks-dotnet-cqrs-events
+
+steps:
+  # Build Nuget packages for templates
+  - task: Bash@3
+    displayName: Create Packages
+    inputs:
+      targetType: "inline"
+      workingDirectory: $(root_src_dir)
+      script: |
+        cp $REPO_NAME/template.csproj
+        mkdir ./templates
+        pushd templates
+        cp -r ${ROOT_SRC_DIR}/$REPO_NAME .
+        cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/api .
+        cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/worker .
+        cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/functions/function-worker .
+        cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/functions/function-listener .
+        popd
+
+        # Clean up the copy to remove git and terraform files
+        pushd ${ROOT_SRC_DIR}/${REPO_NAME}
+        rm -f .git .github .terraform
+        popd
+
+        # Perform the packing of the templates
+        dotent pack -p:PackageVersion=${BUILD_BUILDNUMBER} -o output/packages
+    env:
+      ROOT_SRC_DIR: $(Agent.BuildDirectory)/s
+      REPO_NAME: $(self_repo)
+
+  # Upload the packages as artifacts
+  - task: PublishPipelineArtifact@1
+    displayName: "Publish: NuGet Packages"
+    inputs:
+      path: $(root_src_dir)/output/packages
+      artifact: packages  
