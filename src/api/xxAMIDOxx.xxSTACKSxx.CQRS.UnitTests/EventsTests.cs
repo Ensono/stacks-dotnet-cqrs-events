@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Amido.Stacks.Application.CQRS.Events;
@@ -49,10 +49,10 @@ namespace xxAMIDOxx.xxSTACKSxx.CQRS.UnitTests
                 var eventCode = GetEventCode(definition.implementation);
                 var eventName = GetEventName(eventCode);
 
-                // If the user intend to use the type as part of the name for convention,
+                // If the user intend to use the type as part of the name for convention, 
                 // the convention should be nameApplicationEvent not nameEvent
                 // Event is generic and can mislead with DomainEvents
-                definition.implementation.Name.ShouldBeOneOf(eventName, $"{eventName}ApplicationEvent");
+                definition.implementation.Name.ShouldBeOneOf(eventName, $"{eventName}Event");
             }
         }
 
