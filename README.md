@@ -29,6 +29,160 @@ The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.Se
 
 The functions and workers are all stand-alone implementations that can be used together or separately in different projects.
 
+### Templates
+
+All templates from this repository come as part of the `Amido.Stacks.CQRS.Events.Templates` NuGet package. The list of templates inside the package are as follows:
+
+- `stacks-app-cqrs-events`. The full template including everything + build infrastructure.
+- `stacks-api-cqrs-events`. A template for the `api` project. If you need a CQRS WebAPI that can publish messages to ServiceBus, this is the template to use.
+- `stacks-app-asb-worker`. This template contains a background worker application that reads and handles messages from a ServiceBus subscription.
+- `stacks-function-asb-listener`. Template containing an Azure Function project with a single function that has a Service Bus subscription trigger. The function receives the message and deserializes it.
+- `stacks-function-cosmosdb-worker`. Azure Function containing a CosmosDb change feed trigger. Upon a CosmosDb event, the worker reads it and publishes a message to Service Bus.
+
+
+### Template usage
+
+#### Template installation
+
+To install the templates locally you'll need to download the `Amido.Stacks.CQRS.Events.Templates` NuGet package.
+
+Then you can install it locally to your machine via the command line
+
+```shell
+dotnet new -i /PATH/TO/PACKAGE/Amido.Stacks.CQRS.Events.Templates.1.0.0.nupkg
+```
+
+The output you'll see will list all installed templates. In that list you'll see the just installed Amido Stacks templates
+
+```shell
+Template Name                                    Short Name                       Language    Tags
+-----------------------------------------------  -------------------------------  ----------  ------------------------------------------
+Console Application                              console                          [C#],F#,VB  Common/Console
+Class library                                    classlib                         [C#],F#,VB  Common/Library
+WPF Application                                  wpf                              [C#]        Common/WPF
+WPF Class library                                wpflib                           [C#]        Common/WPF
+WPF Custom Control Library                       wpfcustomcontrollib              [C#]        Common/WPF
+WPF User Control Library                         wpfusercontrollib                [C#]        Common/WPF
+Windows Forms (WinForms) Application             winforms                         [C#]        Common/WinForms
+Windows Forms (WinForms) Class library           winformslib                      [C#]        Common/WinForms
+Worker Service                                   worker                           [C#],F#     Common/Worker/Web
+Amido Stacks Azure Function CosmosDb Worker      stacks-function-cosmosdb-worker  [C#]        Stacks/Azure Function/CosmosDb/Worker
+Amido Stacks Azure Function Service Bus Trigger  stacks-function-asb-listener     [C#]        Stacks/Azure Function/Service Bus/Listener
+Amido Stacks Service Bus Worker                  stacks-app-asb-worker            [C#]        Stacks/Service Bus/Worker
+Amido Stacks Application (.Net Core 3.1)         stacks-app-cqrs-events           [C#]        Stacks/WebAPI/CQRS/Events
+MSTest Test Project                              mstest                           [C#],F#,VB  Test/MSTest
+NUnit 3 Test Project                             nunit                            [C#],F#,VB  Test/NUnit
+NUnit 3 Test Item                                nunit-test                       [C#],F#,VB  Test/NUnit
+xUnit Test Project                               xunit                            [C#],F#,VB  Test/xUnit
+Razor Component                                  razorcomponent                   [C#]        Web/ASP.NET
+Razor Page                                       page                             [C#]        Web/ASP.NET
+MVC ViewImports                                  viewimports                      [C#]        Web/ASP.NET
+MVC ViewStart                                    viewstart                        [C#]        Web/ASP.NET
+Blazor Server App                                blazorserver                     [C#]        Web/Blazor
+Blazor WebAssembly App                           blazorwasm                       [C#]        Web/Blazor/WebAssembly
+ASP.NET Core Empty                               web                              [C#],F#     Web/Empty
+ASP.NET Core Web App (Model-View-Controller)     mvc                              [C#],F#     Web/MVC
+ASP.NET Core Web App                             webapp                           [C#]        Web/MVC/Razor Pages
+ASP.NET Core with Angular                        angular                          [C#]        Web/MVC/SPA
+ASP.NET Core with React.js                       react                            [C#]        Web/MVC/SPA
+ASP.NET Core with React.js and Redux             reactredux                       [C#]        Web/MVC/SPA
+Razor Class Library                              razorclasslib                    [C#]        Web/Razor/Library
+ASP.NET Core Web API                             webapi                           [C#],F#     Web/WebAPI
+ASP.NET Core gRPC Service                        grpc                             [C#]        Web/gRPC
+dotnet gitignore file                            gitignore                                    Config
+global.json file                                 globaljson                                   Config
+NuGet Config                                     nugetconfig                                  Config
+Dotnet local tool manifest file                  tool-manifest                                Config
+Web Config                                       webconfig                                    Config
+Solution File                                    sln                                          Solution
+Protocol Buffer File                             proto                                        Web/gRPC
+
+Examples:
+    dotnet new mvc --auth Individual
+    dotnet new react --auth Individual
+    dotnet new --help
+    dotnet new stacks-function-asb-listener --help
+```
+
+#### Uninstalling a template
+
+To uninstall the template pack you have to execute the following command
+
+```shell
+dotnet new -u Amido.Stacks.CQRS.Events.Templates
+```
+
+
+#### Adding a function template to your project
+
+Let's say you want to add either `stacks-function-cosmosdb-worker` or `stacks-function-asb-listener` function apps to your solution or project.
+
+It's entirely up to you where you want to generate the function project. For example your project has the name structure `Foo.Bar` as a prefix to all your namespaces. If you want the function project to be generated inside a folder called `Foo.Bar` you'll do the following:
+
+```shell
+% cd functions
+
+% dotnet new stacks-function-cosmosdb-worker -n Foo.Bar
+The template "Amido Stacks Azure Function CosmosDb Worker" was created successfully.
+
+% ls -la
+total 0
+drwxr-xr-x  3 amido  staff   96 23 Aug 15:51 .
+drwxr-xr-x  9 amido  staff  288 16 Aug 14:06 ..
+drwxr-xr-x  6 amido  staff  192 23 Aug 15:51 Foo.Bar
+
+% ls -la Foo.Bar
+total 16
+drwxr-xr-x  6 amido  staff   192 23 Aug 15:51 .
+drwxr-xr-x  3 amido  staff    96 23 Aug 15:51 ..
+-rw-r--r--  1 amido  staff   639 23 Aug 15:51 Dockerfile
+drwxr-xr-x  9 amido  staff   288 23 Aug 15:51 Foo.Bar.Worker
+drwxr-xr-x  4 amido  staff   128 23 Aug 15:51 Foo.Bar.Worker.UnitTests
+-rw-r--r--  1 amido  staff  1643 23 Aug 15:51 Foo.Bar.Worker.sln
+```
+
+As you can see your `Foo.Bar` namespace prefix got added to the class names and is reflected not only in the filename, but inside the codebase as well.
+
+To generate the template with your own namespace, but in a different folder you'll have to pass the `-o` flag with your desired path.
+
+```shell
+% dotnet new stacks-function-cosmosdb-worker -n Foo.Bar -o cosmosdb-worker
+The template "Amido Stacks Azure Function CosmosDb Worker" was created successfully.
+
+% ls -la
+total 0
+drwxr-xr-x  3 amido  staff   96 23 Aug 15:58 .
+drwxr-xr-x  9 amido  staff  288 16 Aug 14:06 ..
+drwxr-xr-x  6 amido  staff  192 23 Aug 15:58 cosmosdb-worker
+
+% ls -la cosmosdb-worker
+total 16
+drwxr-xr-x  6 amido  staff   192 23 Aug 15:58 .
+drwxr-xr-x  3 amido  staff    96 23 Aug 15:58 ..
+-rw-r--r--  1 amido  staff   639 23 Aug 15:58 Dockerfile
+drwxr-xr-x  9 amido  staff   288 23 Aug 15:58 Foo.Bar.Worker
+drwxr-xr-x  4 amido  staff   128 23 Aug 15:58 Foo.Bar.Worker.UnitTests
+-rw-r--r--  1 amido  staff  1643 23 Aug 15:58 Foo.Bar.Worker.sln
+```
+
+Now you can build the solution and run/deploy it. If you want to add the existing projects to your own solution you can go to the folder where your `.sln` file lives and execute the following commands
+
+```shell
+% cd my-proj-folder
+
+% ls -la
+total 16
+drwxr-xr-x  6 amido  staff   192 23 Aug 15:58 .
+drwxr-xr-x  3 amido  staff    96 23 Aug 15:58 ..
+-rw-r--r--  1 amido  staff   639 23 Aug 15:58 src
+-rw-r--r--  1 amido  staff  1643 23 Aug 15:58 Foo.Bar.sln
+
+% dotnet sln add path/to/function/Foo.Bar.Worker
+% dotnet sln add path/to/function/Foo.Bar.Worker.UnitTests
+```
+
+Now both `Foo.Bar.Worker` and `Foo.Bar.Worker.UnitTests` projects will be added to the `Foo.Bar` solution.
+
 ### Running the API locally on MacOS
 
 To run the API locally on MacOS there are a couple of prerequisites that you have to be aware of. You'll need a CosmosDB emulator and access to Azure Service Bus.
