@@ -3,11 +3,11 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageVersion>1.0</PackageVersion>
-    <PackageId>Amido.Stacks.CQRS.Events.Templates</PackageId>
-    <Title>Amido Stacks CQRS Events Templates</Title>
+    <PackageId>Amido.Stacks.CQRS.Templates</PackageId>
+    <Title>Amido Stacks CQRS Templates</Title>
     <Authors>Amido</Authors>
-    <Description>Templates containing the full suite of applications and infrastructure to run an event based CQRS web api.</Description>
-    <PackageTags>dotnet-new;templates;amido;cqrs;events</PackageTags>
+    <Description>Templates containing the full suite of applications and infrastructure to run a CQRS web api.</Description>
+    <PackageTags>dotnet-new;templates;amido;cqrs</PackageTags>
 
     <TargetFramework>netstandard2.0</TargetFramework>
 
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-  	<Content Include=".\templates\**" Exclude=".\.git\**;.\.github\**;.\.vscode\**;.\obj;.\bin;.\template.csproj" />
+  	<Content Include=".\templates\**" Exclude=".\templates\**\.git\**;.\templates\**\.github\**;.\templates\**\.vscode\**;.\templates\**\obj\**;.\templates\**\bin\**;.\templates\**\.terraform\**;.\templates\**\.store\**;.\templates\**\template.csproj" />
     <Compile Remove="**\*" />
   </ItemGroup>
 
