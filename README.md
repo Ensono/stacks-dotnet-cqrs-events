@@ -69,7 +69,8 @@ Worker Service                                   worker                         
 Amido Stacks Azure Function CosmosDb Worker      stacks-function-cosmosdb-worker  [C#]        Stacks/Azure Function/CosmosDb/Worker
 Amido Stacks Azure Function Service Bus Trigger  stacks-function-asb-listener     [C#]        Stacks/Azure Function/Service Bus/Listener
 Amido Stacks Service Bus Worker                  stacks-app-asb-worker            [C#]        Stacks/Service Bus/Worker
-Amido Stacks Application (.Net Core 3.1)         stacks-app-cqrs-events           [C#]        Stacks/WebAPI/CQRS/Events
+Amido Stacks CQRS Events WebAPI                  stacks-api-cqrs-events           [C#]        Stacks/WebAPI/CQRS/Events
+Amido Stacks CQRS Events                         stacks-app-cqrs-events           [C#]        Stacks/WebAPI/Infrastructure/CQRS/Events
 MSTest Test Project                              mstest                           [C#],F#,VB  Test/MSTest
 NUnit 3 Test Project                             nunit                            [C#],F#,VB  Test/NUnit
 NUnit 3 Test Item                                nunit-test                       [C#],F#,VB  Test/NUnit
