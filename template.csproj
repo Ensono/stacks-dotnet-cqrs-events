@@ -3,11 +3,11 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageVersion>1.0</PackageVersion>
-    <PackageId>Amido.Stacks.CQRS.Templates</PackageId>
-    <Title>Amido Stacks CQRS Templates</Title>
+    <PackageId>Amido.Stacks.CQRS.Events.Templates</PackageId>
+    <Title>Amido Stacks CQRS Events Templates</Title>
     <Authors>Amido</Authors>
-    <Description>Templates containing the full suite of applications and infrastructure to run a CQRS web api.</Description>
-    <PackageTags>dotnet-new;templates;amido;cqrs</PackageTags>
+    <Description>Templates containing the full suite of applications and infrastructure to run an event based CQRS web api.</Description>
+    <PackageTags>dotnet-new;templates;amido;cqrs;events</PackageTags>
 
     <TargetFramework>netstandard2.0</TargetFramework>
 
