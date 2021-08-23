@@ -181,7 +181,7 @@ drwxr-xr-x  3 amido  staff    96 23 Aug 15:58 ..
 % dotnet sln add path/to/function/Foo.Bar.Worker.UnitTests
 ```
 
-Now both `Foo.Bar.Worker` and `Foo.Bar.Worker.UnitTests` projects will be added to the `Foo.Bar` solution.
+Now both `Foo.Bar.Worker` and `Foo.Bar.Worker.UnitTests` projects are part of your `Foo.Bar` solution.
 
 ### Running the API locally on MacOS
 
