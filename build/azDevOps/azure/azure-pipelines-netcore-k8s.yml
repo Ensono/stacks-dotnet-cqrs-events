@@ -247,6 +247,9 @@ stages:
                 pushd templates
                 cp -r ${ROOT_SRC_DIR}/$REPO_NAME .
                 cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/api .
+                cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/functions/function-listener .
+                cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/functions/function-worker .
+                cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/worker .
                 popd
 
             env:
