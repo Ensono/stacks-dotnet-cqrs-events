@@ -467,7 +467,9 @@ stages:
                       domain: $(domain),
                       component: $(component),
                       app_name: yumido-netcore-api,
+                      app_worker_name: yumido-netcore-bgworker,
                       resource_def_name: $(resource_def_name),
+                      resource_def_worker_name: $(resource_def_name)-bg-worker,
                       version: $(docker_image_tag),
                       environment: $(Environment.ShortName)
                     }
@@ -495,12 +497,20 @@ stages:
                           jwtbearerauthentication_openapiclientid: "<TODO>",
                           jwtbearerauthentication_openapitokenurl: "<TODO>",
                           servicebus_topic_name: $(servicebus_topic_name),
+                          servicebus_subscription_name: $(servicebus_subscription_name),
                           servicebus_connectionstring: $(servicebus_connectionstring)
                         },
                         # -no-unset is present by default
                         args: "-no-empty",
                       }
                     ]
+
+                # Upload the deployment manifest as an artefact
+                - task: PublishPipelineArtifact@1
+                  displayName: Publish K8s Manifest
+                  inputs:
+                    path: $(self_repo_dir)/deploy/k8s/app/api-deploy.yml
+                    artifact: manifests
 
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:

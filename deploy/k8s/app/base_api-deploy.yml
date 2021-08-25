@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: ${project}
 
 ---
-
+# Ingress for the API
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -46,7 +46,7 @@ spec:
         - ${tls_domain}
 
 ---
-
+# Service for the API
 apiVersion: v1
 kind: Service
 metadata:
@@ -80,7 +80,42 @@ spec:
   sessionAffinity: None
 
 ---
+# Service for the background worker
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.kubernetes.io/instance: ${project}-${app_worker_name}
+    app.kubernetes.io/version: ${version}
+    applicationId: ${project}/${app_worker_name}
+    applicationName: ${project}-${app_worker_name}
+    customerID: ${company}
+    owner: ${company}/${project}
+    projectID: ${project}
+    version: ${version}
+  labels:
+    app.kubernetes.io/component: ${component}
+    app.kubernetes.io/name: ${resource_def_worker_name}
+    app.kubernetes.io/part-of: ${project}
+    environment: ${environment}
+  name: ${resource_def_worker_name}
+  namespace: ${namespace}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/component: ${component}
+    app.kubernetes.io/name: ${resource_def_worker_name}
+    app.kubernetes.io/part-of: ${project}
+    environment: ${environment}
+  sessionAffinity: None
 
+---
+
+# Secrets are used by both the API and the background worker
 apiVersion: v1
 kind: Secret
 metadata:
@@ -94,6 +129,7 @@ stringData:
 
 ---
 
+# ConfigMap for the API
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -170,6 +206,64 @@ data:
 
 ---
 
+# Config map for the background worker
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workersettings
+  namespace: ${namespace}
+data:
+  appsettings.json: |
+    {
+      "Serilog": {
+        "Using": [
+          "Serilog.Sinks.Console",
+          "Serilog.Sinks.ApplicationInsights"
+        ],
+        "MinimumLevel": {
+          "Default": "Debug",
+          "Override": {}
+        },
+        "WriteTo": [
+          {
+            "Name": "Console"
+          },
+          {
+            "Name": "ApplicationInsights",
+            "Args": {
+              "telemetryConverter": "Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters.TraceTelemetryConverter, Serilog.Sinks.ApplicationInsights"
+            }
+          }
+        ],
+        "Enrich": [
+          "FromLogContext",
+          "WithMachineName",
+          "WithThreadId"
+        ],
+        "Destructure": []
+      },
+      "ServiceBusConfiguration": {
+        "Listener": {
+          "Topics": [
+            {
+              "Name": "${servicebus_topic_name}",
+              "SubscriptionName": "${servicebus_subscription_name}",
+              "ConcurrencyLevel": 5,
+              "DisableProcessing": false,
+              "ConnectionStringSecret": {
+                "Identifier": "SERVICEBUS_CONNECTIONSTRING",
+                "Source": "Environment"
+              },
+              "DisableMessageValidation": true
+            }
+          ]
+        }
+      }
+    }
+
+---
+
+# Deployment for the API
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -299,3 +393,136 @@ spec:
         - name: appsettings
           configMap:
             name: appsettings
+
+---
+
+# Deployment for the background worker
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app.kubernetes.io/instance: ${project}-${app_worker_name}
+    app.kubernetes.io/version: ${version}
+    applicationId: ${project}/${app_worker_name}
+    applicationName: ${project}-${app_worker_name}
+    customerID: ${company}
+    owner: ${company}/${project}
+    projectID: ${project}
+    version: ${version}
+  labels:
+    aadpodidbinding: ${aadpodidentitybinding}
+    app.kubernetes.io/component: ${component}
+    app.kubernetes.io/name: ${resource_def_worker_name}
+    app.kubernetes.io/part-of: ${project}
+    environment: ${environment}
+  name: ${resource_def_worker_name}
+  namespace: ${namespace}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: ${component}
+      app.kubernetes.io/name: ${resource_def_worker_name}
+      app.kubernetes.io/part-of: ${project}
+      environment: ${environment}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        app.kubernetes.io/version: ${version}
+        applicationId: ${project}/${app_worker_name}
+        applicationName: ${project}-${app_worker_name}
+        customerID: ${company}
+        owner: ${company}/${project}
+        projectID: ${project}
+        role: api
+        version: ${version}
+      labels:
+        aadpodidbinding: ${aadpodidentitybinding}
+        app.kubernetes.io/component: ${component}
+        app.kubernetes.io/name: ${resource_def_worker_name}
+        app.kubernetes.io/part-of: ${project}
+        environment: ${environment}
+    spec:
+      dnsPolicy: ClusterFirst
+      containers:
+        - name: api
+          # this we need to pass from the pipeline to the deployment steps
+          image: ${k8s_image}
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: appsettings
+              # this can either be configured if you are re-using this for many services or should be changed here
+              mountPath: /app/config
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: ENVIRONMENT
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['environment']
+            - name: VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['version']
+            - name: RELEASE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['release']
+            - name: API_BASEPATH
+              value: ${k8s_app_path}
+            - name: COSMOSDB_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: cosmos_key
+            - name: LOG_LEVEL
+              value: debug
+            - name: APPINSIGHTS_INSTRUMENTATIONKEY
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: app_insights
+            - name: SERVICEBUS_CONNECTIONSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: servicebus_connectionstring
+          ports:
+            - name: http
+              containerPort: 80
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 45
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 25
+          readinessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 25
+      volumes:
+        - name: appsettings
+          configMap:
+            name: workersettings
