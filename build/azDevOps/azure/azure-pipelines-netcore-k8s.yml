@@ -263,7 +263,7 @@ stages:
                 BROKER_URL: $(PACT_BROKER)
               }
               test_arguments: "-v q /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
-              project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)              
+              project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)
 
           # Build listener function image
           - template: templates/steps/build/build-function.yml
