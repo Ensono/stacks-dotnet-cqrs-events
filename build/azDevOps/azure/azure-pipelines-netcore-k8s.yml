@@ -55,6 +55,7 @@ variables:
   self_repo_functions_listener_src: src/functions/function-listener
   self_repo_functions_worker_src: src/functions/function-worker
   self_repo_functions_dir: "$(Agent.BuildDirectory)/s/$(self_functions_src)"
+  self_repo_bg_worker_src: src/worker
   self_repo_tf_src: deploy/azure/app/kube
   self_repo_tf_dir: "$(self_repo_dir)/$(self_repo_tf_src)"
   self_repo_tf_servicebus_src: deploy/azure/app/servicebus
@@ -86,6 +87,7 @@ variables:
   docker_image_name: $(self_generic_name)
   docker_worker_function_image_name: stacks-api-events-worker-function
   docker_listener_function_image_name: stacks-api-events-listener-function
+  docker_bg_worker_image_name: stacks-api-events-bg-worker
   docker_image_tag: "$(version_major).$(version_minor).$(version_revision)-$(Build.SourceBranchName)"
   docker_container_registry_name_nonprod: amidostacksnonprodeuwcore
   k8s_docker_registry_nonprod: $(docker_container_registry_name_nonprod).azurecr.io
@@ -160,7 +162,8 @@ stages:
               terraform_container: "terraform_custom"
               terraform_directory: "${{ variables.self_repo_tf_dir }}"
 
-          # BUILD NPM
+          # Build .NET packages
+          # - API
           - template: templates/steps/build/build-netcore.yml
             parameters:
               dotnet_core_version: "3.1.x"
@@ -210,6 +213,57 @@ stages:
               }
               test_arguments: "-v q /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
               project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)
+
+          # - Background worker
+          - template: templates/steps/build/build-netcore.yml
+            parameters:
+              dotnet_core_version: "3.1.x"
+              # Docker Config
+              docker_build: true
+              # TODO: normalize this
+              docker_build_additional_args: "."
+              docker_workdir: $(self_repo_dir)/$(self_repo_bg_worker_src)
+              docker_imagename: $(docker_bg_worker_image_name)
+              docker_imagetag: $(docker_image_tag)
+              docker_containerregistryname: $(docker_container_registry_name_nonprod)
+              # Vulnerability Scanning
+              vulnerability_scan: false
+              vulnerability_workdir: "$(Build.ArtifactStagingDirectory)"
+              # Sonar settings
+              static_code_analysis: true
+              sonar_container: sonar_scanner
+              sonar_run_properties: "/d:sonar.cs.opencover.reportsPaths=\"**/*.opencover.xml\" /d:sonar.exclusions=\"**/*Tests\" /d:sonar.coverage.exclusions=\"**/*Tests\""
+              sonar_env: {
+                SONAR_HOST_URL: "https://sonarcloud.io",
+                SONAR_TOKEN: $SONAR_TOKEN,
+                SONAR_PROJECT_KEY: $SONAR_PROJECT_KEY,
+                SONAR_ORGANIZATION: $SONAR_ORGANIZATION,
+                SONAR_PROJECT_NAME: $SONAR_PROJECT_NAME,
+                BUILD_VERSION: $(docker_image_tag),
+                SONAR_SCANNER_OPTS: "",
+              }
+              # Should be hardcoded in your sonar-project.properties file
+              unit_test: true
+              unit_test_project: "*UnitTests"
+              component_test: true
+              component_test_project: "*ComponentTests"
+              # Enable once you have set up a dev or dedicated test db
+              integration_test: false
+              integration_test_project: "*IntegrationTests"
+              integration_test_env: {
+                COSMOSDB_KEY: $(COSMOSDB_KEY_DEV),
+                CosmosDB__DatabaseName: $(COSMOSDB_NAME_DEV),
+                CosmosDB__DatabaseAccountUri: $(COSMOSDB_ACCOUNT_URI_DEV)
+              }
+              contract_test: false
+              contract_test_project: "*ContractTests"
+              contract_test_env: {
+                BUILD_NUMBER: $(docker_image_tag),
+                PACT_BEARER_TOKEN: $(PACT_BEARER_TOKEN),
+                BROKER_URL: $(PACT_BROKER)
+              }
+              test_arguments: "-v q /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
+              project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)              
 
           # Build listener function image
           - template: templates/steps/build/build-function.yml
