@@ -485,6 +485,7 @@ stages:
                           k8s_app_path: /api/menu,
                           log_level: "Debug",
                           k8s_image: '$(k8s_docker_registry_nonprod)/$(docker_image_name):$(docker_image_tag)',
+                          k8s_worker_image: '$(k8s_docker_registry_nonprod)/$(docker_bg_worker_image_name):$(docker_image_tag)',
                           aadpodidentitybinding: stacks-webapp-identity,
                           app_insights_key: $(app_insights_instrumentation_key),
                           cosmosdb_key: $(cosmosdb_primary_master_key),
@@ -510,7 +511,7 @@ stages:
                   displayName: Publish K8s Manifest
                   inputs:
                     path: $(self_repo_dir)/deploy/k8s/app/api-deploy.yml
-                    artifact: manifests
+                    artifact: manifests_dev
 
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:

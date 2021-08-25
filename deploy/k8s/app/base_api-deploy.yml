@@ -454,7 +454,7 @@ spec:
       containers:
         - name: api
           # this we need to pass from the pipeline to the deployment steps
-          image: ${k8s_image}
+          image: ${k8s_worker_image}
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: appsettings
