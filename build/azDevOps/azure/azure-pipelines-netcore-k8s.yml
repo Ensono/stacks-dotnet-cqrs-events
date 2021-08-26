@@ -558,7 +558,7 @@ stages:
 
   - stage: Prod
     dependsOn: Build
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-prod
       - group: stacks-credentials-prod-kv
@@ -750,6 +750,12 @@ stages:
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.servicebus_topic_name'] ]
           - name: servicebus_connectionstring
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.servicebus_connectionstring'] ]
+          - name: function_publisher_name
+            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.function_publisher_name'] ]
+          - name: function_listener_name
+            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.function_listener_name'] ]
+          - name: app_resource_group
+            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.resource_group'] ]            
         strategy:
           runOnce:
             deploy:
@@ -769,7 +775,9 @@ stages:
                       domain: $(domain),
                       component: $(component),
                       app_name: yumido-netcore-api,
+                      app_worker_name: yumido-netcore-bgworker,
                       resource_def_name: $(resource_def_name),
+                      resource_def_worker_name: $(resource_def_name)-bg-worker,
                       version: $(docker_image_tag),
                       environment: $(Environment.ShortName)
                     }
@@ -797,12 +805,20 @@ stages:
                           jwtbearerauthentication_openapiclientid: "<TODO>",
                           jwtbearerauthentication_openapitokenurl: "<TODO>",
                           servicebus_topic_name: $(servicebus_topic_name),
+                          servicebus_subscription_name: $(servicebus_subscription_name),
                           servicebus_connectionstring: $(servicebus_connectionstring)
                         },
                         # -no-unset is present by default
                         args: "-no-empty",
                       }
                     ]
+
+                # Upload the deployment manifest as an artefact
+                - task: PublishPipelineArtifact@1
+                  displayName: Publish K8s Manifest
+                  inputs:
+                    path: $(self_repo_dir)/deploy/k8s/app/api-deploy.yml
+                    artifact: manifests_prod                    
 
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:
@@ -827,6 +843,25 @@ stages:
                     azure_client_secret: $(ARM_CLIENT_SECRET)
                     azure_tenant_id: $(ARM_TENANT_ID)
                     azure_subscription_id: $(ARM_SUBSCRIPTION_ID)
+
+                # Deploy the function containers to the function apps
+                # - Listener
+                - task: AzureFunctionAppContainer@1
+                  displayName: Deploy Listener function
+                  inputs:
+                    azureSubscription: $(azure_service_connection)
+                    resourceGroupName: $(app_resource_group)
+                    appName: $(function_listener_name)
+                    imageName: $(k8s_docker_registry_prod)/$(docker_listener_function_image_name):$(docker_image_tag)
+
+                # - Worker
+                - task: AzureFunctionAppContainer@1
+                  displayName: Deploy Worker function
+                  inputs:
+                    azureSubscription: $(azure_service_connection)
+                    resourceGroupName: $(app_resource_group)
+                    appName: $(function_publisher_name)
+                    imageName: $(k8s_docker_registry_prod)/$(docker_worker_function_image_name):$(docker_image_tag)                    
 
   - stage: Release
     dependsOn:
