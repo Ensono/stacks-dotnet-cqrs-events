@@ -31,7 +31,7 @@ The functions and workers are all stand-alone implementations that can be used t
 
 ### Templates
 
-All templates from this repository come as part of the `Amido.Stacks.CQRS.Events.Templates` NuGet package. The list of templates inside the package are as follows:
+All templates from this repository come as part of the [Amido.Stacks.CQRS.Events.Templates](https://www.nuget.org/packages/Amido.Stacks.CQRS.Templates/) NuGet package. The list of templates inside the package are as follows:
 
 - `stacks-app-cqrs-events`. The full template including everything + build infrastructure.
 - `stacks-api-cqrs-events`. A template for the `api` project. If you need a CQRS WebAPI that can publish messages to ServiceBus, this is the template to use.
@@ -44,12 +44,12 @@ All templates from this repository come as part of the `Amido.Stacks.CQRS.Events
 
 #### Template installation
 
-To install the templates locally you'll need to download the `Amido.Stacks.CQRS.Events.Templates` NuGet package.
+To install the templates locally you'll need to download the [Amido.Stacks.CQRS.Events.Templates](https://www.nuget.org/packages/Amido.Stacks.CQRS.Templates/) NuGet package.
 
-Then you can install it locally to your machine via the command line
+Then you can install it locally to your machine via the command line (the version provided is just an example, please consult the NuGet page for an up-to date version)
 
 ```shell
-dotnet new -i /PATH/TO/PACKAGE/Amido.Stacks.CQRS.Events.Templates.1.0.0.nupkg
+dotnet new --install Amido.Stacks.CQRS.Templates::0.0.85g
 ```
 
 The output you'll see will list all installed templates. In that list you'll see the just installed Amido Stacks templates
