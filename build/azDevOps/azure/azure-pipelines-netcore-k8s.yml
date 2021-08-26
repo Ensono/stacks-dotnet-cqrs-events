@@ -793,6 +793,7 @@ stages:
                           k8s_app_path: /api/menu,
                           log_level: "Debug",
                           k8s_image: '$(k8s_docker_registry_prod)/$(docker_image_name):$(docker_image_tag)',
+                          k8s_worker_image: '$(k8s_docker_registry_prod)/$(docker_bg_worker_image_name):$(docker_image_tag)',
                           aadpodidentitybinding: stacks-webapp-identity,
                           app_insights_key: $(app_insights_instrumentation_key),
                           cosmosdb_key: $(cosmosdb_primary_master_key),
