@@ -755,7 +755,7 @@ stages:
           - name: function_listener_name
             value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.function_listener_name'] ]
           - name: app_resource_group
-            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.resource_group'] ]            
+            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.resource_group'] ]
         strategy:
           runOnce:
             deploy:
@@ -818,7 +818,7 @@ stages:
                   displayName: Publish K8s Manifest
                   inputs:
                     path: $(self_repo_dir)/deploy/k8s/app/api-deploy.yml
-                    artifact: manifests_prod                    
+                    artifact: manifests_prod
 
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:
@@ -861,7 +861,7 @@ stages:
                     azureSubscription: $(azure_service_connection)
                     resourceGroupName: $(app_resource_group)
                     appName: $(function_publisher_name)
-                    imageName: $(k8s_docker_registry_prod)/$(docker_worker_function_image_name):$(docker_image_tag)                    
+                    imageName: $(k8s_docker_registry_prod)/$(docker_worker_function_image_name):$(docker_image_tag)
 
   - stage: Release
     dependsOn:
