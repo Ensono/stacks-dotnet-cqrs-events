@@ -751,11 +751,11 @@ stages:
           - name: servicebus_connectionstring
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.servicebus_connectionstring'] ]
           - name: function_publisher_name
-            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.function_publisher_name'] ]
+            value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.function_publisher_name'] ]
           - name: function_listener_name
-            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.function_listener_name'] ]
+            value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.function_listener_name'] ]
           - name: app_resource_group
-            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.resource_group'] ]
+            value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.resource_group'] ]
         strategy:
           runOnce:
             deploy:
