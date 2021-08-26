@@ -213,7 +213,7 @@ stages:
               }
               test_arguments: "-v q /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
               functional_test: true
-              functional_test_artefact: true
+              functional_test_artefact: tests
               repo_name: $(self_repo)
               project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)
 
