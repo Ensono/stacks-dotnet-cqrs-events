@@ -212,6 +212,9 @@ stages:
                 BROKER_URL: $(PACT_BROKER)
               }
               test_arguments: "-v q /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
+              functional_test: true
+              functional_test_artefact: true
+              repo_name: $(self_repo)
               project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)
 
           # - Background worker
@@ -518,7 +521,7 @@ stages:
                     scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
                     test_artefact: "tests"
                     test_baseurl: ""
-                    functional_test: false
+                    functional_test: true
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
@@ -826,7 +829,7 @@ stages:
                     scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
                     test_artefact: "tests"
                     test_baseurl: ""
-                    functional_test: false
+                    functional_test: true
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
