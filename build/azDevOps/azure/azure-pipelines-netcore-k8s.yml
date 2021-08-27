@@ -26,7 +26,8 @@ resources:
     - repository: templates
       type: github
       name: amido/stacks-pipeline-templates
-      ref: refs/tags/v2.0.3
+      ref: 3d071d81e20be20ec9ed80d0294c95c07254e93e
+      # ref: refs/tags/v2.0.3
       # EXCHANGE THIS FOR YOUR OWN ENDPOINT CONNECTION TO GITHUB
       # REPOSITORY IS PUBLIC
       endpoint: amidostacks
@@ -516,20 +517,11 @@ stages:
                     path: $(self_repo_dir)/deploy/k8s/app/api-deploy.yml
                     artifact: manifests_dev
 
-                # Create BaseUrl environment variable for tests
-                # This is done using a command so that the case of the var does not change
-                - task: Bash@3
-                  displayName: Set Testing URL
-                  inputs:
-                    targetType: inline
-                    script: |
-                      echo "##vso[task.setvariable variable=BaseUrl]https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_nonprod)/api/menu/"
-
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:
                     scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
                     test_artefact: "tests"
-                    test_baseurl: ""
+                    test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_nonprod)/api/menu/"
                     functional_test: true
                     performance_test: false
                     smoke_test: false
@@ -833,20 +825,11 @@ stages:
                     path: $(self_repo_dir)/deploy/k8s/app/api-deploy.yml
                     artifact: manifests_prod
 
-                # Create BaseUrl environment variable for tests
-                # This is done using a command so that the case of the var does not change
-                - task: Bash@3
-                  displayName: Set Testing URL
-                  inputs:
-                    targetType: inline
-                    script: |
-                      echo "##vso[task.setvariable variable=BaseUrl]https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
-
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:
                     scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
                     test_artefact: "tests"
-                    test_baseurl: ""
+                    test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
                     functional_test: true
                     performance_test: false
                     smoke_test: false
