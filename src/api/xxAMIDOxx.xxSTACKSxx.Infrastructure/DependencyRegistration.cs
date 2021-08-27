@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Amido.Stacks.Application.CQRS.Commands;
 using Amido.Stacks.Application.CQRS.Queries;
@@ -6,6 +6,8 @@ using Amido.Stacks.Configuration.Extensions;
 using Amido.Stacks.Data.Documents.CosmosDB;
 using Amido.Stacks.Data.Documents.CosmosDB.Extensions;
 using Amido.Stacks.DependencyInjection;
+using Amido.Stacks.Messaging.Azure.EventHub.Configuration;
+using Amido.Stacks.Messaging.Azure.EventHub.Publisher;
 using Amido.Stacks.Messaging.Azure.ServiceBus.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +34,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
         {
             AddCommandHandlers(services);
             AddQueryHandlers(services);
+            //AddEventPublishers(services);
         }
 
         /// <summary>
@@ -51,6 +54,10 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             // Azure Service Bus
             services.Configure<ServiceBusConfiguration>(context.Configuration.GetSection("ServiceBusConfiguration"));
             services.AddServiceBus();
+
+            // Azure Event Hub
+            //services.Configure<EventHubConfiguration>(context.Configuration.GetSection("EventHubConfiguration"));
+            //services.AddEventHub();
 
             if (Environment.GetEnvironmentVariable("USE_MEMORY_STORAGE") == null)
                 services.AddTransient<IMenuRepository, MenuRepository>();
@@ -84,16 +91,16 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             }
         }
 
-        private static void AddEventPublishers(WebHostBuilderContext context, IServiceCollection services)
-        {
-            log.Information("Loading implementations of {interface}", typeof(IApplicationEventPublisher).Name);
-            var definitions = typeof(DummyEventPublisher).Assembly.GetImplementationsOf(typeof(IApplicationEventPublisher));
-            foreach (var definition in definitions)
-            {
-                log.Information("Registering '{implementation}' as implementation of '{interface}'", definition.implementation.FullName, definition.interfaceVariation.FullName);
-                //TODO: maybe this should be singleton
-                services.AddTransient(definition.interfaceVariation, definition.implementation);
-            }
-        }
+        //private static void AddEventPublishers(IServiceCollection services)
+        //{
+        //    log.Information("Loading implementations of {interface}", typeof(IApplicationEventPublisher).Name);
+        //    var definitions = typeof(EventPublisher).Assembly.GetImplementationsOf(typeof(IApplicationEventPublisher));
+        //    foreach (var definition in definitions)
+        //    {
+        //        log.Information("Registering '{implementation}' as implementation of '{interface}'", definition.implementation.FullName, definition.interfaceVariation.FullName);
+        //        //TODO: maybe this should be singleton
+        //        services.AddTransient(definition.interfaceVariation, definition.implementation);
+        //    }
+        //}
     }
 }
