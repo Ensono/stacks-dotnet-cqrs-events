@@ -516,6 +516,11 @@ stages:
                     path: $(self_repo_dir)/deploy/k8s/app/api-deploy.yml
                     artifact: manifests_dev
 
+                # Create BaseUrl environment variable for tests
+                # This is done using a command so that the case of the var does not change
+                - bash: |
+                    echo "##vso[task.setvariable variable=BaseUrl]https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
+
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:
                     scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
@@ -823,6 +828,11 @@ stages:
                   inputs:
                     path: $(self_repo_dir)/deploy/k8s/app/api-deploy.yml
                     artifact: manifests_prod
+
+                # Create BaseUrl environment variable for tests
+                # This is done using a command so that the case of the var does not change
+                - bash: |
+                    echo "##vso[task.setvariable variable=BaseUrl]https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
 
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:
