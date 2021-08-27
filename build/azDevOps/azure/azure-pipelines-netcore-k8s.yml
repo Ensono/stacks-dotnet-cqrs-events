@@ -26,7 +26,7 @@ resources:
     - repository: templates
       type: github
       name: amido/stacks-pipeline-templates
-      ref: refs/tags/v2.0.3
+      ref: refs/tags/v2.0.4
       # EXCHANGE THIS FOR YOUR OWN ENDPOINT CONNECTION TO GITHUB
       # REPOSITORY IS PUBLIC
       endpoint: amidostacks
@@ -212,6 +212,9 @@ stages:
                 BROKER_URL: $(PACT_BROKER)
               }
               test_arguments: "-v q /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
+              functional_test: true
+              functional_test_artefact: tests
+              repo_name: $(self_repo)
               project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)
 
           # - Background worker
@@ -517,8 +520,8 @@ stages:
                   parameters:
                     scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
                     test_artefact: "tests"
-                    test_baseurl: ""
-                    functional_test: false
+                    test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_nonprod)/api/menu/"
+                    functional_test: true
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
@@ -825,8 +828,8 @@ stages:
                   parameters:
                     scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
                     test_artefact: "tests"
-                    test_baseurl: ""
-                    functional_test: false
+                    test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
+                    functional_test: true
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
