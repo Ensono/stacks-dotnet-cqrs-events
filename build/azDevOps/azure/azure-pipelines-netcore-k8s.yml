@@ -518,8 +518,12 @@ stages:
 
                 # Create BaseUrl environment variable for tests
                 # This is done using a command so that the case of the var does not change
-                - bash: |
-                    echo "##vso[task.setvariable variable=BaseUrl]https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
+                - task: Bash@3
+                  displayName: Set Testing URL
+                  inputs:
+                    targetType: inline
+                    script: |
+                      echo "##vso[task.setvariable variable=BaseUrl]https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_nonprod)/api/menu/"
 
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:
@@ -831,8 +835,12 @@ stages:
 
                 # Create BaseUrl environment variable for tests
                 # This is done using a command so that the case of the var does not change
-                - bash: |
-                    echo "##vso[task.setvariable variable=BaseUrl]https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
+                - task: Bash@3
+                  displayName: Set Testing URL
+                  inputs:
+                    targetType: inline
+                    script: |
+                      echo "##vso[task.setvariable variable=BaseUrl]https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
 
                 - template: azDevOps/azure/templates/v2/steps/deploy-k8s-app-kubectl.yml@templates
                   parameters:
