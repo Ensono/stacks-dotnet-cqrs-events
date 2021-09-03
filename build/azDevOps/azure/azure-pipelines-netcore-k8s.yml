@@ -722,6 +722,24 @@ stages:
                       -Z "false"
                   displayName: Promote Listener function Docker Image to Production ACR
 
+                - task: Bash@3
+                  inputs:
+                    filePath: "$(self_pipeline_scripts_dir)/util-azure-promote-image.bash"
+                    arguments: >
+                      -a "$(docker_bg_worker_image_name):$(docker_image_tag)"
+                      -b "$(k8s_docker_registry_nonprod)"
+                      -c "$(azure-subscription-id)"
+                      -d "$(azure-client-id)"
+                      -e "$(azure-client-secret)"
+                      -f "$(azure-tenant-id)"
+                      -g "$(k8s_docker_registry_prod)"
+                      -h "$(prod-azure-subscription-id)"
+                      -i "$(prod-azure-client-id)"
+                      -j "$(prod-azure-client-secret)"
+                      -k "$(prod-azure-tenant-id)"
+                      -Z "false"
+                  displayName: Promote BG worker Docker Image to Production ACR
+
       - deployment: DeployProd
         dependsOn:
           - AppInfraProd
