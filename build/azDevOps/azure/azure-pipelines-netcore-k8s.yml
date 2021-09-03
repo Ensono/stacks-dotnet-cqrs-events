@@ -738,7 +738,7 @@ stages:
                       -j "$(prod-azure-client-secret)"
                       -k "$(prod-azure-tenant-id)"
                       -Z "false"
-                  displayName: Promote BG worker Docker Image to Production ACR                  
+                  displayName: Promote BG worker Docker Image to Production ACR
 
       - deployment: DeployProd
         dependsOn:
