@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Amido.Stacks.Application.CQRS.Commands;
 using Amido.Stacks.Application.CQRS.Queries;
@@ -6,7 +6,8 @@ using Amido.Stacks.Configuration.Extensions;
 using Amido.Stacks.Data.Documents.CosmosDB;
 using Amido.Stacks.Data.Documents.CosmosDB.Extensions;
 using Amido.Stacks.DependencyInjection;
-using Amido.Stacks.Messaging.Azure.ServiceBus.Configuration;
+using Amido.Stacks.Messaging.Azure.EventHub.Configuration;
+using Amido.Stacks.Messaging.Azure.EventHub.Publisher;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -32,6 +33,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
         {
             AddCommandHandlers(services);
             AddQueryHandlers(services);
+            AddEventPublishers(services);
         }
 
         /// <summary>
@@ -45,12 +47,9 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             services.AddSecrets();
             services.AddCosmosDB();
 
-            //TODO: Evaluate if event publishers should be generic, probably not, EventHandler are generic tough
-            // AddEventPublishers(context, services);
-
             // Azure Service Bus
-            services.Configure<ServiceBusConfiguration>(context.Configuration.GetSection("ServiceBusConfiguration"));
-            services.AddServiceBus();
+            services.Configure<EventHubConfiguration>(context.Configuration.GetSection("EventHubConfiguration"));
+            services.AddEventHub();
 
             if (Environment.GetEnvironmentVariable("USE_MEMORY_STORAGE") == null)
                 services.AddTransient<IMenuRepository, MenuRepository>();
@@ -84,14 +83,13 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             }
         }
 
-        private static void AddEventPublishers(WebHostBuilderContext context, IServiceCollection services)
+        private static void AddEventPublishers(IServiceCollection services)
         {
             log.Information("Loading implementations of {interface}", typeof(IApplicationEventPublisher).Name);
-            var definitions = typeof(DummyEventPublisher).Assembly.GetImplementationsOf(typeof(IApplicationEventPublisher));
+            var definitions = typeof(EventPublisher).Assembly.GetImplementationsOf(typeof(IApplicationEventPublisher));
             foreach (var definition in definitions)
             {
                 log.Information("Registering '{implementation}' as implementation of '{interface}'", definition.implementation.FullName, definition.interfaceVariation.FullName);
-                //TODO: maybe this should be singleton
                 services.AddTransient(definition.interfaceVariation, definition.implementation);
             }
         }
