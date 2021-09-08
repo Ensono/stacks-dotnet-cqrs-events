@@ -32,6 +32,38 @@
 				]
 			}
 		},
+		"eventPublisher": {
+			"type": "parameter",
+			"datatype": "choice",
+			"choices": [
+				{
+					"choice": "ServiceBus",
+					"description": "Targets the Azure Service Bus for publishing events."
+				},
+				{
+					"choice": "EventHub",
+					"description": "Targets the Azure Event Hub for publishing events."
+				},
+				{
+					"choice": "None",
+					"description": "No event publishing added."
+				}
+			],
+			"defaultValue": "None",
+			"description": "Adds event publishing."
+		},
+		"EventPublisherServiceBus": {
+			"type": "computed",
+			"value": "(eventPublisher == \"ServiceBus\")"
+		},
+		"EventPublisherEventHub": {
+			"type": "computed",
+			"value": "(eventPublisher == \"EventHub\")"
+		},
+		"EventPublisherNone": {
+			"type": "computed",
+			"value": "(eventPublisher == \"None\")"
+		},
 		"enableFunctionWorker": {
 			"type": "parameter",
 			"dataType": "bool",
