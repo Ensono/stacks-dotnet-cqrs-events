@@ -154,5 +154,23 @@
 				}
 			]
 		}
-	}
+	},
+	"postActions": [
+		{
+			"Description": "Adding Reference to Amido.Stacks.Messaging.Azure.ServiceBus NuGet package",
+			"actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+			"ContinueOnError": "false",
+			"manualInstructions": [
+				{
+					"text": "Manually add the reference to Amido.Stacks.Messaging.Azure.ServiceBus to your project file"
+				}
+			],
+			"args": {
+				"referenceType": "package",
+				"reference": "Amido.Stacks.Messaging.Azure.ServiceBus",
+				"version": "0.2.8",
+				"projectFileExtensions": ".csproj"
+			}
+		}
+	]	  
 }
