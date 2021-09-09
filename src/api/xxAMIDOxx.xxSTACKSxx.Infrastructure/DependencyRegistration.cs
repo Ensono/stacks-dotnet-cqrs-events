@@ -89,16 +89,5 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
                 services.AddTransient(definition.interfaceVariation, definition.implementation);
             }
         }
-
-        private static void AddEventPublishers(IServiceCollection services)
-        {
-            log.Information("Loading implementations of {interface}", typeof(IApplicationEventPublisher).Name);
-            var definitions = typeof(DummyEventPublisher).Assembly.GetImplementationsOf(typeof(IApplicationEventPublisher));
-            foreach (var definition in definitions)
-            {
-                log.Information("Registering '{implementation}' as implementation of '{interface}'", definition.implementation.FullName, definition.interfaceVariation.FullName);
-                services.AddTransient(definition.interfaceVariation, definition.implementation);
-            }
-        }
     }
 }

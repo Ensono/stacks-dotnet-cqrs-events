@@ -132,6 +132,12 @@
 					"exclude": [
 						"**/src/worker/**"
 					]
+				},
+				{
+					"condition": "EventPublisherServiceBus || EventPublisherEventHub",
+					"exclude": [
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Fakes/DummyEventPublisher.cs"
+					]
 				}
 			]
 		}
