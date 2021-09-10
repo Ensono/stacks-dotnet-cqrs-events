@@ -1,4 +1,5 @@
 ﻿using System;
+using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Amido.Stacks.Application.CQRS.Commands;
 using Amido.Stacks.Application.CQRS.Queries;
 using Amido.Stacks.Configuration.Extensions;
@@ -46,15 +47,15 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
 #if (EventPublisherServiceBus)
             services.Configure<Amido.Stacks.Messaging.Azure.ServiceBus.Configuration.ServiceBusConfiguration>(context.Configuration.GetSection("ServiceBusConfiguration"));
             services.AddServiceBus();
-            services.AddTransient<Amido.Stacks.Application.CQRS.ApplicationEvents.IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.ServiceBus.Senders.Publishers.EventPublisher>();
+            services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.ServiceBus.Senders.Publishers.EventPublisher>();
 #endif
 #if (EventPublisherEventHub)
             services.Configure<Amido.Stacks.Messaging.Azure.EventHub.Configuration.EventHubConfiguration>(context.Configuration.GetSection("EventHubConfiguration"));
             services.AddEventHub();
-            services.AddTransient<Amido.Stacks.Application.CQRS.ApplicationEvents.IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.EventHub.Publisher.EventPublisher>();
+            services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.EventHub.Publisher.EventPublisher>();
 #endif
 #if (EventPublisherNone)
-            services.AddTransient<Amido.Stacks.Application.CQRS.ApplicationEvents.IApplicationEventPublisher, DummyEventPublisher>();
+            services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
 #endif
 
             if (Environment.GetEnvironmentVariable("USE_MEMORY_STORAGE") == null)
