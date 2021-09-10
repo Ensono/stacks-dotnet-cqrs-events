@@ -25,7 +25,7 @@ stacks-dotnet-cqrs-events
     - `Worker` is a CosmosDB change feed trigger function that publishes a `CosmosDbChangeFeedEvent` when a new entity has been added or was changed to CosmosDB
 - The `worker` folder contains a background worker that listens to all event types from the ASB topic and shows example handlers for them and the use of the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) package.
 
-The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) package for their communication with ASB.
+The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) and the [Amido.Stacks.Messaging.Azure.EventHub](https://github.com/amido/stacks-dotnet-packages-messaging-aeh) packages for their communication with Azure Service Bus or Azure Event Hub depending on the specific implementation.
 
 The functions and workers are all stand-alone implementations that can be used together or separately in different projects.
 
@@ -199,6 +199,10 @@ To run the API locally on MacOS there are a couple of prerequisites that you hav
 
 You'll need an Azure Service Bus namespace and a topic with subscriber in order to be able to publish application events.
 
+#### Azure Service Bus
+
+You'll will need an Azure Event Hub namespace and an Event Hub to publish application events. You will also need a blob container storage account.
+
 #### Configuring CosmosDB and ServiceBus
 
 Now that you have your CosmosDB all set, you can point the API project to it. In `appsettings.json` you can see the following sections
@@ -252,6 +256,25 @@ To set the environment variables permanently on your system you'll have to edit 
 # Example for setting env variable in .zchenv
 echo 'export COSMOSDB_KEY=YOUR_COSMOSDB_PRIMARY_KEY' >> ~/.zshenv
 echo 'export SERVICEBUS_CONNECTIONSTRING=YOUR_SERVICE_BUS_CONNECTION_STRING' >> ~/.zshenv
+```
+
+#### Configuring EventHub
+
+In `appsettings.json` you can see the following sections to configure Event Hub
+
+```json
+"EventHubConfiguration": {
+    "Publisher": {
+      "EventHubNamespaceConnectionString": "",
+      "EventHubName": ""
+    },
+    "Consumer": {
+      "EventHubNamespaceConnectionString": "",
+      "EventHubName": "",
+      "BlobStorageConnectionString": "",
+      "BlobContainerName": ""
+    }
+}
 ```
 
 ### Running the Worker ChangeFeed listener locally
