@@ -199,7 +199,7 @@ To run the API locally on MacOS there are a couple of prerequisites that you hav
 
 You'll need an Azure Service Bus namespace and a topic with subscriber in order to be able to publish application events.
 
-#### Azure Service Bus
+#### Azure Event Hub
 
 You'll will need an Azure Event Hub namespace and an Event Hub to publish application events. You will also need a blob container storage account.
 
