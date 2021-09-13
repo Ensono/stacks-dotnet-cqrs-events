@@ -43,13 +43,8 @@
 				{
 					"choice": "EventHub",
 					"description": "Targets the Azure Event Hub for publishing events."
-				},
-				{
-					"choice": "None",
-					"description": "No event publishing added."
 				}
 			],
-			"defaultValue": "None",
 			"description": "Adds event publishing."
 		},
 		"EventPublisherServiceBus": {
@@ -59,10 +54,6 @@
 		"EventPublisherEventHub": {
 			"type": "computed",
 			"value": "(eventPublisher == \"EventHub\")"
-		},
-		"EventPublisherNone": {
-			"type": "computed",
-			"value": "(eventPublisher == \"None\")"
 		},
 		"enableFunctionWorker": {
 			"type": "parameter",

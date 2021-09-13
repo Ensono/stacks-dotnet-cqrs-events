@@ -48,13 +48,11 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             services.Configure<Amido.Stacks.Messaging.Azure.ServiceBus.Configuration.ServiceBusConfiguration>(context.Configuration.GetSection("ServiceBusConfiguration"));
             services.AddServiceBus();
             services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.ServiceBus.Senders.Publishers.EventPublisher>();
-#endif
-#if (EventPublisherEventHub)
+#elif (EventPublisherEventHub)
             services.Configure<Amido.Stacks.Messaging.Azure.EventHub.Configuration.EventHubConfiguration>(context.Configuration.GetSection("EventHubConfiguration"));
             services.AddEventHub();
             services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.EventHub.Publisher.EventPublisher>();
-#endif
-#if (EventPublisherNone)
+#else
             services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
 #endif
 
