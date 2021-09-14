@@ -8,9 +8,9 @@
         "Listener"
     ],
     "name": "Amido Stacks Azure Function Event Hub Trigger",
-    "identity": "Amido.Stacks.Function.EventHub.Listener.CSharp",
-    "groupIdentity": "Amido.Stacks.Function.Listener",
-    "shortName": "stacks-function-aeh-listener",
+    "identity": "Amido.Stacks.AzFunc.EventHub.Listener.CSharp",
+    "groupIdentity": "Amido.Stacks.AzFunc.EventHub.Listener",
+    "shortName": "stacks-azfunc-aeh-listener",
     "tags": {
         "language": "C#",
         "type": "project"

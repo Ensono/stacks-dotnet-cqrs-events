@@ -68,7 +68,7 @@ Windows Forms (WinForms) Class library           winformslib                    
 Worker Service                                   worker                           [C#],F#     Common/Worker/Web
 Amido Stacks Azure Function CosmosDb Worker      stacks-function-cosmosdb-worker  [C#]        Stacks/Azure Function/CosmosDb/Worker
 Amido Stacks Azure Function Service Bus Trigger  stacks-function-asb-listener     [C#]        Stacks/Azure Function/Service Bus/Listener
-Amido Stacks Azure Function Event Hub Trigger    stacks-function-aeh-listener     [C#]        Stacks/Azure Function/Event Hub/Listener
+Amido Stacks Azure Function Event Hub Trigger    stacks-azfunc-aeh-listener       [C#]        Stacks/Azure Function/Event Hub/Listener
 Amido Stacks Service Bus Worker                  stacks-app-asb-worker            [C#]        Stacks/Service Bus/Worker
 Amido Stacks CQRS Events WebAPI                  stacks-api-cqrs-events           [C#]        Stacks/WebAPI/CQRS/Events
 Amido Stacks CQRS Events                         stacks-app-cqrs-events           [C#]        Stacks/WebAPI/Infrastructure/CQRS/Events
