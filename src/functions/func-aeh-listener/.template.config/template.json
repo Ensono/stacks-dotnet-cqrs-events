@@ -1,0 +1,62 @@
+﻿{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "stacks@amido.com",
+    "classifications": [
+        "Stacks",
+        "Azure Function",
+        "Event Hub",
+        "Listener"
+    ],
+    "name": "Amido Stacks Azure Function Event Hub Trigger",
+    "identity": "Amido.Stacks.Function.EventHub.Listener.CSharp",
+    "groupIdentity": "Amido.Stacks.Function.Listener",
+    "shortName": "stacks-function-aeh-listener",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sourceName": "xxAMIDOxx.xxSTACKSxx",
+    "preferNameDirectory": true,
+    "symbols": {},
+    "sources": [
+        {
+            "source": "./",
+            "include": [
+                "**/*"
+            ],
+            "exclude": [
+                "**/[Bb]in/**",
+                "**/[Oo]bj/**",
+                "**/.template.config/**",
+                "**/*.filelist",
+                "**/*.user",
+                "**/*.lock.json",
+                "**/.git/**",
+                "**/.vs/**",
+                "**/.vscode/**",
+                "_rels/**",
+                "package/**",
+                "**/*.nuspec",
+                "*Content_Types*.xml"
+            ],
+            "rename": {
+                "_gitignore": ".gitignore",
+                "_gitattributes": ".gitattributes"
+            },
+            "modifiers": []
+        }
+    ],
+    "SpecialCustomOperations": {
+        "**/*.yml": {
+            "Operations": [
+                {
+                    "type": "conditional",
+                    "configuration": {
+                        "style": "line",
+                        "token": "#"
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -107,6 +107,8 @@
 				{
 					"condition": "(!enableFunctionListener)",
 					"exclude": [
+						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
+						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**",
 						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
 						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
 					]
