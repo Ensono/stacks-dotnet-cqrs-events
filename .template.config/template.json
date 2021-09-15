@@ -114,6 +114,20 @@
 					]
 				},
 				{
+					"condition": "(enableFunctionListener && EventPublisherServiceBus)",
+					"exclude": [
+						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
+						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
+					]
+				},
+				{
+					"condition": "(enableFunctionListener && EventPublisherEventHub)",
+					"exclude": [
+						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
+						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
+					]
+				},
+				{
 					"condition": "(!enableFunctionListener && !enableFunctionWorker)",
 					"exclude": [
 						"**/src/functions/**",
