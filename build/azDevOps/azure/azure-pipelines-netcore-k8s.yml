@@ -404,7 +404,7 @@ stages:
                       TF_VAR_cosmosdb_kind: "GlobalDocumentDB",
                       TF_VAR_cosmosdb_offer_type: "Standard",
                       TF_VAR_create_dns_record: true,
-                      TF_VAR_app_insights_name: $(tf_app_insights_name_nonprod)",
+                      TF_VAR_app_insights_name: $(tf_app_insights_name_nonprod),
                       TF_VAR_app_gateway_frontend_ip_name: $(tf_app_gateway_frontend_ip_name_nonprod),
                       TF_VAR_core_resource_group: $(tf_core_resource_group_nonprod),
                       TF_VAR_name_company: $(company),
