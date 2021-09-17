@@ -32,6 +32,29 @@
 				]
 			}
 		},
+		"eventPublisher": {
+			"type": "parameter",
+			"datatype": "choice",
+			"choices": [
+				{
+					"choice": "ServiceBus",
+					"description": "Targets the Azure Service Bus for publishing events."
+				},
+				{
+					"choice": "EventHub",
+					"description": "Targets the Azure Event Hub for publishing events."
+				}
+			],
+			"description": "Adds event publishing."
+		},
+		"EventPublisherServiceBus": {
+			"type": "computed",
+			"value": "(eventPublisher == \"ServiceBus\")"
+		},
+		"EventPublisherEventHub": {
+			"type": "computed",
+			"value": "(eventPublisher == \"EventHub\")"
+		},
 		"enableFunctionWorker": {
 			"type": "parameter",
 			"dataType": "bool",
@@ -84,6 +107,22 @@
 				{
 					"condition": "(!enableFunctionListener)",
 					"exclude": [
+						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
+						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**",
+						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
+						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
+					]
+				},
+				{
+					"condition": "(enableFunctionListener && EventPublisherServiceBus)",
+					"exclude": [
+						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
+						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
+					]
+				},
+				{
+					"condition": "(enableFunctionListener && EventPublisherEventHub)",
+					"exclude": [
 						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
 						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
 					]
@@ -99,6 +138,12 @@
 					"condition": "(!enableBackgroundWorker)",
 					"exclude": [
 						"**/src/worker/**"
+					]
+				},
+				{
+					"condition": "EventPublisherServiceBus || EventPublisherEventHub",
+					"exclude": [
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Fakes/DummyEventPublisher.cs"
 					]
 				}
 			]

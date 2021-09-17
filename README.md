@@ -25,7 +25,7 @@ stacks-dotnet-cqrs-events
     - `Worker` is a CosmosDB change feed trigger function that publishes a `CosmosDbChangeFeedEvent` when a new entity has been added or was changed to CosmosDB
 - The `worker` folder contains a background worker that listens to all event types from the ASB topic and shows example handlers for them and the use of the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) package.
 
-The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) package for their communication with ASB.
+The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) and the [Amido.Stacks.Messaging.Azure.EventHub](https://github.com/amido/stacks-dotnet-packages-messaging-aeh) packages for their communication with Azure Service Bus or Azure Event Hub depending on the specific implementation.
 
 The functions and workers are all stand-alone implementations that can be used together or separately in different projects.
 
@@ -37,8 +37,8 @@ All templates from this repository come as part of the [Amido.Stacks.CQRS.Events
 - `stacks-api-cqrs-events`. A template for the `api` project. If you need a CQRS WebAPI that can publish messages to ServiceBus, this is the template to use.
 - `stacks-app-asb-worker`. This template contains a background worker application that reads and handles messages from a ServiceBus subscription.
 - `stacks-function-asb-listener`. Template containing an Azure Function project with a single function that has a Service Bus subscription trigger. The function receives the message and deserializes it.
+- `stacks-function-aeh-listener`. Template containing an Azure Function project with a single function that has a Event Hub trigger. The function receives the message and deserializes it.
 - `stacks-function-cosmosdb-worker`. Azure Function containing a CosmosDb change feed trigger. Upon a CosmosDb event, the worker reads it and publishes a message to Service Bus.
-
 
 ### Template usage
 
@@ -68,6 +68,7 @@ Windows Forms (WinForms) Class library           winformslib                    
 Worker Service                                   worker                           [C#],F#     Common/Worker/Web
 Amido Stacks Azure Function CosmosDb Worker      stacks-function-cosmosdb-worker  [C#]        Stacks/Azure Function/CosmosDb/Worker
 Amido Stacks Azure Function Service Bus Trigger  stacks-function-asb-listener     [C#]        Stacks/Azure Function/Service Bus/Listener
+Amido Stacks Azure Function Event Hub Trigger    stacks-azfunc-aeh-listener       [C#]        Stacks/Azure Function/Event Hub/Listener
 Amido Stacks Service Bus Worker                  stacks-app-asb-worker            [C#]        Stacks/Service Bus/Worker
 Amido Stacks CQRS Events WebAPI                  stacks-api-cqrs-events           [C#]        Stacks/WebAPI/CQRS/Events
 Amido Stacks CQRS Events                         stacks-app-cqrs-events           [C#]        Stacks/WebAPI/Infrastructure/CQRS/Events
@@ -199,6 +200,10 @@ To run the API locally on MacOS there are a couple of prerequisites that you hav
 
 You'll need an Azure Service Bus namespace and a topic with subscriber in order to be able to publish application events.
 
+#### Azure Event Hub
+
+You'll will need an Azure Event Hub namespace and an Event Hub to publish application events. You will also need a blob container storage account.
+
 #### Configuring CosmosDB and ServiceBus
 
 Now that you have your CosmosDB all set, you can point the API project to it. In `appsettings.json` you can see the following sections
@@ -252,6 +257,25 @@ To set the environment variables permanently on your system you'll have to edit 
 # Example for setting env variable in .zchenv
 echo 'export COSMOSDB_KEY=YOUR_COSMOSDB_PRIMARY_KEY' >> ~/.zshenv
 echo 'export SERVICEBUS_CONNECTIONSTRING=YOUR_SERVICE_BUS_CONNECTION_STRING' >> ~/.zshenv
+```
+
+#### Configuring EventHub
+
+In `appsettings.json` you can see the following sections to configure Event Hub
+
+```json
+"EventHubConfiguration": {
+    "Publisher": {
+      "EventHubNamespaceConnectionString": "",
+      "EventHubName": ""
+    },
+    "Consumer": {
+      "EventHubNamespaceConnectionString": "",
+      "EventHubName": "",
+      "BlobStorageConnectionString": "",
+      "BlobContainerName": ""
+    }
+}
 ```
 
 ### Running the Worker ChangeFeed listener locally
