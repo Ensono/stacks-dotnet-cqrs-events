@@ -204,7 +204,7 @@ You'll need an Azure Service Bus namespace and a topic with subscriber in order 
 
 You'll will need an Azure Event Hub namespace and an Event Hub to publish application events. You will also need a blob container storage account.
 
-#### Configuring CosmosDB and ServiceBus
+#### Configuring CosmosD, ServiceBus or EventHub
 
 Now that you have your CosmosDB all set, you can point the API project to it. In `appsettings.json` you can see the following sections
 
@@ -229,24 +229,47 @@ Now that you have your CosmosDB all set, you can point the API project to it. In
             }
         ]
     }
+},
+"EventHubConfiguration": {
+    "Publisher": {
+        "NamespaceConnectionString": {
+            "Identifier": "EVENTHUB_CONNECTIONSTRING",
+            "Source": "Environment"
+        },
+        "EventHubName": "stacks-event-hub"
+    },
+    "Consumer": {
+        "NamespaceConnectionString": {
+            "Identifier": "EVENTHUB_CONNECTIONSTRING",
+            "Source": "Environment"
+        },
+        "EventHubName": "stacks-event-hub",
+        "BlobStorageConnectionString": {
+            "Identifier": "STORAGE_CONNECTIONSTRING",
+            "Source": "Environment"
+        },
+        "BlobContainerName": "stacks-blob-container-name"
+    }
 }
 ```
 
-The `SecurityKeySecret` and `ConnectionStringSecret` sections are needed because of our use of the `Amido.Stacks.Configuration` package. `COSMOSDB_KEY` and `SERVICEBUS_CONNECTIONSTRING` have to be set before you can run the project. If you want to debug the solution with VSCode you usually have a `launch.json` file. In that file there's an `env` section where you can put environment variables for the current session.
+The `SecurityKeySecret` and `ConnectionStringSecret` sections are needed because of our use of the `Amido.Stacks.Configuration` package. `COSMOSDB_KEY`, `SERVICEBUS_CONNECTIONSTRING` or `EVENTHUB_CONNECTIONSTRING` have to be set before you can run the project. If you want to debug the solution with VSCode you usually have a `launch.json` file. In that file there's an `env` section where you can put environment variables for the current session.
 
 ```json
 "env": {
     "ASPNETCORE_ENVIRONMENT": "Development",
     "COSMOSDB_KEY": "YOUR_COSMOSDB_PRIMARY_KEY",
-    "SERVICEBUS_CONNECTIONSTRING": "YOUR_SERVICE_BUS_CONNECTION_STRING"
+    "SERVICEBUS_CONNECTIONSTRING": "YOUR_SERVICE_BUS_CONNECTION_STRING",
+    "EVENTHUB_CONNECTIONSTRING": "YOUR_EVENT_HUB_CONNECTION_STRING"
 }
 ```
 
-If you want to run the application without VSCode you'll have to set the `COSMOSDB_KEY` and `SERVICEBUS_CONNECTIONSTRING` environment variables through your terminal.
+If you want to run the application without VSCode you'll have to set the `COSMOSDB_KEY`, `SERVICEBUS_CONNECTIONSTRING` or `EVENTHUB_CONNECTIONSTRING` environment variables through your terminal.
 
 ```shell
 export COSMOSDB_KEY=YOUR_COSMOSDB_PRIMARY_KEY
 export SERVICEBUS_CONNECTIONSTRING=YOUR_SERVICE_BUS_CONNECTION_STRING
+export EVENTHUB_CONNECTIONSTRING=YOUR_EVENT_HUB_CONNECTION_STRING
 ```
 
 This will set the environment variables only for the current session of your terminal.
@@ -257,25 +280,7 @@ To set the environment variables permanently on your system you'll have to edit 
 # Example for setting env variable in .zchenv
 echo 'export COSMOSDB_KEY=YOUR_COSMOSDB_PRIMARY_KEY' >> ~/.zshenv
 echo 'export SERVICEBUS_CONNECTIONSTRING=YOUR_SERVICE_BUS_CONNECTION_STRING' >> ~/.zshenv
-```
-
-#### Configuring EventHub
-
-In `appsettings.json` you can see the following sections to configure Event Hub
-
-```json
-"EventHubConfiguration": {
-    "Publisher": {
-      "EventHubNamespaceConnectionString": "",
-      "EventHubName": ""
-    },
-    "Consumer": {
-      "EventHubNamespaceConnectionString": "",
-      "EventHubName": "",
-      "BlobStorageConnectionString": "",
-      "BlobContainerName": ""
-    }
-}
+echo 'export EVENTHUB_CONNECTIONSTRING=YOUR_EVENT_HUB_CONNECTION_STRING' >> ~/.zshenv
 ```
 
 ### Running the Worker ChangeFeed listener locally
