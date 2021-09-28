@@ -47,6 +47,29 @@
 			],
 			"description": "Adds event publishing."
 		},
+		"database": {
+			"type": "parameter",
+			"datatype": "choice",
+			"choices": [
+				{
+					"choice": "CosmosDb",
+					"description": "Targets Azure Cosmos database for storing data."
+				},
+				{
+					"choice": "DynamoDb",
+					"description": "Targets AWS Dynamo database for storing data."
+				}
+			],
+			"description": "Adds saving to database."
+		},
+		"CosmosDb": {
+			"type": "computed",
+			"value": "(database == \"CosmosDb\")"
+		},
+		"DynamoDb": {
+			"type": "computed",
+			"value": "(database == \"DynamoDb\")"
+		},
 		"EventPublisherServiceBus": {
 			"type": "computed",
 			"value": "(eventPublisher == \"ServiceBus\")"
@@ -97,6 +120,20 @@
 				"_gitattributes": ".gitattributes"
 			},
 			"modifiers": [
+				{
+					"condition": "(CosmosDb)",
+					"exclude": [
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/DynamoDbMenuRepository.cs",
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/DynamoDbMenuRepositoryTests.cs"
+					]
+				},
+				{
+					"condition": "(DynamoDb)",
+					"exclude": [
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/CosmosDbMenuRepository.cs",
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/CosmosDbMenuRepositoryTests.cs"
+					]
+				},
 				{
 					"condition": "(!enableFunctionWorker)",
 					"exclude": [

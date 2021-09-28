@@ -6,11 +6,11 @@ using xxAMIDOxx.xxSTACKSxx.Domain;
 
 namespace xxAMIDOxx.xxSTACKSxx.Infrastructure.Repositories
 {
-    public class MenuRepository : IMenuRepository
+    public class CosmosDbMenuRepository : IMenuRepository
     {
         readonly IDocumentStorage<Menu> documentStorage;
 
-        public MenuRepository(IDocumentStorage<Menu> documentStorage)
+        public CosmosDbMenuRepository(IDocumentStorage<Menu> documentStorage)
         {
             this.documentStorage = documentStorage;
         }
