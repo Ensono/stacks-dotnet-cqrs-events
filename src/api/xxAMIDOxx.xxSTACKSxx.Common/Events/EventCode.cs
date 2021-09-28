@@ -1,4 +1,4 @@
-namespace xxAMIDOxx.xxSTACKSxx.Common.Events
+﻿namespace xxAMIDOxx.xxSTACKSxx.Common.Events
 {
     public enum EventCode
     {
@@ -18,6 +18,8 @@ namespace xxAMIDOxx.xxSTACKSxx.Common.Events
         // Items Operations
         MenuItemCreated = 301,
         MenuItemUpdated = 302,
-        MenuItemDeleted = 303
+        MenuItemDeleted = 303,
+
+        CosmosDbChangeFeedEvent = 999
     }
 }
