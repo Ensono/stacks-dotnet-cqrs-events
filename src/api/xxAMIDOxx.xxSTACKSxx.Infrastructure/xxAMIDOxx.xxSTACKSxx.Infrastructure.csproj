@@ -7,8 +7,8 @@
 
   <ItemGroup>
     <PackageReference Include="Amido.Stacks.Data.Documents.CosmosDB" Version="0.2.15" />
-	<PackageReference Include="Amido.Stacks.Messaging.Azure.ServiceBus" Version="0.2.8"/>
-    <PackageReference Include="Amido.Stacks.Messaging.Azure.EventHub" Version="0.2.0-preview-master" />
+	<PackageReference Include="Amido.Stacks.Messaging.Azure.ServiceBus" Version="0.2.8" />
+    <PackageReference Include="Amido.Stacks.Messaging.Azure.EventHub" Version="0.2.6-preview-master" />
     <PackageReference Include="Amido.Stacks.DependencyInjection" Version="0.2.17" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
