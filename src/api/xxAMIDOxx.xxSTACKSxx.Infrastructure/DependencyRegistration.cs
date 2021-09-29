@@ -39,10 +39,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
         /// <param name="services"></param>
         public static void ConfigureProductionDependencies(WebHostBuilderContext context, IServiceCollection services)
         {
-            services.Configure<CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDb"));
-
             services.AddSecrets();
-            services.AddCosmosDB();
 
 #if (EventPublisherServiceBus)
             services.Configure<Amido.Stacks.Messaging.Azure.ServiceBus.Configuration.ServiceBusConfiguration>(context.Configuration.GetSection("ServiceBusConfiguration"));
@@ -56,14 +53,23 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
 #endif
 
-            if (Environment.GetEnvironmentVariable("USE_MEMORY_STORAGE") == null)
-                services.AddTransient<IMenuRepository, MenuRepository>();
-            else
-                services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
+#if (CosmosDb)
+            services.Configure<CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDb"));
+            services.AddCosmosDB();
+            services.AddTransient<IMenuRepository, CosmosDbMenuRepository>();
+#elif (DynamoDb)
+            //services.Configure<DynamoDbConfiguration>(context.Configuration.GetSection("DynamoDb"));
+            //services.AddDynamoDB();
+            //services.AddTransient<IMenuRepository, DynamoDbMenuRepository>();
+#else
+            services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
+#endif
 
             var healthChecks = services.AddHealthChecks();
+#if (CosmosDb)
+            healthChecks.AddCheck<CustomHealthCheck>("Sample"); //This is a sample health check, remove if not needed, more info: https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/monitor-app-health
             healthChecks.AddCheck<CosmosDbDocumentStorage<Menu>>("CosmosDB");
-            healthChecks.AddCheck<CustomHealthCheck>("Sample");//This is a sample health check, remove if not needed, more info: https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/monitor-app-health
+#endif
         }
 
         private static void AddCommandHandlers(IServiceCollection services)

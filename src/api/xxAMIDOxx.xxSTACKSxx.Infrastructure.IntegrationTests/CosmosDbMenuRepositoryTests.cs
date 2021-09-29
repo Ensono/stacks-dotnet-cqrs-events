@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Amido.Stacks.Configuration;
@@ -16,7 +16,6 @@ using xxAMIDOxx.xxSTACKSxx.Infrastructure.Repositories;
 
 namespace xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests
 {
-
     /// <summary>
     /// The purpose of this integration test is to validate the implementation
     /// of MenuRepository againt the data store at development\integration
@@ -24,9 +23,9 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests
     /// Configuration issues will be surfaced on e2e or acceptance tests
     /// </summary>
     [Trait("TestType", "IntegrationTests")]
-    public class MenuRepositoryTests
+    public class CosmosDbMenuRepositoryTests
     {
-        public MenuRepositoryTests()
+        public CosmosDbMenuRepositoryTests()
         {
             var settings = Configuration.For<CosmosDbConfiguration>("CosmosDB");
             //Notes:
@@ -53,7 +52,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests
         /// the menu information and is retrieved properly
         /// </summary>
         [Theory, MenuRepositoryAutoData]
-        public async Task SaveAndGetTest(MenuRepository repository, Menu menu)
+        public async Task SaveAndGetTest(CosmosDbMenuRepository repository, Menu menu)
         {
             await repository.SaveAsync(menu);
             var dbItem = await repository.GetByIdAsync(menu.Id);
@@ -79,7 +78,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests
         /// removes an existing menu and is not retrieved when requested
         /// </summary>
         [Theory, MenuRepositoryAutoData]
-        public async Task DeleteTest(MenuRepository repository, Menu menu)
+        public async Task DeleteTest(CosmosDbMenuRepository repository, Menu menu)
         {
             await repository.SaveAsync(menu);
             var dbItem = await repository.GetByIdAsync(menu.Id);
