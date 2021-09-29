@@ -8,9 +8,9 @@
         "Listener"
     ],
     "name": "Amido Stacks Azure Function Service Bus Trigger",
-    "identity": "Amido.Stacks.Function.ServiceBus.Listener.CSharp",
-    "groupIdentity": "Amido.Stacks.Function.Listener",
-    "shortName": "stacks-function-asb-listener",
+    "identity": "Amido.Stacks.AzFunc.ServiceBus.Listener.CSharp",
+    "groupIdentity": "Amido.Stacks.AzFunc.Listener",
+    "shortName": "stacks-az-func-asb-listener",
     "tags": {
         "language": "C#",
         "type": "project"

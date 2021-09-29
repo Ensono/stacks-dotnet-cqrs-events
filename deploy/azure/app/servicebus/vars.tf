@@ -63,9 +63,9 @@ variable "function-publisher-name" {
   default = "function-publisher"
 }
 
-variable "function-listener-name" {
+variable "func-asb-listener-name" {
   type    = string
-  default = "function-listener"
+  default = "func-asb-listener"
 }
 
 variable "sb_name" {

@@ -57,9 +57,9 @@ variables:
   - name: self_repo_dir
     value: "$(Agent.BuildDirectory)/s/$(self_repo)"
   - name: self_repo_functions_listener_src
-    value: src/functions/function-listener
+    value: src/functions/func-asb-listener
   - name: self_repo_functions_worker_src
-    value: src/functions/function-worker
+    value: src/functions/func-cosmosdb-worker
   - name: self_repo_functions_dir
     value: "$(Agent.BuildDirectory)/s/$(self_functions_src)"
   - name: self_repo_bg_worker_src
@@ -311,8 +311,8 @@ stages:
                 pushd templates
                 cp -r ${ROOT_SRC_DIR}/$REPO_NAME .
                 cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/api .
-                cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/functions/function-listener .
-                cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/functions/function-worker .
+                cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/functions/func-asb-listener .
+                cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/functions/func-cosmosdb-worker .
                 cp -r ${ROOT_SRC_DIR}/$REPO_NAME/src/worker .
                 popd
 

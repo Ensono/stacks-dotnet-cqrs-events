@@ -11,10 +11,10 @@ stacks-dotnet-cqrs-events
 │    │    └─── other API related projects
 │    └─── functions
 │    │    └─── func-aeh-listener
-│    │         └─── xxAMIDOxx.xxSTACKSxx.Listner
-│    │    └─── function-listener
-│    │         └─── xxAMIDOxx.xxSTACKSxx.Listner
-│    │    └─── function-worker
+│    │         └─── xxAMIDOxx.xxSTACKSxx.Listener
+│    │    └─── func-asb-listener
+│    │         └─── xxAMIDOxx.xxSTACKSxx.Listener
+│    │    └─── func-cosmosdb-worker
 │    │         └─── xxAMIDOxx.xxSTACKSxx.Worker
 │    └─── tests
 │    └─── worker
@@ -23,9 +23,9 @@ stacks-dotnet-cqrs-events
 
 - The `api` folder contains everything related to the API and is a standalone executable
 - The `functions` folder contains 3 sub-folders with Azure Functions solutions
-    - `function-listener` is an Azure Service Bus subscription (filtered) trigger that listens for `MenuCreatedEvent`
     - `func-aeh-listener` is an Azure Event Hub trigger that listens for `MenuCreatedEvent`
-    - `function-worker` is a CosmosDB change feed trigger function that publishes a `CosmosDbChangeFeedEvent` when a new entity has been added or was changed to CosmosDB
+    - `func-asb-listener` is an Azure Service Bus subscription (filtered) trigger that listens for `MenuCreatedEvent`
+    - `func-cosmosdb-worker` is a CosmosDB change feed trigger function that publishes a `CosmosDbChangeFeedEvent` when a new entity has been added or was changed to CosmosDB
 - The `worker` folder contains a background worker that listens to all event types from the ASB topic and shows example handlers for them and the use of the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) package.
 
 The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) and the [Amido.Stacks.Messaging.Azure.EventHub](https://github.com/amido/stacks-dotnet-packages-messaging-aeh) packages for their communication with Azure Service Bus or Azure Event Hub depending on the specific implementation.
@@ -39,9 +39,9 @@ All templates from this repository come as part of the [Amido.Stacks.CQRS.Events
 - `stacks-app-cqrs-events`. The full template including everything + build infrastructure.
 - `stacks-api-cqrs-events`. A template for the `api` project. If you need a CQRS WebAPI that can publish messages to ServiceBus, this is the template to use.
 - `stacks-app-asb-worker`. This template contains a background worker application that reads and handles messages from a ServiceBus subscription.
-- `stacks-function-asb-listener`. Template containing an Azure Function project with a single function that has a Service Bus subscription trigger. The function receives the message and deserializes it.
-- `stacks-azfunc-aeh-listener`. Template containing an Azure Function project with a single function that has a Event Hub trigger. The function receives the message and deserializes it.
-- `stacks-function-cosmosdb-worker`. Azure Function containing a CosmosDb change feed trigger. Upon a CosmosDb event, the worker reads it and publishes a message to Service Bus.
+- `stacks-az-func-asb-listener`. Template containing an Azure Function project with a single function that has a Service Bus subscription trigger. The function receives the message and deserializes it.
+- `stacks-az-func-aeh-listener`. Template containing an Azure Function project with a single function that has a Event Hub trigger. The function receives the message and deserializes it.
+- `stacks-az-func-cosmosdb-worker`. Azure Function containing a CosmosDb change feed trigger. Upon a CosmosDb event, the worker reads it and publishes a message to Service Bus.
 
 ### Template usage
 
@@ -69,9 +69,9 @@ WPF User Control Library                         wpfusercontrollib              
 Windows Forms (WinForms) Application             winforms                         [C#]        Common/WinForms
 Windows Forms (WinForms) Class library           winformslib                      [C#]        Common/WinForms
 Worker Service                                   worker                           [C#],F#     Common/Worker/Web
-Amido Stacks Azure Function CosmosDb Worker      stacks-function-cosmosdb-worker  [C#]        Stacks/Azure Function/CosmosDb/Worker
-Amido Stacks Azure Function Service Bus Trigger  stacks-function-asb-listener     [C#]        Stacks/Azure Function/Service Bus/Listener
-Amido Stacks Azure Function Event Hub Trigger    stacks-azfunc-aeh-listener       [C#]        Stacks/Azure Function/Event Hub/Listener
+Amido Stacks Azure Function CosmosDb Worker      stacks-az-func-cosmosdb-worker   [C#]        Stacks/Azure Function/CosmosDb/Worker
+Amido Stacks Azure Function Service Bus Trigger  stacks-az-func-asb-listener      [C#]        Stacks/Azure Function/Service Bus/Listener
+Amido Stacks Azure Function Event Hub Trigger    stacks-az-func-aeh-listener      [C#]        Stacks/Azure Function/Event Hub/Listener
 Amido Stacks Service Bus Worker                  stacks-app-asb-worker            [C#]        Stacks/Service Bus/Worker
 Amido Stacks CQRS Events WebAPI                  stacks-api-cqrs-events           [C#]        Stacks/WebAPI/CQRS/Events
 Amido Stacks CQRS Events                         stacks-app-cqrs-events           [C#]        Stacks/WebAPI/Infrastructure/CQRS/Events
@@ -120,14 +120,14 @@ dotnet new -u Amido.Stacks.CQRS.Events.Templates
 
 #### Adding a function template to your project
 
-Let's say you want to add either `stacks-function-cosmosdb-worker` or `stacks-function-asb-listener` function apps to your solution or project.
+Let's say you want to add either `stacks-az-func-cosmosdb-worker` or `stacks-az-func-asb-listener` function apps to your solution or project.
 
 It's entirely up to you where you want to generate the function project. For example your project has the name structure `Foo.Bar` as a prefix to all your namespaces. If you want the function project to be generated inside a folder called `Foo.Bar` you'll do the following:
 
 ```shell
 % cd functions
 
-% dotnet new stacks-function-cosmosdb-worker -n Foo.Bar
+% dotnet new stacks-az-func-cosmosdb-worker -n Foo.Bar
 The template "Amido Stacks Azure Function CosmosDb Worker" was created successfully.
 
 % ls -la
@@ -151,7 +151,7 @@ As you can see your `Foo.Bar` namespace prefix got added to the class names and 
 To generate the template with your own namespace, but in a different folder you'll have to pass the `-o` flag with your desired path.
 
 ```shell
-% dotnet new stacks-function-cosmosdb-worker -n Foo.Bar -o cosmosdb-worker
+% dotnet new stacks-az-func-cosmosdb-worker -n Foo.Bar -o cosmosdb-worker
 The template "Amido Stacks Azure Function CosmosDb Worker" was created successfully.
 
 % ls -la

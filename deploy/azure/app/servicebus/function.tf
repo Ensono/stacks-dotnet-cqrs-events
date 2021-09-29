@@ -46,7 +46,7 @@ resource "azurerm_app_service_plan" "app_sp_publisher" {
 }
 
 resource "azurerm_app_service_plan" "app_sp_listener" {
-  name                = "service-plan-${var.function-listener-name}"
+  name                = "service-plan-${var.func-asb-listener-name}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   kind                = "linux"
@@ -83,7 +83,7 @@ resource "azurerm_function_app" "function_publisher" {
 }
 
 resource "azurerm_function_app" "function_listener" {
-  name                = "${var.function-listener-name}-${random_string.seed.result}"
+  name                = "${var.func-asb-listener-name}-${random_string.seed.result}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   depends_on = [
