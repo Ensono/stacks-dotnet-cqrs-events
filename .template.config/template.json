@@ -137,8 +137,8 @@
 				{
 					"condition": "(!enableFunctionWorker)",
 					"exclude": [
-						"**/src/functions/function-worker/xxAMIDOxx.xxSTACKSxx.Worker/**",
-						"**/src/functions/function-worker/xxAMIDOxx.xxSTACKSxx.Worker.UnitTests/**"
+						"**/src/functions/func-cosmosdb-worker/xxAMIDOxx.xxSTACKSxx.Worker/**",
+						"**/src/functions/func-cosmosdb-worker/xxAMIDOxx.xxSTACKSxx.Worker.UnitTests/**"
 					]
 				},
 				{
@@ -146,8 +146,8 @@
 					"exclude": [
 						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
 						"**/src/functions/func-aeh-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**",
-						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
-						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
+						"**/src/functions/func-asb-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
+						"**/src/functions/func-asb-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
 					]
 				},
 				{
@@ -160,8 +160,8 @@
 				{
 					"condition": "(enableFunctionListener && EventPublisherEventHub)",
 					"exclude": [
-						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
-						"**/src/functions/function-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
+						"**/src/functions/func-asb-listener/xxAMIDOxx.xxSTACKSxx.Listener/**",
+						"**/src/functions/func-asb-listener/xxAMIDOxx.xxSTACKSxx.Listener.UnitTests/**"
 					]
 				},
 				{
