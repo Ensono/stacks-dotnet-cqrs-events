@@ -67,7 +67,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
 
             var healthChecks = services.AddHealthChecks();
             healthChecks.AddCheck<CustomHealthCheck>("Sample"); //This is a sample health check, remove if not needed, more info: https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/monitor-app-health
-#if (DynamoDb)
+#if (CosmosDb)
             healthChecks.AddCheck<CosmosDbDocumentStorage<Menu>>("CosmosDB");
 #endif
         }
