@@ -15,7 +15,6 @@ using xxAMIDOxx.xxSTACKSxx.Application.QueryHandlers;
 using xxAMIDOxx.xxSTACKSxx.Domain;
 using xxAMIDOxx.xxSTACKSxx.Infrastructure.Fakes;
 using xxAMIDOxx.xxSTACKSxx.Infrastructure.HealthChecks;
-using xxAMIDOxx.xxSTACKSxx.Infrastructure.Repositories;
 
 namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
 {
@@ -56,7 +55,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
 #if (CosmosDb)
             services.Configure<CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDb"));
             services.AddCosmosDB();
-            services.AddTransient<IMenuRepository, CosmosDbMenuRepository>();
+            services.AddTransient<IMenuRepository, xxAMIDOxx.xxSTACKSxx.Infrastructure.Repositories.CosmosDbMenuRepository>();
 #elif (DynamoDb)
             //services.Configure<DynamoDbConfiguration>(context.Configuration.GetSection("DynamoDb"));
             //services.AddDynamoDB();
