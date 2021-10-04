@@ -1,4 +1,10 @@
-stacks-dotnet-cqrs-events
+# stacks-dotnet-cqrs-events
+
+The full documentation on Amido Stacks can be found [here](https://amido.github.io/stacks/).
+
+Amido Stacks targets different cloud providers.
+
+[Azure](https://amido.github.io/stacks/docs/workloads/azure/backend/netcore/introduction_netcore)
 
 ### Folders of interest in this repository
 
@@ -47,15 +53,13 @@ All templates from this repository come as part of the [Amido.Stacks.CQRS.Events
 
 #### Template installation
 
-To install the templates locally you'll need to download the [Amido.Stacks.CQRS.Events.Templates](https://www.nuget.org/packages/Amido.Stacks.CQRS.Templates/) NuGet package.
-
-Then you can install it locally to your machine via the command line (the version provided is just an example, please consult the NuGet page for an up-to date version)
+For the latest template version, please consult the Nuget page [Amido.Stacks.CQRS.Events.Templates](https://www.nuget.org/packages/Amido.Stacks.CQRS.Templates/). To install the templates to your machine via the command line:
 
 ```shell
-dotnet new --install Amido.Stacks.CQRS.Templates::0.0.85g
+dotnet new --install Amido.Stacks.CQRS.Templates::0.0.101
 ```
 
-The output you'll see will list all installed templates. In that list you'll see the just installed Amido Stacks templates
+The output you'll see will list all installed templates (not listed for brevity). In that list you'll see the just installed Amido Stacks templates
 
 ```shell
 Template Name                                    Short Name                       Language    Tags
@@ -81,9 +85,8 @@ Examples:
 To uninstall the template pack you have to execute the following command
 
 ```shell
-dotnet new -u Amido.Stacks.CQRS.Events.Templates
+dotnet new --uninstall Amido.Stacks.CQRS.Events.Templates
 ```
-
 
 #### Adding a function template to your project
 
