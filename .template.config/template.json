@@ -135,6 +135,15 @@
 					]
 				},
 				{
+					"condition": "(!CosmosDb && !DynamoDb)",
+					"exclude": [
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/CosmosDbMenuRepository.cs",
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/CosmosDbMenuRepositoryTests.cs",
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/DynamoDbMenuRepository.cs",
+						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/DynamoDbMenuRepositoryTests.cs"
+					]
+				},
+				{
 					"condition": "(!enableFunctionWorker)",
 					"exclude": [
 						"**/src/functions/func-cosmosdb-worker/xxAMIDOxx.xxSTACKSxx.Worker/**",
@@ -153,13 +162,13 @@
 				{
 					"condition": "(enableFunctionListener && EventPublisherServiceBus)",
 					"exclude": [
-						"**/src/functions/func-aeh-listener/**",
+						"**/src/functions/func-aeh-listener/**"
 					]
 				},
 				{
 					"condition": "(enableFunctionListener && EventPublisherEventHub)",
 					"exclude": [
-						"**/src/functions/func-asb-listener/**",
+						"**/src/functions/func-asb-listener/**"
 					]
 				},
 				{
