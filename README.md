@@ -42,9 +42,9 @@ The functions and workers are all stand-alone implementations that can be used t
 
 All templates from this repository come as part of the [Amido.Stacks.CQRS.Events.Templates](https://www.nuget.org/packages/Amido.Stacks.CQRS.Templates/) NuGet package. The list of templates inside the package are as follows:
 
-- `stacks-app-cqrs-events`. The full template including everything + build infrastructure.
-- `stacks-api-cqrs-events`. A template for the `api` project. If you need a CQRS WebAPI that can publish messages to ServiceBus, this is the template to use.
-- `stacks-app-asb-worker`. This template contains a background worker application that reads and handles messages from a ServiceBus subscription.
+- `stacks-cqrs-events-app`. The full template including source + build infrastructure.
+- `stacks-cqrs-events-webapi`. A template for the `api` project. If you need a CQRS WebAPI that can publish messages to ServiceBus, this is the template to use.
+- `stacks-asb-worker`. This template contains a background worker application that reads and handles messages from a ServiceBus subscription.
 - `stacks-az-func-asb-listener`. Template containing an Azure Function project with a single function that has a Service Bus subscription trigger. The function receives the message and deserializes it.
 - `stacks-az-func-aeh-listener`. Template containing an Azure Function project with a single function that has a Event Hub trigger. The function receives the message and deserializes it.
 - `stacks-az-func-cosmosdb-worker`. Azure Function containing a CosmosDb change feed trigger. Upon a CosmosDb event, the worker reads it and publishes a message to Service Bus.
@@ -68,9 +68,9 @@ Template Name                                    Short Name                     
 Amido Stacks Azure Function CosmosDb Worker      stacks-az-func-cosmosdb-worker   [C#]        Stacks/Azure Function/CosmosDb/Worker
 Amido Stacks Azure Function Service Bus Trigger  stacks-az-func-asb-listener      [C#]        Stacks/Azure Function/Service Bus/Listener
 Amido Stacks Azure Function Event Hub Trigger    stacks-az-func-aeh-listener      [C#]        Stacks/Azure Function/Event Hub/Listener
-Amido Stacks Service Bus Worker                  stacks-app-asb-worker            [C#]        Stacks/Service Bus/Worker
-Amido Stacks CQRS Events WebAPI                  stacks-api-cqrs-events           [C#]        Stacks/WebAPI/CQRS/Events
-Amido Stacks CQRS Events                         stacks-app-cqrs-events           [C#]        Stacks/WebAPI/Infrastructure/CQRS/Events
+Amido Stacks Service Bus Worker                  stacks-asb-worker                [C#]        Stacks/Service Bus/Worker
+Amido Stacks CQRS Events Web API                 stacks-cqrs-events-webapi        [C#]        Stacks/CQRS/Events/WebAPI
+Amido Stacks CQRS Events App                     stacks-cqrs-events-app           [C#]        Stacks/Application/Infrastructure/CQRS/Events/WebAPI
 ...
 
 Examples:
