@@ -3,15 +3,16 @@
 	"author": "stacks@amido.com",
 	"classifications": [
 		"Stacks",
-		"WebAPI",
+		"Application",
 		"Infrastructure",
 		"CQRS",
-		"Events"
+		"Events",
+		"WebAPI"
 	],
-	"name": "Amido Stacks CQRS Events",
-	"identity": "Amido.Stacks.App.Cqrs.Events.CSharp",
-	"groupIdentity": "Amido.Stacks.App.Cqrs.Events",
-	"shortName": "stacks-app-cqrs-events",
+	"name": "Amido Stacks CQRS Events App",
+	"identity": "Amido.Stacks.Cqrs.Events.App.CSharp",
+	"groupIdentity": "Amido.Stacks.Cqrs.Events.App",
+	"shortName": "stacks-cqrs-events-app",
 	"tags": {
 		"language": "C#",
 		"type": "project"
