@@ -33,7 +33,7 @@ resource "azurerm_storage_account" "sa_listener" {
 
 # The app plans for the functions
 resource "azurerm_app_service_plan" "app_sp" {
-  name                = "service-plan-${var.function-publisher-name}"
+  name                = "${var.app-service-plan-name}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   kind                = "linux"
