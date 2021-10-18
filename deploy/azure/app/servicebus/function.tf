@@ -68,7 +68,7 @@ resource "azurerm_function_app" "function_publisher" {
     TOPIC_NAME                     = azurerm_servicebus_topic.sb_topic.name
   }
 
-  site_config = {
+  site_config {
     always_on = true
   }
 }
@@ -91,7 +91,7 @@ resource "azurerm_function_app" "function_listener" {
     TOPIC_NAME                  = azurerm_servicebus_topic.sb_topic.name
   }
 
-  site_config = {
+  site_config {
     always_on = true
   }  
 }
