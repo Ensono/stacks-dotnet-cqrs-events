@@ -558,21 +558,21 @@ stages:
                       # Get the registry credentials
                       $registryCredentials = (
                         az acr credential show `
-                          --name ${{ docker_container_registry_name_nonprod }} `
+                          --name $(docker_container_registry_name_nonprod) `
                         | ConvertFrom-Json
                       )
 
                       $registryUsername = $registryCredentials.username
                       $registryPassword = $registryCredentials.passwords[0].value
 
-                      # Set the permissons on each function
-                      $functions = @("${{ function_publisher_name }}", "${{ function_listener_name }}")
+                      # Set the permissions on each function
+                      $functions = @("$(function_publisher_name)", "$(function_listener_name)")
                       foreach ($function in $functions) {
 
                         az functionapp config container set `
-                          --resource-group "${{ app_resource_group }}" `
-                          --name "$(function)" `
-                          --docker-registry-server-url "https://${{ k8s_docker_registry_nonprod }}" `
+                          --resource-group "$(app_resource_group)" `
+                          --name "$function" `
+                          --docker-registry-server-url "https://$(k8s_docker_registry_nonprod)" `
                           --docker-registry-server-user "$registryUsername" `
                           --docker-registry-server-password "$registryPassword"
                       }
