@@ -547,6 +547,36 @@ stages:
                     azure_tenant_id: $(ARM_TENANT_ID)
                     azure_subscription_id: $(ARM_SUBSCRIPTION_ID)
 
+                # Update the functions with the credentials to access the container registry
+                - task: AzureCLI@2
+                  displayName: Set ACR perms on function
+                  inputs:
+                    azureSubscription: $(azure_service_connection)
+                    scriptType: 'pscore'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      # Get the registry credentials
+                      $registryCredentials = (
+                        az acr credential show `
+                          --name ${{ docker_container_registry_name_nonprod }} `
+                        | ConvertFrom-Json
+                      )
+
+                      $registryUsername = $registryCredentials.username
+                      $registryPassword = $registryCredentials.passwords[0].value
+
+                      # Set the permissons on each function
+                      $functions = @("${{ function_publisher_name }}", "${{ function_listener_name }}")
+                      foreach ($function in $functions) {
+
+                        az functionapp config container set `
+                          --resource-group "${{ app_resource_group }}" `
+                          --name "$(function)" `
+                          --docker-registry-server-url "https://${{ k8s_docker_registry_nonprod }}" `
+                          --docker-registry-server-user "$registryUsername" `
+                          --docker-registry-server-password "$registryPassword"
+                      }
+
                 # Deploy the function containers to the function apps
                 # - Listener
                 - task: AzureFunctionAppContainer@1
