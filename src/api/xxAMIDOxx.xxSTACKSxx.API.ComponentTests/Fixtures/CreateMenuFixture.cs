@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
-using Amido.Stacks.Application.CQRS.Events;
+using xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using NSubstitute;

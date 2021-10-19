@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
-using Amido.Stacks.Application.CQRS.Events;
+using xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events;
 using Amido.Stacks.Core.Operations;
 using Amido.Stacks.DependencyInjection;
 using AutoFixture;

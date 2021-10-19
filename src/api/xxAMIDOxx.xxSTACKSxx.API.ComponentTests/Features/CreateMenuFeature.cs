@@ -1,4 +1,4 @@
-﻿using Amido.Stacks.Application.CQRS.Events;
+﻿using xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events;
 using Xbehave;
 using Xunit;
 using xxAMIDOxx.xxSTACKSxx.API.ComponentTests.Fixtures;
