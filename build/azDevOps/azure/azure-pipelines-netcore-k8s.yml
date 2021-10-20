@@ -928,7 +928,7 @@ stages:
                         az functionapp config container set `
                           --resource-group "$(app_resource_group)" `
                           --name "$function" `
-                          --docker-registry-server-url "https://$(k8s_docker_registry_nonprod)" `
+                          --docker-registry-server-url "https://$(k8s_docker_registry_prod)" `
                           --docker-registry-server-user "$registryUsername" `
                           --docker-registry-server-password "$registryPassword"
                       }
