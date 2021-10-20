@@ -1,11 +1,11 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
-using Amido.Stacks.Application.CQRS.Events;
 using Microsoft.Extensions.Logging;
+using xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events;
 
 namespace xxAMIDOxx.xxSTACKSxx.BackgroundWorker.Handlers
 {
-	public class CategoryCreatedEventHandler : IApplicationEventHandler<CategoryCreatedEvent>
+    public class CategoryCreatedEventHandler : IApplicationEventHandler<CategoryCreatedEvent>
 	{
 		private readonly ILogger<CategoryCreatedEventHandler> log;
 

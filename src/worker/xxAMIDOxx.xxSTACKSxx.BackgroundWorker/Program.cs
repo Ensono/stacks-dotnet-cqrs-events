@@ -1,11 +1,8 @@
-using System;
-using System.IO;
+﻿using System.IO;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
-using Amido.Stacks.Application.CQRS.Events;
 using Amido.Stacks.Configuration.Extensions;
 using Amido.Stacks.DependencyInjection;
 using Amido.Stacks.Messaging.Azure.ServiceBus.Configuration;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +12,7 @@ using xxAMIDOxx.xxSTACKSxx.BackgroundWorker.Handlers;
 
 namespace xxAMIDOxx.xxSTACKSxx.BackgroundWorker
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
