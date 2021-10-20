@@ -914,7 +914,7 @@ stages:
                       # Get the registry credentials
                       $registryCredentials = (
                         az acr credential show `
-                          --name $(docker_container_registry_name_nonprod) `
+                          --name $(docker_container_registry_name_prod) `
                         | ConvertFrom-Json
                       )
 
