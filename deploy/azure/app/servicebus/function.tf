@@ -67,6 +67,10 @@ resource "azurerm_function_app" "function_publisher" {
     SUBSCRIPTION_NAME              = azurerm_servicebus_subscription.sb_sub_1.name
     TOPIC_NAME                     = azurerm_servicebus_topic.sb_topic.name
   }
+
+  site_config {
+    always_on = true
+  }
 }
 
 resource "azurerm_function_app" "function_listener" {
@@ -86,5 +90,9 @@ resource "azurerm_function_app" "function_listener" {
     SUBSCRIPTION_NAME           = azurerm_servicebus_subscription.sb_sub_2.name
     TOPIC_NAME                  = azurerm_servicebus_topic.sb_topic.name
   }
+
+  site_config {
+    always_on = true
+  }  
 }
 
