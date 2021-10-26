@@ -3,7 +3,7 @@ using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Amido.Stacks.Core.Operations;
 using Newtonsoft.Json;
 
-namespace xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events
+namespace xxAMIDOxx.xxSTACKSxx.Listener.Events
 {
 	public class MenuCreatedEvent : IApplicationEvent
 	{
