@@ -17,7 +17,7 @@
     <PackageReference Include="Amido.Stacks.Messaging.Azure.ServiceBus" Version="0.2.8" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events\xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events.csproj" />
+    <ProjectReference Include="..\..\..\api\xxAMIDOxx.xxSTACKSxx.CQRS\xxAMIDOxx.xxSTACKSxx.CQRS.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
