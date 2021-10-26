@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NSubstitute;
 using Xunit;
-using xxAMIDOxx.xxSTACKSxx.Listener.Events;
+using xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events;
 
 namespace xxAMIDOxx.xxSTACKSxx.Listener.UnitTests
 {

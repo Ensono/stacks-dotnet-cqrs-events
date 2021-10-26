@@ -1,4 +1,4 @@
-﻿namespace xxAMIDOxx.xxSTACKSxx.Listener.Events.Enums
+﻿namespace xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events.Enums
 {
 	public enum EventCode
 	{

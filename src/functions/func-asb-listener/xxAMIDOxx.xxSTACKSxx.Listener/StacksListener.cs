@@ -2,7 +2,6 @@
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using xxAMIDOxx.xxSTACKSxx.Listener.Events;
 
 namespace xxAMIDOxx.xxSTACKSxx.Listener
 {
@@ -23,7 +22,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Listener
             "%SUBSCRIPTION_NAME%",
             Connection = "SERVICEBUS_CONNECTIONSTRING")] Message mySbMsg)
         {
-            var appEvent = msgReader.Read<StacksCloudEvent<MenuCreatedEvent>>(mySbMsg);
+            var appEvent = msgReader.Read<StacksCloudEvent<Application.CQRS.Events.MenuCreatedEvent>>(mySbMsg);
 
             // TODO: work with appEvent
             logger.LogInformation($"Message read. Menu Id: {appEvent?.Data?.MenuId}");
