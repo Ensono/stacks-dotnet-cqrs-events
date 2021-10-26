@@ -5,7 +5,7 @@ using Amido.Stacks.Messaging.Azure.EventHub.Serializers;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events;
+using xxAMIDOxx.xxSTACKSxx.Listener.Events;
 
 namespace xxAMIDOxx.xxSTACKSxx.Listener
 {
