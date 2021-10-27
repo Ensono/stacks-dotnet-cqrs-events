@@ -13,7 +13,7 @@ ARG outdir=out
 WORKDIR /app
 
 # Copy the worker project and build
-COPY ./${function} ./${function}
+COPY ./ ./${function} ./${function}
 RUN dotnet publish -c Release -o ${outdir} ${function}
 
 # Build the runtime image
