@@ -1,8 +1,8 @@
-﻿using Amido.Stacks.Application.CQRS.Events;
-using Amido.Stacks.Messaging.Azure.ServiceBus.Serializers;
+﻿using Amido.Stacks.Messaging.Azure.ServiceBus.Serializers;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
+using xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events;
 
 namespace xxAMIDOxx.xxSTACKSxx.Listener
 {

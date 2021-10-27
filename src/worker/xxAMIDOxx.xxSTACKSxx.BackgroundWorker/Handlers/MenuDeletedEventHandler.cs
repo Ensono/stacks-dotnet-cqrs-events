@@ -1,11 +1,11 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Amido.Stacks.Application.CQRS.ApplicationEvents;
-using Amido.Stacks.Application.CQRS.Events;
 using Microsoft.Extensions.Logging;
+using xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events;
 
 namespace xxAMIDOxx.xxSTACKSxx.BackgroundWorker.Handlers
 {
-	public class MenuDeletedEventHandler : IApplicationEventHandler<MenuDeletedEvent>
+    public class MenuDeletedEventHandler : IApplicationEventHandler<MenuDeletedEvent>
 	{
 		private readonly ILogger<MenuDeletedEventHandler> log;
 

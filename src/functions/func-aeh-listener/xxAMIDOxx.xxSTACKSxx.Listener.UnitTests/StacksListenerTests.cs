@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Amido.Stacks.Application.CQRS.Events;
 using Amido.Stacks.Messaging.Azure.EventHub.Serializers;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NSubstitute;
 using Xunit;
+using xxAMIDOxx.xxSTACKSxx.Application.CQRS.Events;
 
 namespace xxAMIDOxx.xxSTACKSxx.Listener.UnitTests
 {
