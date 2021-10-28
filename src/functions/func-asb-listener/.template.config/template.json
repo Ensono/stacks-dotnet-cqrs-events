@@ -17,7 +17,21 @@
     },
     "sourceName": "xxAMIDOxx.xxSTACKSxx",
     "preferNameDirectory": true,
-    "symbols": {},
+    "symbols": {
+        "domain": {
+            "type": "parameter",
+            "isRequired": true,
+            "replaces": "Menu",
+            "fileRename": "Menu",
+            "defaultValue": "DOMAIN",
+            "forms": {
+                "global": [
+                    "identity",
+                    "lowerCase"
+                ]
+            }
+        }
+    },
     "sources": [
         {
             "source": "./",

@@ -32,51 +32,51 @@
             }
         },
         "eventPublisher": {
-			"type": "parameter",
-			"datatype": "choice",
-			"choices": [
-				{
-					"choice": "ServiceBus",
-					"description": "Targets the Azure Service Bus for publishing events."
-				},
-				{
-					"choice": "EventHub",
-					"description": "Targets the Azure Event Hub for publishing events."
-				}
-			],
-			"description": "Adds event publishing."
-		},
-		"database": {
-			"type": "parameter",
-			"datatype": "choice",
-			"choices": [
-				{
-					"choice": "CosmosDb",
-					"description": "Targets Azure Cosmos database for storing data."
-				},
-				{
-					"choice": "DynamoDb",
-					"description": "Targets AWS Dynamo database for storing data."
-				}
-			],
-			"description": "Adds saving to database."
-		},
-		"CosmosDb": {
-			"type": "computed",
-			"value": "(database == \"CosmosDb\")"
-		},
-		"DynamoDb": {
-			"type": "computed",
-			"value": "(database == \"DynamoDb\")"
-		},
-		"EventPublisherServiceBus": {
-			"type": "computed",
-			"value": "(eventPublisher == \"ServiceBus\")"
-		},
-		"EventPublisherEventHub": {
-			"type": "computed",
-			"value": "(eventPublisher == \"EventHub\")"
-		}
+            "type": "parameter",
+            "datatype": "choice",
+            "choices": [
+                {
+                    "choice": "ServiceBus",
+                    "description": "Targets the Azure Service Bus for publishing events."
+                },
+                {
+                    "choice": "EventHub",
+                    "description": "Targets the Azure Event Hub for publishing events."
+                }
+            ],
+            "description": "Adds event publishing."
+        },
+        "database": {
+            "type": "parameter",
+            "datatype": "choice",
+            "choices": [
+                {
+                    "choice": "CosmosDb",
+                    "description": "Targets Azure Cosmos database for storing data."
+                },
+                {
+                    "choice": "DynamoDb",
+                    "description": "Targets AWS Dynamo database for storing data."
+                }
+            ],
+            "description": "Adds saving to database."
+        },
+        "CosmosDb": {
+            "type": "computed",
+            "value": "(database == \"CosmosDb\")"
+        },
+        "DynamoDb": {
+            "type": "computed",
+            "value": "(database == \"DynamoDb\")"
+        },
+        "EventPublisherServiceBus": {
+            "type": "computed",
+            "value": "(eventPublisher == \"ServiceBus\")"
+        },
+        "EventPublisherEventHub": {
+            "type": "computed",
+            "value": "(eventPublisher == \"EventHub\")"
+        }
     },
     "sources": [
         {
@@ -105,34 +105,34 @@
             },
             "modifiers": [
                 {
-					"condition": "(CosmosDb)",
-					"exclude": [
-						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/DynamoDbMenuRepository.cs",
-						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/DynamoDbMenuRepositoryTests.cs"
-					]
-				},
-				{
-					"condition": "(DynamoDb)",
-					"exclude": [
-						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/CosmosDbMenuRepository.cs",
-						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/CosmosDbMenuRepositoryTests.cs"
-					]
-				},
-				{
-					"condition": "(!CosmosDb && !DynamoDb)",
-					"exclude": [
-						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/CosmosDbMenuRepository.cs",
-						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/CosmosDbMenuRepositoryTests.cs",
-						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/DynamoDbMenuRepository.cs",
-						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/DynamoDbMenuRepositoryTests.cs"
-					]
-				},
+                    "condition": "(CosmosDb)",
+                    "exclude": [
+                        "xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/DynamoDbMenuRepository.cs",
+                        "xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/DynamoDbMenuRepositoryTests.cs"
+                    ]
+                },
                 {
-					"condition": "EventPublisherServiceBus || EventPublisherEventHub",
-					"exclude": [
-						"**/src/api/xxAMIDOxx.xxSTACKSxx.Infrastructure/Fakes/DummyEventPublisher.cs"
-					]
-				}
+                    "condition": "(DynamoDb)",
+                    "exclude": [
+                        "xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/CosmosDbMenuRepository.cs",
+                        "xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/CosmosDbMenuRepositoryTests.cs"
+                    ]
+                },
+                {
+                    "condition": "(!CosmosDb && !DynamoDb)",
+                    "exclude": [
+                        "xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/CosmosDbMenuRepository.cs",
+                        "xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/CosmosDbMenuRepositoryTests.cs",
+                        "xxAMIDOxx.xxSTACKSxx.Infrastructure/Repositories/DynamoDbMenuRepository.cs",
+                        "xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/DynamoDbMenuRepositoryTests.cs"
+                    ]
+                },
+                {
+                    "condition": "EventPublisherServiceBus || EventPublisherEventHub",
+                    "exclude": [
+                        "xxAMIDOxx.xxSTACKSxx.Infrastructure/Fakes/DummyEventPublisher.cs"
+                    ]
+                }
             ]
         }
     ],
