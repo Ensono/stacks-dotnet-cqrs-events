@@ -117,7 +117,7 @@ It's entirely up to you where you want to generate the WebAPI. For example your 
 
 ```shell
 % dotnet new stacks-cqrs-events-app -n Foo.Bar -d Warehouse -db CosmosDb -e ServiceBus -o new-proj-folder
-The template "Amido Stacks Web Api" was created successfully.
+The template "Amido Stacks CQRS Events App" was created successfully.
 ```
 
 #### Adding a function template to your project
