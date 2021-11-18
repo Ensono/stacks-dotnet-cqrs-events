@@ -417,7 +417,7 @@ stages:
                       TF_VAR_dns_zone_name: $(base_domain_nonprod),
                       TF_VAR_dns_zone_resource_group: "$(dns_zone_resource_group)",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_nonprod),
-                      TF_VAR_app_bus_type: servicebus,
+                      TF_VAR_app_bus_type: $(app_bus_type),
                     }
                     terraform_output_commands: |
                       raw_tf=$(terraform output -json | jq -r 'keys[] as $k | "##vso[task.setvariable variable=\($k);isOutput=true]\(.[$k] | .value)"')
@@ -589,13 +589,15 @@ stages:
                     imageName: $(k8s_docker_registry_nonprod)/$(docker_listener_function_image_name):$(docker_image_tag)
 
                 # - Worker
-                - task: AzureFunctionAppContainer@1
-                  displayName: Deploy Worker function
-                  inputs:
-                    azureSubscription: $(azure_service_connection)
-                    resourceGroupName: $(app_resource_group)
-                    appName: $(function_publisher_name)
-                    imageName: $(k8s_docker_registry_nonprod)/$(docker_worker_function_image_name):$(docker_image_tag)
+                - ${{ if eq(app_bus_type, "servicebus") }}:
+                  - task: AzureFunctionAppContainer@1
+                    displayName: Deploy Worker function
+                    inputs:
+                      azureSubscription: $(azure_service_connection)
+                      resourceGroupName: $(app_resource_group)
+                      appName: $(function_publisher_name)
+                      imageName: $(k8s_docker_registry_nonprod)/$(docker_worker_function_image_name):$(docker_image_tag)
+                  
 
   - stage: Prod
     dependsOn: Build
