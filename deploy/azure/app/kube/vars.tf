@@ -109,7 +109,7 @@ variable "create_cdn_endpoint" {
 }
 
 variable "app_bus_type" {
-  type = string
+  type    = string
   default = "servicebus"
 }
 
