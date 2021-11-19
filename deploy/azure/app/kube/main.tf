@@ -54,8 +54,8 @@ module "servicebus" {
 }
 
 module "eventhub" {
-  count                      = "${contains(split(var.app_bus_type, ","), "eventhub") ? 1 : 0}"
-  source                     = "../eventhub"
-  resource_group_name        = module.default_label.id
-  resource_group_location    = var.resource_group_location  
+  count                   = "${contains(split(var.app_bus_type, ","), "eventhub") ? 1 : 0}"
+  source                  = "../eventhub"
+  resource_group_name     = module.default_label.id
+  resource_group_location = var.resource_group_location  
 }
