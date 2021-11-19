@@ -597,7 +597,6 @@ stages:
                     resourceGroupName: $(app_resource_group)
                     appName: $(function_publisher_name)
                     imageName: $(k8s_docker_registry_nonprod)/$(docker_worker_function_image_name):$(docker_image_tag)
-                  
 
   - stage: Prod
     dependsOn: Build
