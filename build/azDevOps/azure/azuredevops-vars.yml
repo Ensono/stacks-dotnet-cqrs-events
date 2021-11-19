@@ -83,6 +83,9 @@ variables:
   - name: dns_zone_resource_group
     value: "Stacks-Ancillary-Resources"
 
+  - name: app_bus_type
+    value: servicebus,eventhub
+
   # GitHub infomration
   - name: create_release
     value: true
