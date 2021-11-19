@@ -589,14 +589,14 @@ stages:
                     imageName: $(k8s_docker_registry_nonprod)/$(docker_listener_function_image_name):$(docker_image_tag)
 
                 # - Worker
-                - ${{ if eq(app_bus_type, "servicebus") }}:
-                  - task: AzureFunctionAppContainer@1
-                    displayName: Deploy Worker function
-                    inputs:
-                      azureSubscription: $(azure_service_connection)
-                      resourceGroupName: $(app_resource_group)
-                      appName: $(function_publisher_name)
-                      imageName: $(k8s_docker_registry_nonprod)/$(docker_worker_function_image_name):$(docker_image_tag)
+                - task: AzureFunctionAppContainer@1
+                  condition: eq(app_bus_type, "servicebus")
+                  displayName: Deploy Worker function
+                  inputs:
+                    azureSubscription: $(azure_service_connection)
+                    resourceGroupName: $(app_resource_group)
+                    appName: $(function_publisher_name)
+                    imageName: $(k8s_docker_registry_nonprod)/$(docker_worker_function_image_name):$(docker_image_tag)
                   
 
   - stage: Prod
