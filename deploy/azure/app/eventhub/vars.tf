@@ -29,7 +29,7 @@ variable "eh_partition_count" {
 variable "eh_retention" {
     type = number
     default = 1
-    default = "How many days to retain the events for this Event Hub"
+    description = "How many days to retain the events for this Event Hub"
 }
 
 variable "eh_blob_container" {
