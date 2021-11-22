@@ -1,15 +1,15 @@
 output "eventhub_connectionstring" {
-    value = azurerm_eventhub_namespace.eh_ns.default_primary_connection_string
+  value = azurerm_eventhub_namespace.eh_ns.default_primary_connection_string
 }
 
 output "eventhub_name" {
-    value = azurem_eventhub.eh.name
+  value = azurerm_eventhub.eh.name
 }
 
 output "eventhub_sa_connectionstring" {
-    value = azurerm_storage_account.eh_storage.primary_connection_string
+  value = azurerm_storage_account.eh_storage.primary_connection_string
 }
 
 output "eventhub_sa_container" {
-    value = azurerm_storage_container.eh_storage_container.name
+  value = azurerm_storage_container.eh_storage_container.name
 }

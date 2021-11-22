@@ -33,7 +33,7 @@ resource "azurerm_function_app" "function_listener" {
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   depends_on = [
-    azurerm_eventhub_namespace.eh
+    azurerm_eventhub_namespace.eh_ns
   ]
 
   app_service_plan_id        = azurerm_app_service_plan.app_sp.id
@@ -41,14 +41,14 @@ resource "azurerm_function_app" "function_listener" {
   storage_account_access_key = azurerm_storage_account.function_storage.primary_access_key
 
   app_settings = {
-    NAMESPACE_CONNECTIONSTRING = azurerm_eventhub_namespace.eh.default_primary_connection_string
-    EVENT_HUB_NAME           = azurerm_eventhub.eh.name
-    BLOB_STORAGE_CONNECTIONSTRING                  = azurerm_storage_account.eh_storage.primary_access_key
-    BLOB_CONTAINER_NAME = azurem_storage_container.eh_storage_container.name
+    NAMESPACE_CONNECTIONSTRING    = azurerm_eventhub_namespace.eh_ns.default_primary_connection_string
+    EVENT_HUB_NAME                = azurerm_eventhub.eh.name
+    BLOB_STORAGE_CONNECTIONSTRING = azurerm_storage_account.eh_storage.primary_access_key
+    BLOB_CONTAINER_NAME           = azurerm_storage_container.eh_storage_container.name
   }
 
   site_config {
     always_on = true
-  }  
+  }
 }
 
