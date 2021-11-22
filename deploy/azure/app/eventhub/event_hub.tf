@@ -36,4 +36,4 @@ resource "azurerm_eventhub" "eh" {
       storage_account_id  = azurerm_storage_account.eh_storage.id
     }
   }
-
+}
