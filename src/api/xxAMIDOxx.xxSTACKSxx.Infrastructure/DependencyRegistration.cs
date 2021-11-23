@@ -50,6 +50,8 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.EventHub.Publisher.EventPublisher>();
 #elif (EventPublisherNone)
             services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
+#else
+            services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
 #endif
 
 #if (CosmosDb)
@@ -61,6 +63,8 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             //services.AddDynamoDB();
             //services.AddTransient<IMenuRepository, DynamoDbMenuRepository>();
 #elif (InMemoryDb)
+            services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
+#else
             services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
 #endif
 
