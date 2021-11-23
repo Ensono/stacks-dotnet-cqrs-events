@@ -57,7 +57,6 @@ namespace xxAMIDOxx.xxSTACKSxx.API
                 .AddAuthorization()
                 .AddDataAnnotations()
                 .AddCors()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 /* Only required if the models will used Json.Net features for serialization
                 .AddNewtonsoftJson(options =>
                 {
