@@ -93,7 +93,7 @@ dotnet new --uninstall Amido.Stacks.CQRS.Events.Templates
 - **-n|--name**
   - Sets the project name
   - Omitting it will result in the project name being the same as the folder where the command has been ran from
-- **-d|--domain**
+- **-do|--domain**
   - Sets the name of the aggregate root object. It is also the name of the collection within CosmosDB instance.
 - **-db|--database**
   - Configures which database provider to be used
@@ -116,7 +116,7 @@ Let's say you want to create a brand new WebAPI with CQRS and Event sourcing for
 It's entirely up to you where you want to generate the WebAPI. For example your company has the name structure `Foo.Bar` as a prefix to all your namespaces where `Foo` is the company name and `Bar` is the name of the project. If you want the WebAPI to have a domain `Warehouse`, use `CosmosDb`, publish events to `ServiceBus` and be generated inside a folder called `new-proj-folder` you'll execute the following command:
 
 ```shell
-% dotnet new stacks-cqrs-events-app -n Foo.Bar -d Warehouse -db CosmosDb -e ServiceBus -o new-proj-folder
+% dotnet new stacks-cqrs-events-app -n Foo.Bar -do Warehouse -db CosmosDb -e ServiceBus -o new-proj-folder
 The template "Amido Stacks CQRS Events App" was created successfully.
 ```
 
@@ -129,7 +129,7 @@ It's entirely up to you where you want to generate the function project. For exa
 ```shell
 % cd functions
 
-% dotnet new stacks-az-func-cosmosdb-worker -n Foo.Bar -d Menu
+% dotnet new stacks-az-func-cosmosdb-worker -n Foo.Bar -do Menu
 The template "Amido Stacks Azure Function CosmosDb Worker" was created successfully.
 
 % ls -la
