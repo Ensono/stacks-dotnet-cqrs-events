@@ -59,7 +59,7 @@ variables:
   - name: self_repo_functions_listener_asb_src
     value: src/functions/func-asb-listener
   - name: self_repo_functions_listener_aeh_src
-    value: src/functions/func-aeh-listener    
+    value: src/functions/func-aeh-listener
   - name: self_repo_functions_worker_src
     value: src/functions/func-cosmosdb-worker
   - name: self_repo_functions_dir
@@ -98,7 +98,7 @@ variables:
   - name: docker_listener_asb_function_image_name
     value: stacks-api-events-listener-asb-function
   - name: docker_listener_aeh_function_image_name
-    value: stacks-api-events-listener-aeh-function    
+    value: stacks-api-events-listener-aeh-function
   - name: docker_bg_worker_image_name
     value: stacks-api-events-bg-worker
   - name: docker_image_tag
@@ -281,29 +281,29 @@ stages:
 
           # Build listener function image for Azure Service Bus
           - ${{ if contains('$(app_bus_type)', 'servicebus') }}:
-            - template: templates/steps/build/build-function.yml
-              parameters:
-                dotnet_core_version: "3.1.x"
-                # Docker Config
-                docker_build: true
-                docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener ."
-                docker_workdir: $(self_repo_dir)/$(self_repo_functions_listener_asb_src)
-                docker_imagename: $(docker_listener_asb_function_image_name)
-                docker_imagetag: $(docker_image_tag)
-                docker_containerregistryname: $(docker_container_registry_name_nonprod)
+              - template: templates/steps/build/build-function.yml
+                parameters:
+                  dotnet_core_version: "3.1.x"
+                  # Docker Config
+                  docker_build: true
+                  docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener ."
+                  docker_workdir: $(self_repo_dir)/$(self_repo_functions_listener_asb_src)
+                  docker_imagename: $(docker_listener_asb_function_image_name)
+                  docker_imagetag: $(docker_image_tag)
+                  docker_containerregistryname: $(docker_container_registry_name_nonprod)
 
           # Build listener function image for Azure Event Hub
           - ${{ if contains('$(app_bus_type)', 'eventhub') }}:
-            - template: templates/steps/build/build-function.yml
-              parameters:
-                dotnet_core_version: "3.1.x"
-                # Docker Config
-                docker_build: true
-                docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener ."
-                docker_workdir: $(self_repo_dir)/$(self_repo_functions_listener_aeh_src)
-                docker_imagename: $(docker_listener_aeh_function_image_name)
-                docker_imagetag: $(docker_image_tag)
-                docker_containerregistryname: $(docker_container_registry_name_nonprod)
+              - template: templates/steps/build/build-function.yml
+                parameters:
+                  dotnet_core_version: "3.1.x"
+                  # Docker Config
+                  docker_build: true
+                  docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener ."
+                  docker_workdir: $(self_repo_dir)/$(self_repo_functions_listener_aeh_src)
+                  docker_imagename: $(docker_listener_aeh_function_image_name)
+                  docker_imagetag: $(docker_image_tag)
+                  docker_containerregistryname: $(docker_container_registry_name_nonprod)
 
           # Build worker function image
           - template: templates/steps/build/build-function.yml
@@ -476,7 +476,7 @@ stages:
           - name: function_listener_name
             value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.function_listener_name'] ]
           - name: eventhub_function_listener_name
-            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.eventhub_function_listener_name'] ]            
+            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.eventhub_function_listener_name'] ]
           - name: app_resource_group
             value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.resource_group'] ]
         strategy:
@@ -620,7 +620,7 @@ stages:
                     azureSubscription: $(azure_service_connection)
                     resourceGroupName: $(app_resource_group)
                     appName: $(eventhub_function_listener_name)
-                    imageName: $(k8s_docker_registry_nonprod)/$(docker_listener_aeh_function_image_name):$(docker_image_tag)                      
+                    imageName: $(k8s_docker_registry_nonprod)/$(docker_listener_aeh_function_image_name):$(docker_image_tag)
 
                 # - Worker
                 - task: AzureFunctionAppContainer@1
@@ -812,7 +812,7 @@ stages:
                       -j "$(prod-azure-client-secret)"
                       -k "$(prod-azure-tenant-id)"
                       -Z "false"
-                  displayName: Promote Listener AEH function Docker Image to Production ACR                  
+                  displayName: Promote Listener AEH function Docker Image to Production ACR
 
                 - task: Bash@3
                   inputs:
@@ -868,7 +868,7 @@ stages:
           - name: function_listener_name
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.function_listener_name'] ]
           - name: eventhub_function_listener_name
-            value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.eventhub_function_listener_name'] ]            
+            value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.eventhub_function_listener_name'] ]
           - name: app_resource_group
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.resource_group'] ]
         strategy:
@@ -1011,7 +1011,7 @@ stages:
                     azureSubscription: $(azure_service_connection)
                     resourceGroupName: $(app_resource_group)
                     appName: $(function_listener_name)
-                    imageName: $(k8s_docker_registry_prod)/$(docker_listener_aeh_function_image_name):$(docker_image_tag)                    
+                    imageName: $(k8s_docker_registry_prod)/$(docker_listener_aeh_function_image_name):$(docker_image_tag)
 
                 # - Worker
                 - task: AzureFunctionAppContainer@1
