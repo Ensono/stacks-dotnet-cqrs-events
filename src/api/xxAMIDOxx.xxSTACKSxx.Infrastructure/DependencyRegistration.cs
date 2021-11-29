@@ -48,6 +48,8 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             services.Configure<Amido.Stacks.Messaging.Azure.EventHub.Configuration.EventHubConfiguration>(context.Configuration.GetSection("EventHubConfiguration"));
             services.AddEventHub();
             services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.EventHub.Publisher.EventPublisher>();
+#elif (EventPublisherNone)
+            services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
 #else
             services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
 #endif
@@ -60,6 +62,8 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             //services.Configure<DynamoDbConfiguration>(context.Configuration.GetSection("DynamoDb"));
             //services.AddDynamoDB();
             //services.AddTransient<IMenuRepository, DynamoDbMenuRepository>();
+#elif (InMemoryDb)
+            services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
 #else
             services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
 #endif
