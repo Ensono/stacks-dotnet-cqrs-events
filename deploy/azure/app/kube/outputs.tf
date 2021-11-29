@@ -106,3 +106,11 @@ output "eventhub_sa_connectionstring" {
 output "eventhub_sa_container" {
   value = module.eventhub.*.eventhub_sa_container[0]
 }
+
+output "eventhub_function_listener_name" {
+  value = module.eventhub.*.function_listener_name[0]
+}
+
+output "eventhub_function_listener_id" {
+  value = module.eventhub.*.function_listener_id[0]
+}
