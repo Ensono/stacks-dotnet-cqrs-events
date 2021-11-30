@@ -280,7 +280,7 @@ stages:
               project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)
 
           # Build listener function image for Azure Service Bus
-          - ${{ if contains('$(app_bus_type)', 'servicebus') }}:
+          - ${{ if contains('${{ variables.app_bus_type }}', 'servicebus') }}:
               - template: templates/steps/build/build-function.yml
                 parameters:
                   dotnet_core_version: "3.1.x"
@@ -293,7 +293,7 @@ stages:
                   docker_containerregistryname: $(docker_container_registry_name_nonprod)
 
           # Build listener function image for Azure Event Hub
-          - ${{ if contains('$(app_bus_type)', 'eventhub') }}:
+          - ${{ if contains('${{ variables.app_bus_type }}', 'eventhub') }}:
               - template: templates/steps/build/build-function.yml
                 parameters:
                   dotnet_core_version: "3.1.x"
@@ -604,7 +604,7 @@ stages:
                 # Deploy the function containers to the function apps
                 # - Listener for Azure Service Bus
                 - task: AzureFunctionAppContainer@1
-                  condition: contains('$(app_bus_type)', 'servicebus')
+                  condition: contains('${{ variables.app_bus_type }}', 'servicebus')
                   displayName: Deploy Listener ASB function
                   inputs:
                     azureSubscription: $(azure_service_connection)
@@ -614,7 +614,7 @@ stages:
 
                 # - Listener for Azure Event Hub
                 - task: AzureFunctionAppContainer@1
-                  condition: contains('$(app_bus_type)', 'eventhub')
+                  condition: contains('${{ variables.app_bus_type }}', 'eventhub')
                   displayName: Deploy Listener AEH function
                   inputs:
                     azureSubscription: $(azure_service_connection)
@@ -777,7 +777,7 @@ stages:
                   displayName: Promote Worker function Docker Image to Production ACR
 
                 - task: Bash@3
-                  condition: contains('$(app_bus_type)', 'servicebus')
+                  condition: contains('${{ variables.app_bus_type }}', 'servicebus')
                   inputs:
                     filePath: "$(self_pipeline_scripts_dir)/util-azure-promote-image.bash"
                     arguments: >
@@ -796,7 +796,7 @@ stages:
                   displayName: Promote Listener ASB function Docker Image to Production ACR
 
                 - task: Bash@3
-                  condition: contains('$(app_bus_type)', 'eventhub')
+                  condition: contains('${{ variables.app_bus_type }}', 'eventhub')
                   inputs:
                     filePath: "$(self_pipeline_scripts_dir)/util-azure-promote-image.bash"
                     arguments: >
@@ -995,7 +995,7 @@ stages:
                 # Deploy the function containers to the function apps
                 # - Listener Azure Service Bus
                 - task: AzureFunctionAppContainer@1
-                  condition: contains('$(app_bus_type)', 'servicebus')
+                  condition: contains('${{ variables.app_bus_type }}', 'servicebus')
                   displayName: Deploy Listener ASB function
                   inputs:
                     azureSubscription: $(azure_service_connection)
@@ -1004,7 +1004,7 @@ stages:
                     imageName: $(k8s_docker_registry_prod)/$(docker_listener_asb_function_image_name):$(docker_image_tag)
 
                 - task: AzureFunctionAppContainer@1
-                  condition: contains('$(app_bus_type)', 'eventhub')
+                  condition: contains('${{ variables.app_bus_type }}', 'eventhub')
                   displayName: Deploy Listener AEH function
                   inputs:
                     azureSubscription: $(azure_service_connection)
