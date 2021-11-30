@@ -590,7 +590,7 @@ stages:
                       $functions = @("$(function_publisher_name)", "$(function_listener_name)", "$(eventhub_function_listener_name)")
                       foreach ($function in $functions) {
 
-                        if [ "X$function" != "X" ];
+                        if [ "X$function" != "X" ]
                         then
                           az functionapp config container set `
                             --resource-group "$(app_resource_group)" `
@@ -982,7 +982,7 @@ stages:
                       $functions = @("$(function_publisher_name)", "$(function_listener_name)", "$(eventhub_function_listener_name")
                       foreach ($function in $functions) {
 
-                        if [ "X$function" != "X" ];
+                        if [ "X$function" != "X" ]
                         then
                           az functionapp config container set `
                             --resource-group "$(app_resource_group)" `
