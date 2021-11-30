@@ -591,15 +591,14 @@ stages:
                       $functions = @("$(function_publisher_name)", "$(function_listener_name)", "$(eventhub_function_listener_name)")
                       foreach ($function in $functions) {
 
-                        if [ "X$function" != "X" ]
-                        then
+                        if (![string]::IsNullOrEmpty($function)) {
                           az functionapp config container set `
                             --resource-group "$(app_resource_group)" `
                             --name "$function" `
                             --docker-registry-server-url "https://$(k8s_docker_registry_nonprod)" `
                             --docker-registry-server-user "$registryUsername" `
                             --docker-registry-server-password "$registryPassword"
-                        fi
+                        }
                       }
 
                 # Deploy the function containers to the function apps
@@ -983,15 +982,14 @@ stages:
                       $functions = @("$(function_publisher_name)", "$(function_listener_name)", "$(eventhub_function_listener_name")
                       foreach ($function in $functions) {
 
-                        if [ "X$function" != "X" ]
-                        then
+                        if (![string]::IsNullOrEmpty($function)) {
                           az functionapp config container set `
                             --resource-group "$(app_resource_group)" `
                             --name "$function" `
                             --docker-registry-server-url "https://$(k8s_docker_registry_prod)" `
                             --docker-registry-server-user "$registryUsername" `
                             --docker-registry-server-password "$registryPassword"
-                        fi
+                        }
                       }
 
                 # Deploy the function containers to the function apps
