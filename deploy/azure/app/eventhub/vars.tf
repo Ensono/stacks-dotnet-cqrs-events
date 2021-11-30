@@ -47,9 +47,9 @@ variable "app-service-plan-name" {
   default = "app-sp-events"
 }
 
-variable "func-asb-listener-name" {
+variable "func-aeh-listener-name" {
   type    = string
-  default = "func-asb-listener"
+  default = "func-aeh-listener"
 }
 
 variable "seed_length" {

@@ -29,7 +29,7 @@ resource "azurerm_app_service_plan" "app_sp" {
 }
 
 resource "azurerm_function_app" "function_listener" {
-  name                = "${var.func-asb-listener-name}-${random_string.seed.result}"
+  name                = "${var.func-aeh-listener-name}-${random_string.seed.result}"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   depends_on = [
