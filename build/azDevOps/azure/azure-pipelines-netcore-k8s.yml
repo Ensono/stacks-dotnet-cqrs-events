@@ -280,7 +280,7 @@ stages:
               project_root_dir: $(Pipeline.Workspace)/s/$(self_repo)/$(self_repo_src)
 
           # Build listener function image for Azure Service Bus
-          - ${{ if contains('${{ variables.app_bus_type }}', 'servicebus') }}:
+          - ${{ if contains(variables.app_bus_type, 'servicebus') }}:
               - template: templates/steps/build/build-function.yml
                 parameters:
                   dotnet_core_version: "3.1.x"
@@ -293,7 +293,7 @@ stages:
                   docker_containerregistryname: $(docker_container_registry_name_nonprod)
 
           # Build listener function image for Azure Event Hub
-          - ${{ if contains('${{ variables.app_bus_type }}', 'eventhub') }}:
+          - ${{ if contains(variables.app_bus_type, 'eventhub') }}:
               - template: templates/steps/build/build-function.yml
                 parameters:
                   dotnet_core_version: "3.1.x"
