@@ -5,7 +5,7 @@
 #
 # docker build -t stacks-dotnet-cqrs-events --build-arg function=xxAMIDOxx.xxSTACKSxx.Listener .\src\functions
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as build
+FROM mcr.microsoft.com/azure-functions/dotnet:4 as build
 
 ARG function
 ARG outdir=out
@@ -17,7 +17,7 @@ COPY ./ ./
 RUN dotnet publish -c Release -o ${outdir} ${function}
 
 # Build the runtime image
-FROM mcr.microsoft.com/azure-functions/dotnet:3.0 as runtime
+FROM mcr.microsoft.com/azure-functions/dotnet:4 as runtime
 EXPOSE 80
 WORKDIR /home/site/wwwroot
 COPY --from=build /app/${outdir} .
