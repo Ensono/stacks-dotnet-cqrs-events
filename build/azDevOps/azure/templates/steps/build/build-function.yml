@@ -2,7 +2,7 @@ parameters:
   pool:
     vmImage: "ubuntu-latest"
   docker_build: true
-  dotnet_core_version: "3.1.x"
+  dotnet_core_version: "6.0.x"
   docker_build_additional_args: ""
   docker_workdir: ""
   docker_imagename: ""
