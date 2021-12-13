@@ -118,6 +118,12 @@ variable "az_function_extension_version" {
   description = "Version of the Azure Function runtime to use"
 }
 
+variable "az_function_dotnet_version" {
+  type = string
+  default = "v6.0"
+  description = "Version of the .NET framework to use in the function"
+}
+
 variable "location_name_map" {
   type = map(string)
 

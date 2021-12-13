@@ -66,11 +66,13 @@ resource "azurerm_function_app" "function_publisher" {
     SERVICEBUS_CONNECTIONSTRING    = azurerm_servicebus_namespace.sb.default_primary_connection_string
     SUBSCRIPTION_NAME              = azurerm_servicebus_subscription.sb_sub_1.name
     TOPIC_NAME                     = azurerm_servicebus_topic.sb_topic.name
-    FUNCTIONS_EXTENSION_VERSION    = var.az_function_extension_version
   }
+
+  version = var.az_function_extension_version
 
   site_config {
     always_on = true
+    dotnet_framework_version = var.az_function_dotnet_version
   }
 }
 
@@ -90,11 +92,13 @@ resource "azurerm_function_app" "function_listener" {
     SERVICEBUS_CONNECTIONSTRING = azurerm_servicebus_namespace.sb.default_primary_connection_string
     SUBSCRIPTION_NAME           = azurerm_servicebus_subscription.sb_sub_2.name
     TOPIC_NAME                  = azurerm_servicebus_topic.sb_topic.name
-    FUNCTIONS_EXTENSION_VERSION = var.az_function_extension_version
   }
+
+  version = var.az_function_extension_version
 
   site_config {
     always_on = true
-  }  
+    dotnet_framework_version = var.az_function_dotnet_version
+  }
 }
 
