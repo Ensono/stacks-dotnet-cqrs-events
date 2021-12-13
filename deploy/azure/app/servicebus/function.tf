@@ -68,8 +68,11 @@ resource "azurerm_function_app" "function_publisher" {
     TOPIC_NAME                     = azurerm_servicebus_topic.sb_topic.name
   }
 
+  version = var.az_function_extension_version
+
   site_config {
     always_on = true
+    dotnet_framework_version = var.az_function_dotnet_version
   }
 }
 
@@ -91,8 +94,11 @@ resource "azurerm_function_app" "function_listener" {
     TOPIC_NAME                  = azurerm_servicebus_topic.sb_topic.name
   }
 
+  version = var.az_function_extension_version
+
   site_config {
     always_on = true
-  }  
+    dotnet_framework_version = var.az_function_dotnet_version
+  }
 }
 
