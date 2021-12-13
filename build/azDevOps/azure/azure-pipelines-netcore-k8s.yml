@@ -26,14 +26,14 @@ resources:
     - repository: templates
       type: github
       name: amido/stacks-pipeline-templates
-      ref: refs/tags/v2.0.4
+      ref: refs/tags/v2.0.6
       # EXCHANGE THIS FOR YOUR OWN ENDPOINT CONNECTION TO GITHUB
       # REPOSITORY IS PUBLIC
       endpoint: amidostacks
 
   containers:
     - container: sonar_scanner
-      image: amidostacks/ci-sonarscanner:0.0.2
+      image: amidostacks/ci-sonarscanner:0.0.3
     - container: k8s_deploy
       image: amidostacks/ci-k8s:0.0.14
     - container: terraform_custom
@@ -80,7 +80,7 @@ variables:
 
   # Versioning
   - name: version_major
-    value: 3
+    value: 6
   - name: version_minor
     value: 0
   - name: version_revision
@@ -173,7 +173,7 @@ stages:
           # - API
           - template: templates/steps/build/build-netcore.yml
             parameters:
-              dotnet_core_version: "3.1.x"
+              dotnet_core_version: "6.0.x"
               # Docker Config
               docker_build: true
               # TODO: normalize this
@@ -227,7 +227,7 @@ stages:
           # - Background worker
           - template: templates/steps/build/build-netcore.yml
             parameters:
-              dotnet_core_version: "3.1.x"
+              dotnet_core_version: "6.0.x"
               # Docker Config
               docker_build: true
               # TODO: normalize this
@@ -278,7 +278,7 @@ stages:
           # Build listener function image
           - template: templates/steps/build/build-function.yml
             parameters:
-              dotnet_core_version: "3.1.x"
+              dotnet_core_version: "6.0.x"
               # Docker Config
               docker_build: true
               docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener ."
@@ -290,7 +290,7 @@ stages:
           # Build worker function image
           - template: templates/steps/build/build-function.yml
             parameters:
-              dotnet_core_version: "3.1.x"
+              dotnet_core_version: "6.0.x"
               # Docker Config
               docker_build: true
               docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Worker ."
@@ -324,7 +324,7 @@ stages:
           - template: azDevOps/azure/templates/v2/steps/build-pack-test-dotnet.yml@templates
             parameters:
               package_path: $(Agent.BuildDirectory)/s
-              dotnet_core_version: 3.1.x
+              dotnet_core_version: 6.0.x
               version_variable_name: version_number
 
           # Upload the packages as artefacts
@@ -529,6 +529,7 @@ stages:
                     test_artefact: "tests"
                     test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_nonprod)/api/menu/"
                     functional_test: true
+                    dotnet_core_version: 6.0.x
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
@@ -885,6 +886,7 @@ stages:
                     test_artefact: "tests"
                     test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
                     functional_test: true
+                    dotnet_core_version: 6.0.x
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
