@@ -112,6 +112,12 @@ variable "servicebus_sku" {
   default = "Standard"
 }
 
+variable "az_function_extension_version" {
+  type = string
+  default = "~4"
+  description = "Version of the Azure Function runtime to use"
+}
+
 variable "location_name_map" {
   type = map(string)
 
