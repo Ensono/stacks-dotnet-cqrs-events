@@ -529,6 +529,7 @@ stages:
                     test_artefact: "tests"
                     test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_nonprod)/api/menu/"
                     functional_test: true
+                    dotnet_core_version: 6.0.x
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
@@ -885,6 +886,7 @@ stages:
                     test_artefact: "tests"
                     test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
                     functional_test: true
+                    dotnet_core_version: 6.0.x
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
