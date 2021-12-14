@@ -3,8 +3,6 @@ using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Amido.Stacks.Application.CQRS.Commands;
 using Amido.Stacks.Application.CQRS.Queries;
 using Amido.Stacks.Configuration.Extensions;
-using Amido.Stacks.Data.Documents.CosmosDB;
-using Amido.Stacks.Data.Documents.CosmosDB.Extensions;
 using Amido.Stacks.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
