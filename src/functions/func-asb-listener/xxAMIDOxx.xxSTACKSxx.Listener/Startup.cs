@@ -1,4 +1,3 @@
-using Amido.Stacks.Configuration.Extensions;
 using Amido.Stacks.Messaging.Azure.ServiceBus.Configuration;
 using Amido.Stacks.Messaging.Azure.ServiceBus.Serializers;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
