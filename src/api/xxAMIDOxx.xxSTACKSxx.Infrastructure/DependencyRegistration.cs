@@ -4,6 +4,7 @@ using Amido.Stacks.Application.CQRS.Commands;
 using Amido.Stacks.Application.CQRS.Queries;
 using Amido.Stacks.Configuration.Extensions;
 using Amido.Stacks.DependencyInjection;
+using Amido.Stacks.Messaging.Azure.ServiceBus.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -38,39 +39,13 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
         {
             services.AddSecrets();
 
-#if (EventPublisherServiceBus)
             services.Configure<Amido.Stacks.Messaging.Azure.ServiceBus.Configuration.ServiceBusConfiguration>(context.Configuration.GetSection("ServiceBusConfiguration"));
             services.AddServiceBus();
-            services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.ServiceBus.Senders.Publishers.EventPublisher>();
-#elif (EventPublisherEventHub)
-            services.Configure<Amido.Stacks.Messaging.Azure.EventHub.Configuration.EventHubConfiguration>(context.Configuration.GetSection("EventHubConfiguration"));
-            services.AddEventHub();
-            services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.EventHub.Publisher.EventPublisher>();
-#elif (EventPublisherNone)
-            services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
-#else
-            services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
-#endif
+            services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.ServiceBus.Publisher.EventPublisher>();
 
-#if (CosmosDb)
-            services.Configure<CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDb"));
-            services.AddCosmosDB();
-            services.AddTransient<IMenuRepository, xxAMIDOxx.xxSTACKSxx.Infrastructure.Repositories.CosmosDbMenuRepository>();
-#elif (DynamoDb)
-            //services.Configure<DynamoDbConfiguration>(context.Configuration.GetSection("DynamoDb"));
-            //services.AddDynamoDB();
-            //services.AddTransient<IMenuRepository, DynamoDbMenuRepository>();
-#elif (InMemoryDb)
             services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
-#else
-            services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
-#endif
 
             var healthChecks = services.AddHealthChecks();
-#if (CosmosDb)
-            healthChecks.AddCheck<CustomHealthCheck>("Sample"); //This is a sample health check, remove if not needed, more info: https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/monitor-app-health
-            healthChecks.AddCheck<CosmosDbDocumentStorage<Menu>>("CosmosDB");
-#endif
         }
 
         private static void AddCommandHandlers(IServiceCollection services)
