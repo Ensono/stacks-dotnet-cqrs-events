@@ -47,8 +47,11 @@ resource "azurerm_function_app" "function_listener" {
     BLOB_CONTAINER_NAME           = azurerm_storage_container.eh_storage_container.name
   }
 
+  version = var.az_function_extension_version
+
   site_config {
     always_on = true
+    dotnet_framework_version = var.az_function_dotnet_version
   }
 }
 
