@@ -291,15 +291,15 @@ echo 'export EVENTHUB_CONNECTIONSTRING=YOUR_EVENT_HUB_CONNECTION_STRING' >> ~/.z
 If you wan to run the application using Visual Studio, you will need to set the environment variables in the `launchSettings.json` file contained in the Properties folder of the solution.
 
 ```json
-    "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "COSMOSDB_KEY": "",
-        "SERVICEBUS_CONNECTIONSTRING": "",
-        "EVENTHUB_CONNECTIONSTRING": "=",
-        "STORAGE_CONNECTIONSTRING": "",
-        "OTLP_SERVICENAME": "",
-        "OTLP_ENDPOINT": ""
-    },
+"environmentVariables": {
+    "ASPNETCORE_ENVIRONMENT": "Development",
+    "COSMOSDB_KEY": "",
+    "SERVICEBUS_CONNECTIONSTRING": "",
+    "EVENTHUB_CONNECTIONSTRING": "=",
+    "STORAGE_CONNECTIONSTRING": "",
+    "OTLP_SERVICENAME": "",
+    "OTLP_ENDPOINT": ""
+}
 ```
 
 ### Running the Worker ChangeFeed listener locally
