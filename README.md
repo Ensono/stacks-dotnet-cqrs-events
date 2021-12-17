@@ -290,7 +290,7 @@ echo 'export EVENTHUB_CONNECTIONSTRING=YOUR_EVENT_HUB_CONNECTION_STRING' >> ~/.z
 
 If you wan to run the application using Visual Studio, you will need to set the environment variables in the `launchSettings.json` file contained in the Properties folder of the solution.
 
-```
+```json
     "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "COSMOSDB_KEY": "",
