@@ -40,6 +40,7 @@ module "app" {
 }
 
 module "servicebus" {
+  count                      = contains(split(",", var.app_bus_type), "servicebus") ? 1 : 0
   source                     = "../servicebus"
   resource_group_name        = module.default_label.id
   resource_group_location    = var.resource_group_location
@@ -50,4 +51,11 @@ module "servicebus" {
   cosmosdb_database_name     = module.app.cosmosdb_database_name
   cosmosdb_collection_name   = var.cosmosdb_sql_container
   cosmosdb_connection_string = "AccountEndpoint=${module.app.cosmosdb_endpoint};AccountKey=${module.app.cosmosdb_primary_master_key};"
+}
+
+module "eventhub" {
+  count                   = contains(split(",", var.app_bus_type), "eventhub") ? 1 : 0
+  source                  = "../eventhub"
+  resource_group_name     = module.default_label.id
+  resource_group_location = var.resource_group_location
 }
