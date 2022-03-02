@@ -190,7 +190,7 @@ stages:
               vulnerability_scan: false
               vulnerability_workdir: "$(Build.ArtifactStagingDirectory)"
               # Sonar settings
-              static_code_analysis: true
+              static_code_analysis: false
               sonar_container: sonar_scanner
               sonar_run_properties: "/d:sonar.cs.opencover.reportsPaths=\"**/*.opencover.xml\" /d:sonar.exclusions=\"**/*Tests\" /d:sonar.coverage.exclusions=\"**/*Tests\""
               sonar_env: {
