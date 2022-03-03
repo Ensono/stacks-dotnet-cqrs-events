@@ -1,8 +1,8 @@
-﻿using System;
-using Amido.Stacks.Application.CQRS.ApplicationEvents;
+﻿using Amido.Stacks.Application.CQRS.ApplicationEvents;
 using Amido.Stacks.Application.CQRS.Commands;
 using Amido.Stacks.Application.CQRS.Queries;
 using Amido.Stacks.Configuration.Extensions;
+using Amido.Stacks.Data.Documents.CosmosDB.Extensions;
 using Amido.Stacks.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +13,9 @@ using xxAMIDOxx.xxSTACKSxx.Application.QueryHandlers;
 using xxAMIDOxx.xxSTACKSxx.Domain;
 using xxAMIDOxx.xxSTACKSxx.Infrastructure.Fakes;
 using xxAMIDOxx.xxSTACKSxx.Infrastructure.HealthChecks;
+#if (CosmosDb || DynamoDb)
+using xxAMIDOxx.xxSTACKSxx.Infrastructure.Repositories;
+#endif
 
 namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
 {
@@ -53,9 +56,9 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
 #endif
 
 #if (CosmosDb)
-            services.Configure<CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDb"));
+            services.Configure<Amido.Stacks.Data.Documents.CosmosDB.CosmosDbConfiguration>(context.Configuration.GetSection("CosmosDb"));
             services.AddCosmosDB();
-            services.AddTransient<IMenuRepository, xxAMIDOxx.xxSTACKSxx.Infrastructure.Repositories.CosmosDbMenuRepository>();
+            services.AddTransient<IMenuRepository, CosmosDbMenuRepository>();
 #elif (DynamoDb)
             //services.Configure<DynamoDbConfiguration>(context.Configuration.GetSection("DynamoDb"));
             //services.AddDynamoDB();
@@ -65,11 +68,10 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
 #else
             services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
 #endif
-
             var healthChecks = services.AddHealthChecks();
 #if (CosmosDb)
             healthChecks.AddCheck<CustomHealthCheck>("Sample"); //This is a sample health check, remove if not needed, more info: https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/monitor-app-health
-            healthChecks.AddCheck<CosmosDbDocumentStorage<Menu>>("CosmosDB");
+            healthChecks.AddCheck<Amido.Stacks.Data.Documents.CosmosDB.CosmosDbDocumentStorage<Menu>>("CosmosDB");
 #endif
         }
 
