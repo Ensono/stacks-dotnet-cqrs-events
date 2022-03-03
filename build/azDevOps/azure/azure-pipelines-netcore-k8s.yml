@@ -343,7 +343,7 @@ stages:
           - template: azDevOps/azure/templates/v2/steps/build-pack-test-dotnet.yml@templates
             parameters:
               package_path: $(Agent.BuildDirectory)/s
-              dotnet_core_version: 6.0.x
+              dotnet_core_version: "6.0.x"
               version_variable_name: version_number
 
           # Upload the packages as artefacts
@@ -551,7 +551,7 @@ stages:
                     test_artefact: "tests"
                     test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_nonprod)/api/menu/"
                     functional_test: true
-                    dotnet_core_version: 6.0.x
+                    dotnet_core_version: "6.0.x"
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
@@ -943,7 +943,7 @@ stages:
                     test_artefact: "tests"
                     test_baseurl: "https://$(Environment.ShortName)-${{ variables.domain }}.$(base_domain_prod)/api/menu/"
                     functional_test: true
-                    dotnet_core_version: 6.0.x
+                    dotnet_core_version: "6.0.x"
                     performance_test: false
                     smoke_test: false
                     # Kubernetes Config
