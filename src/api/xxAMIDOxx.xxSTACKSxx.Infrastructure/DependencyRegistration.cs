@@ -13,6 +13,8 @@ using xxAMIDOxx.xxSTACKSxx.Application.QueryHandlers;
 using xxAMIDOxx.xxSTACKSxx.Domain;
 using xxAMIDOxx.xxSTACKSxx.Infrastructure.Fakes;
 using xxAMIDOxx.xxSTACKSxx.Infrastructure.HealthChecks;
+using Amido.Stacks.DynamoDB.Extensions;
+using Amazon.DynamoDBv2;
 #if (CosmosDb || DynamoDb)
 using xxAMIDOxx.xxSTACKSxx.Infrastructure.Repositories;
 #endif
@@ -60,9 +62,8 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             services.AddCosmosDB();
             services.AddTransient<IMenuRepository, CosmosDbMenuRepository>();
 #elif (DynamoDb)
-            //services.Configure<DynamoDbConfiguration>(context.Configuration.GetSection("DynamoDb"));
-            //services.AddDynamoDB();
-            //services.AddTransient<IMenuRepository, DynamoDbMenuRepository>();
+            services.AddDynamoDB();
+            services.AddTransient<IMenuRepository, DynamoDbMenuRepository>();
 #elif (InMemoryDb)
             services.AddTransient<IMenuRepository, InMemoryMenuRepository>();
 #else
