@@ -256,6 +256,9 @@ Now that you have your CosmosDB all set, you can point the API project to it. In
         "BlobContainerName": "stacks-blob-container-name"
     }
 }
+"AwsSqsConfiguration": {
+    "QueueUrl": "SQS_QUEUE_URL"
+}
 ```
 
 The `SecurityKeySecret` and `ConnectionStringSecret` sections are needed because of our use of the `Amido.Stacks.Configuration` package. `COSMOSDB_KEY`, `SERVICEBUS_CONNECTIONSTRING` or `EVENTHUB_CONNECTIONSTRING` have to be set before you can run the project. If you want to debug the solution with VSCode you usually have a `launch.json` file. In that file there's an `env` section where you can put environment variables for the current session.
@@ -265,7 +268,8 @@ The `SecurityKeySecret` and `ConnectionStringSecret` sections are needed because
     "ASPNETCORE_ENVIRONMENT": "Development",
     "COSMOSDB_KEY": "YOUR_COSMOSDB_PRIMARY_KEY",
     "SERVICEBUS_CONNECTIONSTRING": "YOUR_SERVICE_BUS_CONNECTION_STRING",
-    "EVENTHUB_CONNECTIONSTRING": "YOUR_EVENT_HUB_CONNECTION_STRING"
+    "EVENTHUB_CONNECTIONSTRING": "YOUR_EVENT_HUB_CONNECTION_STRING",
+    "SQS_QUEUE_URL": ""
 }
 ```
 
@@ -275,6 +279,7 @@ If you want to run the application without VSCode you'll have to set the `COSMOS
 export COSMOSDB_KEY=YOUR_COSMOSDB_PRIMARY_KEY
 export SERVICEBUS_CONNECTIONSTRING=YOUR_SERVICE_BUS_CONNECTION_STRING
 export EVENTHUB_CONNECTIONSTRING=YOUR_EVENT_HUB_CONNECTION_STRING
+export SQS_QUEUE_URL=YOUR_SQS_QUEUE_URL
 ```
 
 This will set the environment variables only for the current session of your terminal.
@@ -286,6 +291,7 @@ To set the environment variables permanently on your system you'll have to edit 
 echo 'export COSMOSDB_KEY=YOUR_COSMOSDB_PRIMARY_KEY' >> ~/.zshenv
 echo 'export SERVICEBUS_CONNECTIONSTRING=YOUR_SERVICE_BUS_CONNECTION_STRING' >> ~/.zshenv
 echo 'export EVENTHUB_CONNECTIONSTRING=YOUR_EVENT_HUB_CONNECTION_STRING' >> ~/.zshenv
+echo 'export SQS_QUEUE_URL=YOUR_SQS_QUEUE_URL' >> ~/.zshenv
 ```
 
 If you wan to run the application using Visual Studio, you will need to set the environment variables in the `launchSettings.json` file contained in the Properties folder of the solution.
@@ -298,7 +304,8 @@ If you wan to run the application using Visual Studio, you will need to set the 
     "EVENTHUB_CONNECTIONSTRING": "=",
     "STORAGE_CONNECTIONSTRING": "",
     "OTLP_SERVICENAME": "",
-    "OTLP_ENDPOINT": ""
+    "OTLP_ENDPOINT": "",
+    "SQS_QUEUE_URL": "",
 }
 ```
 
