@@ -6,7 +6,7 @@ Amido Stacks targets different cloud providers.
 
 [Azure](https://amido.github.io/stacks/docs/workloads/azure/backend/netcore/introduction_netcore)
 
-### Folders of interest in this repository
+## Folders of interest in this repository
 
 ```shell
 stacks-dotnet-cqrs-events
@@ -29,16 +29,16 @@ stacks-dotnet-cqrs-events
 
 - The `api` folder contains everything related to the API and is a standalone executable
 - The `functions` folder contains 3 sub-folders with Azure Functions solutions
-    - `func-aeh-listener` is an Azure Event Hub trigger that listens for `MenuCreatedEvent`
-    - `func-asb-listener` is an Azure Service Bus subscription (filtered) trigger that listens for `MenuCreatedEvent`
-    - `func-cosmosdb-worker` is a CosmosDB change feed trigger function that publishes a `CosmosDbChangeFeedEvent` when a new entity has been added or was changed to CosmosDB
+  - `func-aeh-listener` is an Azure Event Hub trigger that listens for `MenuCreatedEvent`
+  - `func-asb-listener` is an Azure Service Bus subscription (filtered) trigger that listens for `MenuCreatedEvent`
+  - `func-cosmosdb-worker` is a CosmosDB change feed trigger function that publishes a `CosmosDbChangeFeedEvent` when a new entity has been added or was changed to CosmosDB
 - The `worker` folder contains a background worker that listens to all event types from the ASB topic and shows example handlers for them and the use of the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) package.
 
 The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb),  the [Amido.Stacks.Messaging.Azure.EventHub](https://github.com/amido/stacks-dotnet-packages-messaging-aeh) or the [Amido.Stacks.SQS](https://github.com/amido/stacks-dotnet-packages-sqs) packages for their communication with either Azure Service Bus, Azure Event Hub or AWS SQS depending on the specific implementation.
 
 The functions and workers are all stand-alone implementations that can be used together or separately in different projects.
 
-### Templates
+## Templates
 
 All templates from this repository come as part of the [Amido.Stacks.CQRS.Events.Templates](https://www.nuget.org/packages/Amido.Stacks.CQRS.Templates/) NuGet package. The list of templates inside the package are as follows:
 
@@ -49,9 +49,7 @@ All templates from this repository come as part of the [Amido.Stacks.CQRS.Events
 - `stacks-az-func-aeh-listener`. Template containing an Azure Function project with a single function that has a Event Hub trigger. The function receives the message and deserializes it.
 - `stacks-az-func-cosmosdb-worker`. Azure Function containing a CosmosDb change feed trigger. Upon a CosmosDb event, the worker reads it and publishes a message to Service Bus.
 
-### Template usage
-
-#### Template installation
+## Template installation
 
 For the latest template version, please consult the Nuget page [Amido.Stacks.CQRS.Events.Templates](https://www.nuget.org/packages/Amido.Stacks.CQRS.Events.Templates/). To install the templates to your machine via the command line:
 
@@ -80,7 +78,7 @@ Examples:
     dotnet new stacks-az-func-asb-listener --help
 ```
 
-#### Uninstalling a template
+## Uninstalling a template
 
 To uninstall the template pack you have to execute the following command
 
@@ -88,7 +86,7 @@ To uninstall the template pack you have to execute the following command
 dotnet new --uninstall Amido.Stacks.CQRS.Events.Templates
 ```
 
-#### Important parameters
+## Important parameters
 
 - **-n|--name**
   - Sets the project name
@@ -109,7 +107,7 @@ dotnet new --uninstall Amido.Stacks.CQRS.Events.Templates
   - Sets the path to where the project is added
   - Omitting the parameter will result in the creation of a new folder
 
-#### Creating a new WebAPI + CQRS + Events project from the template
+## Creating a new WebAPI + CQRS + Events project from the template
 
 Let's say you want to create a brand new WebAPI with CQRS and Event sourcing for your project.
 
@@ -127,7 +125,7 @@ Alternatively, if you wanted to generate the WebAPI. For example your company ha
 The template "Amido Stacks CQRS Events App" was created successfully.
 ```
 
-#### Adding a function template to your project
+## Adding a function template to your project
 
 Let's say you want to add either `stacks-az-func-cosmosdb-worker` or `stacks-az-func-asb-listener` function apps to your solution or project.
 
@@ -197,30 +195,46 @@ drwxr-xr-x  3 amido  staff    96 23 Aug 15:58 ..
 
 Now both `Foo.Bar.Worker` and `Foo.Bar.Worker.UnitTests` projects are part of your `Foo.Bar` solution.
 
-### Running the API locally on MacOS
+## Running the API locally on MacOS
 
-To run the API locally on MacOS there are a couple of prerequisites that you have to be aware of. You'll need a CosmosDB emulator and access to Azure Service Bus.
+To run the API locally on MacOS there are a couple of prerequisites that you have to be aware of. You'll need a CosmosDB emulator/instance or an instance of DynamoDB on AWS. You also might need access to Azure/AWS for Azure Service Bus, Azure Event Hubs or AWS SQS.
 
-#### Docker CosmosDB emulator setup
+### Docker CosmosDB emulator setup
 
-1. Get Docker from here - https://docs.docker.com/docker-for-mac/install/
-2. Follow the instructions outlined here - https://docs.microsoft.com/en-us/azure/cosmos-db/linux-emulator?tabs=ssl-netstd21
+1. Get Docker from here - <https://docs.docker.com/docker-for-mac/install/>
+2. Follow the instructions outlined here - <https://docs.microsoft.com/en-us/azure/cosmos-db/linux-emulator?tabs=ssl-netstd21>
 3. From the CosmosDB UI create a database called `Stacks`.
 4. Inside the `Stacks` database create a container called `Menu`
 
-#### Azure Service Bus
+### DynamoDb Setup
+
+You need a DynamoDB instance in order to use this library. You can follow the official instructions provided by AWS [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SettingUp.DynamoWebService.html).
+
+Also the object(s) from your application that you want to store in DynamoDB have to conform to the [Object Persistence Model](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKHighLevel.html). That means your object and its fields will need to have certain attribute annotations like `[DynamoDBTable("Menu")]` etc.
+
+**IMPORTANT:** The DynamoDB table must have the same name as your Domain. If your domain is `Menu` then table created in AWS has to have the same name.
+
+Relevant documentation pages that you can follow to set up your profile:
+
+- [Configuration and credential file settings](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
+
+- [Named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
+
+This library assumes you'll use the `AWS CLI` tools and will have configured your access keys via the `aws configure` command.
+
+### Azure Service Bus
 
 You'll need an Azure Service Bus namespace and a topic with subscriber in order to be able to publish application events.
 
-#### Azure Event Hub
+### Azure Event Hub
 
 You'll will need an Azure Event Hub namespace and an Event Hub to publish application events. You will also need a blob container storage account.
 
-#### AWS SQS
+### AWS SQS
 
 You'll need an AWS SQS Queue setup with a defined QueueUrl in order to be able to publish application events.
 
-#### Configuring CosmosDb, ServiceBus, EventHub or SQS
+### Configuring CosmosDb, ServiceBus, EventHub or SQS
 
 Now that you have your CosmosDB all set, you can point the API project to it. In `appsettings.json` you can see the following sections
 
