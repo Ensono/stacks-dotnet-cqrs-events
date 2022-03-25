@@ -34,7 +34,7 @@ stacks-dotnet-cqrs-events
     - `func-cosmosdb-worker` is a CosmosDB change feed trigger function that publishes a `CosmosDbChangeFeedEvent` when a new entity has been added or was changed to CosmosDB
 - The `worker` folder contains a background worker that listens to all event types from the ASB topic and shows example handlers for them and the use of the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) package.
 
-The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb) and the [Amido.Stacks.Messaging.Azure.EventHub](https://github.com/amido/stacks-dotnet-packages-messaging-aeh) packages for their communication with Azure Service Bus or Azure Event Hub depending on the specific implementation.
+The API, functions and worker all depend on the [Amido.Stacks.Messaging.Azure.ServiceBus](https://github.com/amido/stacks-dotnet-packages-messaging-asb),  the [Amido.Stacks.Messaging.Azure.EventHub](https://github.com/amido/stacks-dotnet-packages-messaging-aeh) or the [Amido.Stacks.SQS](https://github.com/amido/stacks-dotnet-packages-sqs) packages for their communication with either Azure Service Bus, Azure Event Hub or AWS SQS depending on the specific implementation.
 
 The functions and workers are all stand-alone implementations that can be used together or separately in different projects.
 
@@ -43,7 +43,7 @@ The functions and workers are all stand-alone implementations that can be used t
 All templates from this repository come as part of the [Amido.Stacks.CQRS.Events.Templates](https://www.nuget.org/packages/Amido.Stacks.CQRS.Templates/) NuGet package. The list of templates inside the package are as follows:
 
 - `stacks-cqrs-events-app`. The full template including source + build infrastructure.
-- `stacks-cqrs-events-webapi`. A template for the `api` project. If you need a CQRS WebAPI that can publish messages to ServiceBus, this is the template to use.
+- `stacks-cqrs-events-webapi`. A template for the `api` project. If you need a CQRS WebAPI that can publish messages to ServiceBus or SQS, this is the template to use.
 - `stacks-asb-worker`. This template contains a background worker application that reads and handles messages from a ServiceBus subscription.
 - `stacks-az-func-asb-listener`. Template containing an Azure Function project with a single function that has a Service Bus subscription trigger. The function receives the message and deserializes it.
 - `stacks-az-func-aeh-listener`. Template containing an Azure Function project with a single function that has a Event Hub trigger. The function receives the message and deserializes it.
@@ -117,6 +117,13 @@ It's entirely up to you where you want to generate the WebAPI. For example your 
 
 ```shell
 % dotnet new stacks-cqrs-events-app -n Foo.Bar -do Warehouse -db CosmosDb -e ServiceBus -o new-proj-folder
+The template "Amido Stacks CQRS Events App" was created successfully.
+```
+
+Alternatively, if you wanted to generate the WebAPI. For example your company has the name structure `Bar.Baz` as a prefix to all your namespaces where `Bar` is the company name and `Baz` is the name of the project. If you want the WebAPI to have a domain `Warehouse`, use `DynamoDb`, publish events to `AwsSqs` and be generated inside a folder called `new-proj-folder` you'll execute the following command:
+
+```shell
+% dotnet new stacks-cqrs-events-app -n Foo.Bar -do Warehouse -db DynamoDb -e AwsSqs -o new-proj-folder
 The template "Amido Stacks CQRS Events App" was created successfully.
 ```
 
@@ -209,7 +216,11 @@ You'll need an Azure Service Bus namespace and a topic with subscriber in order 
 
 You'll will need an Azure Event Hub namespace and an Event Hub to publish application events. You will also need a blob container storage account.
 
-#### Configuring CosmosD, ServiceBus or EventHub
+#### AWS SQS
+
+You'll need an AWS SQS Queue setup with a defined QueueUrl in order to be able to publish application events.
+
+#### Configuring CosmosDb, ServiceBus, EventHub or SQS
 
 Now that you have your CosmosDB all set, you can point the API project to it. In `appsettings.json` you can see the following sections
 
@@ -256,25 +267,30 @@ Now that you have your CosmosDB all set, you can point the API project to it. In
         "BlobContainerName": "stacks-blob-container-name"
     }
 }
+"AwsSqsConfiguration": {
+    "QueueUrl": "SQS_QUEUE_URL"
+}
 ```
 
-The `SecurityKeySecret` and `ConnectionStringSecret` sections are needed because of our use of the `Amido.Stacks.Configuration` package. `COSMOSDB_KEY`, `SERVICEBUS_CONNECTIONSTRING` or `EVENTHUB_CONNECTIONSTRING` have to be set before you can run the project. If you want to debug the solution with VSCode you usually have a `launch.json` file. In that file there's an `env` section where you can put environment variables for the current session.
+The `SecurityKeySecret` and `ConnectionStringSecret` sections are needed because of our use of the `Amido.Stacks.Configuration` package. `COSMOSDB_KEY`, `SERVICEBUS_CONNECTIONSTRING`, `EVENTHUB_CONNECTIONSTRING` or `SQS_QUEUE_URL` have to be set before you can run the project. If you want to debug the solution with VSCode you usually have a `launch.json` file. In that file there's an `env` section where you can put environment variables for the current session.
 
 ```json
 "env": {
     "ASPNETCORE_ENVIRONMENT": "Development",
     "COSMOSDB_KEY": "YOUR_COSMOSDB_PRIMARY_KEY",
     "SERVICEBUS_CONNECTIONSTRING": "YOUR_SERVICE_BUS_CONNECTION_STRING",
-    "EVENTHUB_CONNECTIONSTRING": "YOUR_EVENT_HUB_CONNECTION_STRING"
+    "EVENTHUB_CONNECTIONSTRING": "YOUR_EVENT_HUB_CONNECTION_STRING",
+    "SQS_QUEUE_URL": "YOUR_SQS_QUEUE_URL"
 }
 ```
 
-If you want to run the application without VSCode you'll have to set the `COSMOSDB_KEY`, `SERVICEBUS_CONNECTIONSTRING` or `EVENTHUB_CONNECTIONSTRING` environment variables through your terminal.
+If you want to run the application without VSCode you'll have to set the `COSMOSDB_KEY`, `SERVICEBUS_CONNECTIONSTRING`, `EVENTHUB_CONNECTIONSTRING` or `SQS_QUEUE_URL` environment variables through your terminal.
 
 ```shell
 export COSMOSDB_KEY=YOUR_COSMOSDB_PRIMARY_KEY
 export SERVICEBUS_CONNECTIONSTRING=YOUR_SERVICE_BUS_CONNECTION_STRING
 export EVENTHUB_CONNECTIONSTRING=YOUR_EVENT_HUB_CONNECTION_STRING
+export SQS_QUEUE_URL=YOUR_SQS_QUEUE_URL
 ```
 
 This will set the environment variables only for the current session of your terminal.
@@ -286,6 +302,7 @@ To set the environment variables permanently on your system you'll have to edit 
 echo 'export COSMOSDB_KEY=YOUR_COSMOSDB_PRIMARY_KEY' >> ~/.zshenv
 echo 'export SERVICEBUS_CONNECTIONSTRING=YOUR_SERVICE_BUS_CONNECTION_STRING' >> ~/.zshenv
 echo 'export EVENTHUB_CONNECTIONSTRING=YOUR_EVENT_HUB_CONNECTION_STRING' >> ~/.zshenv
+echo 'export SQS_QUEUE_URL=YOUR_SQS_QUEUE_URL' >> ~/.zshenv
 ```
 
 If you wan to run the application using Visual Studio, you will need to set the environment variables in the `launchSettings.json` file contained in the Properties folder of the solution.
@@ -298,7 +315,8 @@ If you wan to run the application using Visual Studio, you will need to set the 
     "EVENTHUB_CONNECTIONSTRING": "=",
     "STORAGE_CONNECTIONSTRING": "",
     "OTLP_SERVICENAME": "",
-    "OTLP_ENDPOINT": ""
+    "OTLP_ENDPOINT": "",
+    "SQS_QUEUE_URL": "",
 }
 ```
 

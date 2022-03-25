@@ -51,6 +51,10 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
             services.Configure<Amido.Stacks.Messaging.Azure.EventHub.Configuration.EventHubConfiguration>(context.Configuration.GetSection("EventHubConfiguration"));
             services.AddEventHub();
             services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.EventHub.Publisher.EventPublisher>();
+#elif (EventPublisherAwsSqs)
+            services.Configure<AwsSqsConfiguration>(context.Configuration.GetSection("AwsSqsConfiguration"));
+            services.AddAwsSqs();
+            services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.EventHub.Publisher.EventPublisher>();
 #elif (EventPublisherNone)
             services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
 #else

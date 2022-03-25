@@ -45,6 +45,10 @@
                     "description": "Targets the Azure Event Hub for publishing events."
                 },
                 {
+                    "choice": "AwsSqs",
+                    "description": "Targets the AWS SQS for publishing events."
+                },
+                {
 					"choice": "None",
 					"description": "Does not add event publishing"
 				}
@@ -91,6 +95,10 @@
             "type": "computed",
             "value": "(eventPublisher == \"EventHub\")"
         },
+        "EventPublisherAwsSqs": {
+			"type": "computed",
+			"value": "(eventPublisher == \"AwsSqs\")"
+		},
         "EventPublisherNone": {
 			"type": "computed",
 			"value": "(eventPublisher == \"None\")"
