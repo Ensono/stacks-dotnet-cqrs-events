@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: ${project}
 
 ---
-# Ingress for the API
+
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -20,7 +20,7 @@ metadata:
     customerID: ${company}
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/rewrite-target: /$$2
+    nginx.ingress.kubernetes.io/rewrite-target: ${rewrite_target}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     owner: ${company}/${project}
     projectID: ${project}
@@ -40,13 +40,13 @@ spec:
           - backend:
               serviceName: ${resource_def_name}
               servicePort: 80
-            path: ${k8s_app_path}(/|$)(.*)
+            path: ${k8s_app_route}(/|$)(.*)
   tls:
     - hosts:
         - ${tls_domain}
 
 ---
-# Service for the API
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -81,7 +81,6 @@ spec:
 
 ---
 
-# Secrets are used by both the API and the background worker
 apiVersion: v1
 kind: Secret
 metadata:
@@ -95,7 +94,6 @@ stringData:
 
 ---
 
-# ConfigMap for the API
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -140,7 +138,7 @@ data:
       "JwtBearerAuthentication": {
           "Audience": "${jwtbearerauthentication_audience}",
           "Authority": "${jwtbearerauthentication_authority}",
-          "Enabled": ${jwtbearerauthentication_enabled},
+          "Enabled": false,
           "OpenApi": {
               "AuthorizationUrl": "${jwtbearerauthentication_openapiauthorizationurl}",
               "ClientId": "${jwtbearerauthentication_openapiclientid}",
@@ -286,13 +284,6 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: api
-          # this we need to pass from the pipeline to the deployment steps
-          image: ${k8s_image}
-          imagePullPolicy: IfNotPresent
-          volumeMounts:
-            - name: appsettings
-              # this can either be configured if you are re-using this for many services or should be changed here
-              mountPath: /app/config
           env:
             - name: POD_NAME
               valueFrom:
@@ -315,7 +306,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.annotations['release']
             - name: API_BASEPATH
-              value: ${k8s_app_path}
+              value: ${k8s_app_route}
             - name: COSMOSDB_KEY
               valueFrom:
                 secretKeyRef:
@@ -333,6 +324,18 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: servicebus_connectionstring
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
+          image: ${k8s_image}
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: appsettings
+              mountPath: /app/config
           ports:
             - name: http
               containerPort: 80
@@ -362,7 +365,6 @@ spec:
 
 ---
 
-# Deployment for the background worker
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -419,12 +421,17 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: api
-          # this we need to pass from the pipeline to the deployment steps
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
           image: ${k8s_worker_image}
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: appsettings
-              # this can either be configured if you are re-using this for many services or should be changed here
               mountPath: /app/config
           env:
             - name: POD_NAME
@@ -448,7 +455,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.annotations['release']
             - name: API_BASEPATH
-              value: ${k8s_app_path}
+              value: ${k8s_app_route}
             - name: COSMOSDB_KEY
               valueFrom:
                 secretKeyRef:
