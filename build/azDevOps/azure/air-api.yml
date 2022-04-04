@@ -92,6 +92,8 @@ stages:
               artifact: tests
 
   - stage: Dev
+    # TODO: Temporary condition
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/main')))
     dependsOn: Build
     # condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master')),eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     variables:
@@ -241,7 +243,7 @@ stages:
                     artifact: manifests_dev
   - stage: Prod
     dependsOn: Build
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/main')))
     variables:
       - group: amido-stacks-infra-credentials-prod
       - group: stacks-credentials-prod-kv
