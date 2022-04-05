@@ -359,3 +359,9 @@ local
 **/local.appsettings.json
 
 working
+support
+envfile
+coverage
+.terraform.lock.hcl
+tfplan
+.sonarqube
