@@ -15,6 +15,8 @@ using xxAMIDOxx.xxSTACKSxx.Infrastructure.Fakes;
 using xxAMIDOxx.xxSTACKSxx.Infrastructure.HealthChecks;
 using Amido.Stacks.DynamoDB.Extensions;
 using Amazon.DynamoDBv2;
+using Amido.Stacks.SQS;
+using Amido.Stacks.SQS.Extensions;
 #if (CosmosDb || DynamoDb)
 using xxAMIDOxx.xxSTACKSxx.Infrastructure.Repositories;
 #endif
@@ -54,7 +56,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Infrastructure
 #elif (EventPublisherAwsSqs)
             services.Configure<AwsSqsConfiguration>(context.Configuration.GetSection("AwsSqsConfiguration"));
             services.AddAwsSqs();
-            services.AddTransient<IApplicationEventPublisher, Amido.Stacks.Messaging.Azure.EventHub.Publisher.EventPublisher>();
+            services.AddTransient<IApplicationEventPublisher, Amido.Stacks.SQS.Publisher.EventPublisher>();
 #elif (EventPublisherNone)
             services.AddTransient<IApplicationEventPublisher, DummyEventPublisher>();
 #else
