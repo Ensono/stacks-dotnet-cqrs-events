@@ -3,8 +3,6 @@
 # Each module is conditionally created within this app infra definition interface and can be re-used across app types e.g. SSR webapp, API only
 ########
 
-data "azurerm_client_config" "current" {}
-
 # Naming convention
 module "default_label" {
   source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.24.1"
