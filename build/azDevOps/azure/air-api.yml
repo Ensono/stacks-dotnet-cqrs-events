@@ -49,7 +49,7 @@ stages:
               SONAR_URL: "https://sonarcloud.io"
               SONAR_TOKEN: $(SONAR_TOKEN)
               SONAR_PROPERTIES: ""
-              PROJECT_NAME: stacks-dotnet-cqrs # TODO: Reset this to a var i.e. SONAR_PROECT_NAME
+              PROJECT_NAME: stacks-dotnet-cqrs-events # TODO: Reset this to a var i.e. SONAR_PROECT_NAME
               BUILD_BUILDNUMBER: $(version_number)
 
           - task: Bash@3
@@ -64,8 +64,56 @@ stages:
               ARM_CLIENT_ID: "$(azure-client-id)"
               ARM_CLIENT_SECRET: "$(azure-client-secret)"
               # Docker
+              # NB: Main API image names are defined in `air-api-vars.yml` in commmon with other projects.
+              DOCKER_IMAGE_NAME_BG_WORKER: "stacks-api-events-bg-worker"
+              DOCKER_IMAGE_ARGS_BG_WORKER: "src/worker"
+              DOCKER_IMAGE_NAME_WORKER: "stacks-api-events-worker-function"
+              DOCKER_IMAGE_ARGS_WORKER: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Worker src/functions/func-cosmosdb-worker"
+              DOCKER_IMAGE_NAME_ASB_LISTENER: "stacks-api-events-listener-asb-function"
+              DOCKER_IMAGE_ARGS_ASB_LISTENER: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener src/functions/func-asb-listener"
+              DOCKER_IMAGE_NAME_AEH_LISTENER: "stacks-api-events-listener-aeh-function"
+              DOCKER_IMAGE_ARGS_AEH_LISTENER: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener src/functions/func-aeh-listener"
               DOCKER_CONTAINER_REGISTRY_NAME: $(docker_container_registry_name_nonprod).azurecr.io
               REGISTRY_RESOURCE_GROUP: $(docker_container_registry_rg_name_nonprod)
+
+          # Functions TODO: needs to be run in TaskCTL
+          # Build listener function image for Azure Service Bus
+          - ${{ if contains(variables.app_bus_type, 'servicebus') }}:
+              - template: templates/steps/build/build-function.yml
+                parameters:
+                  dotnet_core_version: "6.0.x"
+                  # Docker Config
+                  docker_build: true
+                  docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener ."
+                  docker_workdir: $(self_repo_dir)/$(self_repo_functions_listener_asb_src)
+                  docker_imagename: $(docker_listener_asb_function_image_name)
+                  docker_imagetag: $(docker_image_tag)
+                  docker_containerregistryname: $(docker_container_registry_name_nonprod)
+
+          # Build listener function image for Azure Event Hub
+          - ${{ if contains(variables.app_bus_type, 'eventhub') }}:
+              - template: templates/steps/build/build-function.yml
+                parameters:
+                  dotnet_core_version: "6.0.x"
+                  # Docker Config
+                  docker_build: true
+                  docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener ."
+                  docker_workdir: $(self_repo_dir)/$(self_repo_functions_listener_aeh_src)
+                  docker_imagename: $(docker_listener_aeh_function_image_name)
+                  docker_imagetag: $(docker_image_tag)
+                  docker_containerregistryname: $(docker_container_registry_name_nonprod)
+
+          # Build worker function image
+          - template: templates/steps/build/build-function.yml
+            parameters:
+              dotnet_core_version: "6.0.x"
+              # Docker Config
+              docker_build: true
+              docker_build_additional_args: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Worker ."
+              docker_workdir: $(self_repo_dir)/$(self_repo_functions_worker_src)
+              docker_imagename: $(docker_worker_function_image_name)
+              docker_imagetag: $(docker_image_tag)
+              docker_containerregistryname: $(docker_container_registry_name_nonprod)
 
           # Upload test coverage results as artifacts
           - task: PublishCodeCoverageResults@1
