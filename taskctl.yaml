@@ -1,0 +1,61 @@
+# Import contexts and tasks for Taskctl
+import:
+  - ./build/taskctl/contexts.yaml
+  - ./build/taskctl/tasks.yaml
+
+watchers:
+
+  lint:
+    watch:
+      - "*.yml"
+    events: [create, write]
+    task: lint:yaml
+
+pipelines:
+
+  setup:
+    - task: buildnumber
+
+  lint:
+    - task: lint:yaml
+    - task: lint:terraform:format
+    - task: lint:terraform:validate
+
+  test:
+    - pipeline: lint
+    - task: test
+      depends_on:
+        - lint
+  # Pipeline to perform the build of the project
+  build:
+    - task: build:functional_tests
+    - task: build:container
+      name: build:worker
+      variables:
+        - buildargs: src/worker
+        - imagename: stacks-api-events-bg-worker
+      depends_on:
+        - build:api
+    - task: build:container
+      name: build:api
+      variables:
+        - buildargs: src/api
+        - imagename: $env:DOCKER_IMAGE_NAME
+
+  # Pipeline to ensure that the infrastructure is valid
+  infrastructure:
+    - task: infra:init
+    - task: infra:plan
+      depends_on: infra:init
+    - task: infra:apply
+      depends_on: infra:plan
+
+  # Deploy pipeline
+  deploy:
+    - task: infra:init
+    - task: deploy:templater
+      depends_on: infra:init
+    - task: deploy:kubernetes
+      depends_on: deploy:templater
+    - task: deploy:functional_tests
+      depends_on: deploy:kubernetes
