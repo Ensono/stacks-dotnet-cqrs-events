@@ -282,7 +282,10 @@ Now that you have your CosmosDB all set, you can point the API project to it. In
     }
 }
 "AwsSqsConfiguration": {
-    "QueueUrl": "SQS_QUEUE_URL"
+    "QueueUrl": {
+            "Identifier": "SQS_QUEUE_URL",
+            "Source": "Environment"
+        }
 }
 ```
 
