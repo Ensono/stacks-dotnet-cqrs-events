@@ -74,6 +74,8 @@ variables:
     value: netcore-api-cqrs-evnts
   - name: k8s_app_route
     value: /api/menu
+  - name: app_bus_type
+    value: servicebus
 
   # Test Configuration
   - name: FUNCTIONAL_TESTS_SRC_DIR
