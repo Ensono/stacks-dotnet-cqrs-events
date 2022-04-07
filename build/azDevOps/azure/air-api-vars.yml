@@ -75,7 +75,7 @@ variables:
   - name: k8s_app_route
     value: /api/menu
   - name: app_bus_type
-    value: servicebus
+    value: servicebus,eventhub
 
   # Test Configuration
   - name: FUNCTIONAL_TESTS_SRC_DIR
