@@ -1,23 +1,22 @@
-﻿namespace xxAMIDOxx.xxSTACKSxx.Application.CQRS.Enums
+﻿namespace xxAMIDOxx.xxSTACKSxx.Application.CQRS.Enums;
+
+public enum EventCode
 {
-    public enum EventCode
-    {
-        // Menu operations
-        MenuCreated = 101,
-        MenuUpdated = 102,
-        MenuDeleted = 103,
+    // Menu operations
+    MenuCreated = 101,
+    MenuUpdated = 102,
+    MenuDeleted = 103,
 
-        // Categories Operations
-        CategoryCreated = 201,
-        CategoryUpdated = 202,
-        CategoryDeleted = 203,
+    // Categories Operations
+    CategoryCreated = 201,
+    CategoryUpdated = 202,
+    CategoryDeleted = 203,
 
-        // Items Operations
-        MenuItemCreated = 301,
-        MenuItemUpdated = 302,
-        MenuItemDeleted = 303,
+    // Items Operations
+    MenuItemCreated = 301,
+    MenuItemUpdated = 302,
+    MenuItemDeleted = 303,
 
-        // CosmosDB change feed operations
-        EntityUpdated = 999
-    }
+    // CosmosDB change feed operations
+    EntityUpdated = 999
 }
