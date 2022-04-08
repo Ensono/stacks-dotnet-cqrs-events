@@ -37,7 +37,7 @@ resources:
     - container: k8s_deploy
       image: amidostacks/ci-k8s:0.0.14
     - container: terraform_custom
-      image: amidostacks/ci-tf:0.0.8
+      image: amidostacks/ci-tf:1.1.6
 
 variables:
   - template: azuredevops-vars.yml
@@ -198,7 +198,8 @@ stages:
                 SONAR_TOKEN: $SONAR_TOKEN,
                 SONAR_PROJECT_KEY: $SONAR_PROJECT_KEY,
                 SONAR_ORGANIZATION: $SONAR_ORGANIZATION,
-                SONAR_PROJECT_NAME: $SONAR_PROJECT_NAME,
+                SONAR_PROJECT_NAME: stacks-dotnet-cqrs-events,
+                # TODO: validate if this needs to be updated from $SONAR_PROJECT_NAME
                 BUILD_VERSION: $(docker_image_tag),
                 SONAR_SCANNER_OPTS: "",
               }
@@ -252,7 +253,8 @@ stages:
                 SONAR_TOKEN: $SONAR_TOKEN,
                 SONAR_PROJECT_KEY: $SONAR_PROJECT_KEY,
                 SONAR_ORGANIZATION: $SONAR_ORGANIZATION,
-                SONAR_PROJECT_NAME: $SONAR_PROJECT_NAME,
+                SONAR_PROJECT_NAME: stacks-dotnet-cqrs-events,
+                # TODO: validate if this needs to be updated from $SONAR_PROJECT_NAME
                 BUILD_VERSION: $(docker_image_tag),
                 SONAR_SCANNER_OPTS: "",
               }

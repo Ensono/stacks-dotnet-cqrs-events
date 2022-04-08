@@ -50,7 +50,7 @@ resource "azurerm_function_app" "function_listener" {
   version = var.az_function_extension_version
 
   site_config {
-    always_on = true
+    always_on                = true
     dotnet_framework_version = var.az_function_dotnet_version
   }
 }

@@ -59,7 +59,7 @@ variable "cosmosdb_lease_collection_name" {
 # Optional variables
 # These have default values that can be overriden as required
 variable "app-service-plan-name" {
-  type = string
+  type    = string
   default = "app-sp-events"
 }
 
@@ -113,14 +113,14 @@ variable "servicebus_sku" {
 }
 
 variable "az_function_extension_version" {
-  type = string
-  default = "~4"
+  type        = string
+  default     = "~4"
   description = "Version of the Azure Function runtime to use"
 }
 
 variable "az_function_dotnet_version" {
-  type = string
-  default = "v6.0"
+  type        = string
+  default     = "v6.0"
   description = "Version of the .NET framework to use in the function"
 }
 
