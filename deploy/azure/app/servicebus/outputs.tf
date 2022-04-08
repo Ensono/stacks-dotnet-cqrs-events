@@ -14,7 +14,8 @@ output "servicebus_subscription_name" {
 }
 
 output "servicebus_connectionstring" {
-  value = azurerm_servicebus_namespace.sb.default_primary_connection_string
+  value     = azurerm_servicebus_namespace.sb.default_primary_connection_string
+  sensitive = true
 }
 
 output "servicebus_subscription_filtered_name" {

@@ -22,7 +22,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain.UnitTests
 
             // Act
             var result = converter.ToEntry(categories);
-            var first = result.AsListOfDocument().FirstOrDefault();
+            var first = result.AsListOfDocument()[0];
 
             // Assert
             Assert.NotNull(result);
@@ -30,17 +30,17 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain.UnitTests
             Assert.Equal(3, result.AsListOfDocument().Count);
 
             // Category Fields
-            Assert.Equal(categories.First().Id.ToString(), first["Id"]);
-            Assert.Equal(categories.First().Name, first["Name"]);
-            Assert.Equal(categories.First().Description, first["Description"]);
+            Assert.Equal(categories[0].Id.ToString(), first["Id"]);
+            Assert.Equal(categories[0].Name, first["Name"]);
+            Assert.Equal(categories[0].Description, first["Description"]);
             Assert.NotNull(first["Items"].AsListOfDocument());
             Assert.Equal(3, first["Items"].AsListOfDocument().Count);
 
             // MenuItem
-            var menuItem = first["Items"].AsListOfDocument().FirstOrDefault();
-            Assert.Equal(categories.First().Items.First().Id.ToString(), menuItem["Id"]);
-            Assert.Equal(categories.First().Items.First().Description, menuItem["Description"]);
-            Assert.Equal(categories.First().Items.First().Name, menuItem["Name"]);
+            var menuItem = first["Items"].AsListOfDocument()[0];
+            Assert.Equal(categories[0].Items[0].Id.ToString(), menuItem["Id"]);
+            Assert.Equal(categories[0].Items[0].Description, menuItem["Description"]);
+            Assert.Equal(categories[0].Items[0].Name, menuItem["Name"]);
         }
 
         [Theory, AutoData]
@@ -72,10 +72,10 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain.UnitTests
             Assert.NotNull(catResult);
             Assert.Equal(3, catResult.Count);
 
-            var first = catResult.FirstOrDefault();
-            Assert.Equal(categories.First().Id, first.Id);
-            Assert.Equal(categories.First().Description, first.Description);
-            Assert.Equal(categories.First().Name, first.Name);
+            var first = catResult[0];
+            Assert.Equal(categories[0].Id, first.Id);
+            Assert.Equal(categories[0].Description, first.Description);
+            Assert.Equal(categories[0].Name, first.Name);
         }
     }
 }
