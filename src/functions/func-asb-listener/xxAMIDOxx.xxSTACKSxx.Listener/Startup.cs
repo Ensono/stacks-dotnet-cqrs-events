@@ -12,47 +12,46 @@ using xxAMIDOxx.xxSTACKSxx.Listener;
 using xxAMIDOxx.xxSTACKSxx.Listener.Logging;
 
 [assembly: FunctionsStartup(typeof(Startup))]
-namespace xxAMIDOxx.xxSTACKSxx.Listener
+namespace xxAMIDOxx.xxSTACKSxx.Listener;
+
+public class Startup : FunctionsStartup
 {
-    public class Startup : FunctionsStartup
+    public override void Configure(IFunctionsHostBuilder builder)
     {
-        public override void Configure(IFunctionsHostBuilder builder)
+        RegisterDependentServices(builder);
+
+        JsonConvert.DefaultSettings = () => new JsonSerializerSettings
         {
-            RegisterDependentServices(builder);
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
+    }
 
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
-        }
+    protected virtual void RegisterDependentServices(IFunctionsHostBuilder builder)
+    {
+        var configuration = LoadConfiguration(builder);
 
-        protected virtual void RegisterDependentServices(IFunctionsHostBuilder builder)
-        {
-            var configuration = LoadConfiguration(builder);
+        builder.Services
+            .Configure<StacksListener>(configuration.GetSection(nameof(StacksListener)))
+            .AddLogging(l => { l.AddSerilog(CreateLogger(configuration)); })
+            .AddTransient(typeof(ILogger<>), typeof(LogAdapter<>));
 
-            builder.Services
-                .Configure<StacksListener>(configuration.GetSection(nameof(StacksListener)))
-                .AddLogging(l => { l.AddSerilog(CreateLogger(configuration)); })
-                .AddTransient(typeof(ILogger<>), typeof(LogAdapter<>));
+        builder.Services.AddTransient<IMessageReader, JsonMessageSerializer>();
+    }
 
-            builder.Services.AddTransient<IMessageReader, JsonMessageSerializer>();
-        }
+    private static IConfiguration LoadConfiguration(IFunctionsHostBuilder builder)
+    {
+        return new ConfigurationBuilder()
+            .SetBasePath(builder.GetContext().ApplicationRootPath)
+            .AddJsonFile("appsettings.json", false)
+            .AddEnvironmentVariables()
+            .Build();
+    }
 
-        private static IConfiguration LoadConfiguration(IFunctionsHostBuilder builder)
-        {
-            return new ConfigurationBuilder()
-                .SetBasePath(builder.GetContext().ApplicationRootPath)
-                .AddJsonFile("appsettings.json", false)
-                .AddEnvironmentVariables()
-                .Build();
-        }
-
-        private static Logger CreateLogger(IConfiguration config)
-        {
-            return new LoggerConfiguration()
-                .ReadFrom
-                .Configuration(config)
-                .CreateLogger();
-        }
+    private static Logger CreateLogger(IConfiguration config)
+    {
+        return new LoggerConfiguration()
+            .ReadFrom
+            .Configuration(config)
+            .CreateLogger();
     }
 }
