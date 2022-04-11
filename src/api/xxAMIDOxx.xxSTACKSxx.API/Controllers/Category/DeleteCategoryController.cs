@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
 
 namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
+    // ReSharper disable once ArrangeNamespaceBody
 {
     /// <summary>
     /// Category related operations
