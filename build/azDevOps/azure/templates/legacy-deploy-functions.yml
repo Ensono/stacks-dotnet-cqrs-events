@@ -9,7 +9,7 @@ parameters:
 steps:
   # Update the functions with the credentials to access the container registry
   - task: AzureCLI@2
-    ${{ if eq(parameters['condition']) }}:
+    ${{ if parameters.condition }}:
       condition: ${{ parameters.condition }}
     displayName: Set ${{parameters.function_name}} ACR access
     inputs:
@@ -37,7 +37,7 @@ steps:
 
   # Deploy the function containers to the function apps
   - task: AzureFunctionAppContainer@1
-    ${{ if eq(parameters['condition']) }}:
+    ${{ if parameters.condition }}:
       condition: ${{ parameters.condition }}
     displayName: Deploy ${{parameters.function_name}} container
     inputs:
