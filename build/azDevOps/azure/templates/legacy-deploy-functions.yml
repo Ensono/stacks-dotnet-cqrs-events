@@ -13,7 +13,7 @@ steps:
       condition: ${{ parameters.condition }}
     displayName: Set ${{parameters.function_name}} ACR access
     inputs:
-      azureSubscription: ${{ parameters.azure_service_connection }}
+      azureSubscription: ${{ parameters.azureSubscription }}
       scriptType: 'pscore'
       scriptLocation: 'inlineScript'
       inlineScript: |
@@ -41,7 +41,7 @@ steps:
       condition: ${{ parameters.condition }}
     displayName: Deploy ${{parameters.function_name}} container
     inputs:
-      azureSubscription: ${{ parameters.azure_service_connection }}
+      azureSubscription: ${{ parameters.azureSubscription }}
       resourceGroupName: ${{ parameters.function_resource_group }}
       appName: ${{ parameters.function_name }}
       imageName: ${{ parameters.container_registry_name }}/${{ parameters.function_image_name }}:${{ parameters.function_image_tag }}
