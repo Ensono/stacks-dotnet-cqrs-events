@@ -30,7 +30,7 @@ steps:
         # Set the permissions on each function
             az functionapp config container set `
               --resource-group "${{ parameters.function_resource_group}}" `
-              --name "$function" `
+              --name "${{parameters.function_name}}" `
               --docker-registry-server-url "https://${{ parameters.container_registry_name }}.azurecr.io" `
               --docker-registry-server-user "$registryUsername" `
               --docker-registry-server-password "$registryPassword"
@@ -39,7 +39,7 @@ steps:
   - task: AzureFunctionAppContainer@1
     ${{ if parameters.condition }}:
       condition: ${{ parameters.condition }}
-    displayName: Deploy ${{parameters.function_name}} container
+    displayName: Deploy container ${{parameters.function_name}}
     inputs:
       azureSubscription: ${{ parameters.azureSubscription }}
       resourceGroupName: ${{ parameters.function_resource_group }}
