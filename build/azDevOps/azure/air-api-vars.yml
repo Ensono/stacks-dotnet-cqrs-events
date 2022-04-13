@@ -77,6 +77,33 @@ variables:
   - name: app_bus_type
     value: servicebus,eventhub
 
+  # Function Naming
+  - name: docker_image_name_bg_worker
+    value: "stacks-api-events-bg-worker"
+  - name: docker_image_args_bg_worker
+    value: "src/worker"
+  - name: docker_image_name_worker
+    value: "stacks-api-events-worker-function"
+  - name: docker_image_args_worker
+    value: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Worker src/functions/func-cosmosdb-worker"
+  - name: docker_image_name_asb_listener
+    value: "stacks-api-events-listener-asb-function"
+  - name: docker_image_args_asb_listener
+    value: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener src/functions/func-asb-listener"
+  - name: docker_image_name_aeh_listener
+    value: "stacks-api-events-listener-aeh-function"
+  - name: docker_image_args_aeh_listener
+    value: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener src/functions/func-aeh-listener"
+
+  # SonarQube Configuration
+  # SONAR_TOKEN and SONAR_ORGANIZATION must be inherited from library groups/etc.
+  - name: sonar_url
+    value: "https://sonarcloud.io"
+  - name: sonar_properties
+    value: '/d:sonar.cs.opencover.reportsPaths="/app/coverage/*.opencover.xml" /d:sonar.exclusions="**/*Tests" /d:sonar.coverage.exclusions="**/*Tests"'
+  - name: sonar_project_name
+    value: stacks-dotnet-cqrs-events
+
   # Test Configuration
   - name: FUNCTIONAL_TESTS_SRC_DIR
     value: src/tests/Functional

@@ -46,10 +46,10 @@ stages:
             env:
               # SonarQube
               SONAR_ORG: $(SONAR_ORGANIZATION)
-              SONAR_URL: "https://sonarcloud.io"
+              SONAR_URL: $(sonar_url)
               SONAR_TOKEN: $(SONAR_TOKEN)
-              SONAR_PROPERTIES: ""
-              PROJECT_NAME: stacks-dotnet-cqrs-events # TODO: Reset this to a var i.e. SONAR_PROECT_NAME
+              SONAR_PROPERTIES: $(sonar_properties)
+              PROJECT_NAME: $(sonar_project_name)
               BUILD_BUILDNUMBER: $(version_number)
 
           - task: Bash@3
@@ -64,15 +64,14 @@ stages:
               ARM_CLIENT_ID: "$(azure-client-id)"
               ARM_CLIENT_SECRET: "$(azure-client-secret)"
               # Docker
-              # NB: Main API image names are defined in `air-api-vars.yml` in commmon with other projects.
-              DOCKER_IMAGE_NAME_BG_WORKER: "stacks-api-events-bg-worker"
-              DOCKER_IMAGE_ARGS_BG_WORKER: "src/worker"
-              DOCKER_IMAGE_NAME_WORKER: "stacks-api-events-worker-function"
-              DOCKER_IMAGE_ARGS_WORKER: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Worker src/functions/func-cosmosdb-worker"
-              DOCKER_IMAGE_NAME_ASB_LISTENER: "stacks-api-events-listener-asb-function"
-              DOCKER_IMAGE_ARGS_ASB_LISTENER: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener src/functions/func-asb-listener"
-              DOCKER_IMAGE_NAME_AEH_LISTENER: "stacks-api-events-listener-aeh-function"
-              DOCKER_IMAGE_ARGS_AEH_LISTENER: "--build-arg function=xxAMIDOxx.xxSTACKSxx.Listener src/functions/func-aeh-listener"
+              DOCKER_IMAGE_NAME_BG_WORKER: $(docker_image_name_bg_worker)
+              DOCKER_IMAGE_ARGS_BG_WORKER: $(docker_image_args_bg_worker)
+              DOCKER_IMAGE_NAME_WORKER: $(docker_image_name_worker)
+              DOCKER_IMAGE_ARGS_WORKER: $(docker_image_args_worker)
+              DOCKER_IMAGE_NAME_ASB_LISTENER: $(docker_image_name_asb_listener)
+              DOCKER_IMAGE_ARGS_ASB_LISTENER: $(docker_image_args_asb_listener)
+              DOCKER_IMAGE_NAME_AEH_LISTENER: $(docker_image_name_aeh_listener)
+              DOCKER_IMAGE_ARGS_AEH_LISTENER: $(docker_image_args_aeh_listener)
               DOCKER_CONTAINER_REGISTRY_NAME: $(docker_container_registry_name_nonprod).azurecr.io
               REGISTRY_RESOURCE_GROUP: $(docker_container_registry_rg_name_nonprod)
 
@@ -249,6 +248,40 @@ stages:
                   inputs:
                     path: $(Agent.BuildDirectory)/s/$(k8s_resource_file)
                     artifact: manifests_dev
+
+                # TODO: This functionality in general should be run via AIR, but there are limitations in CLI tooling.
+                - template: templates/legacy-deploy-functions.yml
+                  condition: contains('${{ variables.app_bus_type }}', 'servicebus')
+                  parameters:
+                    azureSubscription: ${{ variables.azure_service_connection}}
+                    container_registry_name: $(docker_container_registry_name_nonprod)
+                    function_image_name: $(docker_image_name_asb_listener)
+                    function_image_tag: $(docker_image_tag)
+                    function_name: func-asb-listener-nwhujo # TODO: This name is constructed in TF but we currently have no way of reading the output into the pipeline
+                    function_resource_group: amido-stacks-dev-euw-netcore-api-cqrs-evnts # TODO: This name is constructed in TF but we currently have no way of reading the output into the pipeline
+
+                - template: templates/legacy-deploy-functions.yml
+                  condition: contains('${{ variables.app_bus_type }}', 'eventhub')
+                  parameters:
+                    azureSubscription: ${{ variables.azure_service_connection}}
+                    container_registry_name: $(docker_container_registry_name_nonprod)
+                    function_image_name: $(docker_image_name_aeh_listener)
+                    function_image_tag: $(docker_image_tag)
+                    function_name: func-aeh-listener-lngrjm # TODO: This name is constructed in TF but we currently have no way of reading the output into the pipeline
+                    function_resource_group: amido-stacks-dev-euw-netcore-api-cqrs-evnts # TODO: This name is constructed in TF but we currently have no way of reading the output into the pipeline
+
+                - template: templates/legacy-deploy-functions.yml
+                  parameters:
+                    azureSubscription: ${{ variables.azure_service_connection}}
+                    container_registry_name: $(docker_container_registry_name_nonprod)
+                    function_image_name: $(docker_image_name_worker)
+                    function_image_tag: $(docker_image_tag)
+                    function_name: function-publisher-nwhujo # TODO: This name is constructed in TF but we currently have no way of reading the output into the pipeline
+                    function_resource_group: amido-stacks-dev-euw-netcore-api-cqrs-evnts # TODO: This name is constructed in TF but we currently have no way of reading the output into the pipeline
+
+
+
+
   - stage: Prod
     dependsOn: Build
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/main')))
