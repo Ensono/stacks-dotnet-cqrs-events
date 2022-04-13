@@ -251,8 +251,8 @@ stages:
 
                 # TODO: This functionality in general should be run via AIR, but there are limitations in CLI tooling.
                 - template: templates/legacy-deploy-functions.yml
-                  condition: contains('${{ variables.app_bus_type }}', 'servicebus')
                   parameters:
+                    condition: contains('${{ variables.app_bus_type }}', 'servicebus')
                     azureSubscription: ${{ variables.azure_service_connection}}
                     container_registry_name: $(docker_container_registry_name_nonprod)
                     function_image_name: $(docker_image_name_asb_listener)
@@ -261,8 +261,8 @@ stages:
                     function_resource_group: amido-stacks-dev-euw-netcore-api-cqrs-evnts # TODO: This name is constructed in TF but we currently have no way of reading the output into the pipeline
 
                 - template: templates/legacy-deploy-functions.yml
-                  condition: contains('${{ variables.app_bus_type }}', 'eventhub')
                   parameters:
+                    condition: contains('${{ variables.app_bus_type }}', 'eventhub')
                     azureSubscription: ${{ variables.azure_service_connection}}
                     container_registry_name: $(docker_container_registry_name_nonprod)
                     function_image_name: $(docker_image_name_aeh_listener)
