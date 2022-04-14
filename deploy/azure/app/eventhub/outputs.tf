@@ -1,5 +1,5 @@
 output "eventhub_connectionstring" {
-  value = azurerm_eventhub_namespace.eh_ns.default_primary_connection_string
+  value     = azurerm_eventhub_namespace.eh_ns.default_primary_connection_string
   sensitive = true
 }
 
@@ -8,7 +8,7 @@ output "eventhub_name" {
 }
 
 output "eventhub_sa_connectionstring" {
-  value = azurerm_storage_account.eh_storage.primary_connection_string
+  value     = azurerm_storage_account.eh_storage.primary_connection_string
   sensitive = true
 }
 

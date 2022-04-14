@@ -13,8 +13,7 @@ using Amido.Stacks.Domain.Events;
 using Amido.Stacks.DynamoDB.Converters;
 using xxAMIDOxx.xxSTACKSxx.Domain.Converters;
 
-namespace xxAMIDOxx.xxSTACKSxx.Domain
-{
+namespace xxAMIDOxx.xxSTACKSxx.Domain;
 #if (DynamoDb)
     [DynamoDBTable("Menu")]
     public class Menu
@@ -64,7 +63,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain
             this.Description = description;
             this.Enabled = enabled;
 
-            Emit(new MenuChanged());//TODO: Pass the event data
+            Emit(new MenuChanged());
         }
 
         public void AddCategory(Guid categoryId, string name, string description)
@@ -74,7 +73,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain
 
             categories.Add(new Category(categoryId, name, description));
 
-            Emit(new CategoryCreated());//TODO: Pass the event data
+            Emit(new CategoryCreated());
         }
 
         public void UpdateCategory(Guid categoryId, string name, string description)
@@ -83,7 +82,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain
 
             category.Update(name, description);
 
-            Emit(new CategoryChanged());//TODO: Pass the event data
+            Emit(new CategoryChanged());
         }
 
         public void RemoveCategory(Guid categoryId)
@@ -92,7 +91,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain
 
             categories.Remove(category);
 
-            Emit(new CategoryRemoved());//TODO: Pass the event data
+            Emit(new CategoryRemoved());
         }
 
         public void AddMenuItem(
@@ -112,7 +111,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain
                 price,
                 available));
 
-            Emit(new MenuItemCreated());//TODO: Pass the event data
+            Emit(new MenuItemCreated());
         }
 
         public void UpdateMenuItem(
@@ -132,7 +131,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain
                 price,
                 available));
 
-            Emit(new MenuItemChanged());//TODO: Pass the event data
+            Emit(new MenuItemChanged());
         }
 
         public void RemoveMenuItem(Guid categoryId, Guid menuItemId)
@@ -141,7 +140,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain
 
             category.RemoveMenuItem(menuItemId);
 
-            Emit(new MenuItemRemoved());//TODO: Pass the event data
+            Emit(new MenuItemRemoved());
         }
 
         private Category GetCategory(Guid categoryId)
@@ -159,131 +158,129 @@ namespace xxAMIDOxx.xxSTACKSxx.Domain
 
 #else
 
-    public class Menu : AggregateRoot<Guid>
+public class Menu : AggregateRoot<Guid>
+{
+    [JsonProperty("Categories")]
+    private List<Category> categories;
+
+    public Menu(Guid id, string name, Guid tenantId, string description, bool enabled, List<Category> categories = null)
     {
-        [JsonProperty("Categories")]
-        private List<Category> categories;
-
-        public Menu(Guid id, string name, Guid tenantId, string description, bool enabled, List<Category> categories = null)
-        {
-            Id = id;
-            Name = name;
-            TenantId = tenantId;
-            Description = description;
-            this.categories = categories ?? new List<Category>();
-            Enabled = enabled;
-        }
-
-        public string Name { get; private set; }
-
-        public Guid TenantId { get; private set; }
-
-        public string Description { get; private set; }
-
-        [JsonIgnore]
-        public IReadOnlyList<Category> Categories { get => categories?.AsReadOnly(); private set => categories = value.ToList(); }
-
-        public bool Enabled { get; private set; }
-
-        public void Update(string name, string description, bool enabled)
-        {
-            this.Name = name;
-            this.Description = description;
-            this.Enabled = enabled;
-
-            Emit(new MenuChanged());//TODO: Pass the event data
-        }
-
-        public void AddCategory(Guid categoryId, string name, string description)
-        {
-            if (categories.Any(c => c.Name == name))
-                CategoryAlreadyExistsException.Raise(Id, name);
-
-            categories.Add(new Category(categoryId, name, description));
-
-            Emit(new CategoryCreated());//TODO: Pass the event data
-        }
-
-        public void UpdateCategory(Guid categoryId, string name, string description)
-        {
-            var category = GetCategory(categoryId);
-
-            category.Update(name, description);
-
-            Emit(new CategoryChanged());//TODO: Pass the event data
-        }
-
-        public void RemoveCategory(Guid categoryId)
-        {
-            var category = GetCategory(categoryId);
-
-            categories.Remove(category);
-
-            Emit(new CategoryRemoved());//TODO: Pass the event data
-        }
-
-        public void AddMenuItem(
-            Guid categoryId,
-            Guid menuItemId,
-            string name,
-            string description,
-            double price,
-            bool available)
-        {
-            var category = GetCategory(categoryId);
-
-            category.AddMenuItem(
-                new MenuItem(
-                    menuItemId,
-                    name,
-                    description,
-                    price,
-                    available));
-
-            Emit(new MenuItemCreated());//TODO: Pass the event data
-        }
-
-        public void UpdateMenuItem(
-            Guid categoryId,
-            Guid menuItemId,
-            string name,
-            string description,
-            double price,
-            bool available)
-        {
-            var category = GetCategory(categoryId);
-
-            category.UpdateMenuItem(
-                new MenuItem(
-                    menuItemId,
-                    name,
-                    description,
-                    price,
-                    available));
-
-            Emit(new MenuItemChanged());//TODO: Pass the event data
-        }
-
-        public void RemoveMenuItem(Guid categoryId, Guid menuItemId)
-        {
-            var category = GetCategory(categoryId);
-
-            category.RemoveMenuItem(menuItemId);
-
-            Emit(new MenuItemRemoved());//TODO: Pass the event data
-        }
-
-        private Category GetCategory(Guid categoryId)
-        {
-            var category = categories.SingleOrDefault(c => c.Id == categoryId);
-
-            if (category == null)
-                CategoryDoesNotExistException.Raise(Id, categoryId);
-
-            return category;
-        }
+        Id = id;
+        Name = name;
+        TenantId = tenantId;
+        Description = description;
+        this.categories = categories ?? new List<Category>();
+        Enabled = enabled;
     }
 
-#endif
+    public string Name { get; private set; }
 
+    public Guid TenantId { get; private set; }
+
+    public string Description { get; private set; }
+
+    [JsonIgnore]
+    public IReadOnlyList<Category> Categories { get => categories?.AsReadOnly(); private set => categories = value.ToList(); }
+
+    public bool Enabled { get; private set; }
+
+    public void Update(string name, string description, bool enabled)
+    {
+        this.Name = name;
+        this.Description = description;
+        this.Enabled = enabled;
+
+        Emit(new MenuChanged());
+    }
+
+    public void AddCategory(Guid categoryId, string name, string description)
+    {
+        if (categories.Any(c => c.Name == name))
+            CategoryAlreadyExistsException.Raise(Id, name);
+
+        categories.Add(new Category(categoryId, name, description));
+
+        Emit(new CategoryCreated());
+    }
+
+    public void UpdateCategory(Guid categoryId, string name, string description)
+    {
+        var category = GetCategory(categoryId);
+
+        category.Update(name, description);
+
+        Emit(new CategoryChanged());
+    }
+
+    public void RemoveCategory(Guid categoryId)
+    {
+        var category = GetCategory(categoryId);
+
+        categories.Remove(category);
+
+        Emit(new CategoryRemoved());
+    }
+
+    public void AddMenuItem(
+        Guid categoryId,
+        Guid menuItemId,
+        string name,
+        string description,
+        double price,
+        bool available)
+    {
+        var category = GetCategory(categoryId);
+
+        category.AddMenuItem(
+            new MenuItem(
+                menuItemId,
+                name,
+                description,
+                price,
+                available));
+
+        Emit(new MenuItemCreated());
+    }
+
+    public void UpdateMenuItem(
+        Guid categoryId,
+        Guid menuItemId,
+        string name,
+        string description,
+        double price,
+        bool available)
+    {
+        var category = GetCategory(categoryId);
+
+        category.UpdateMenuItem(
+            new MenuItem(
+                menuItemId,
+                name,
+                description,
+                price,
+                available));
+
+        Emit(new MenuItemChanged());
+    }
+
+    public void RemoveMenuItem(Guid categoryId, Guid menuItemId)
+    {
+        var category = GetCategory(categoryId);
+
+        category.RemoveMenuItem(menuItemId);
+
+        Emit(new MenuItemRemoved());
+    }
+
+    private Category GetCategory(Guid categoryId)
+    {
+        var category = categories.SingleOrDefault(c => c.Id == categoryId);
+
+        if (category == null)
+            CategoryDoesNotExistException.Raise(Id, categoryId);
+
+        return category;
+    }
 }
+
+#endif

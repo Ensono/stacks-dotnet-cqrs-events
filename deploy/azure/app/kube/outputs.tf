@@ -60,7 +60,7 @@ output "servicebus_subscription_name" {
 }
 
 output "servicebus_connectionstring" {
-  value = module.servicebus.*.servicebus_connectionstring[0]
+  value     = module.servicebus.*.servicebus_connectionstring[0]
   sensitive = true
 }
 
@@ -97,7 +97,7 @@ output "function_listener_name" {
 }
 
 output "eventhub_connectionstring" {
-  value = module.eventhub.*.eventhub_connectionstring[0]
+  value     = module.eventhub.*.eventhub_connectionstring[0]
   sensitive = true
 }
 
@@ -107,7 +107,7 @@ output "eventhub_name" {
 }
 
 output "eventhub_sa_connectionstring" {
-  value = module.eventhub.*.eventhub_sa_connectionstring[0]
+  value     = module.eventhub.*.eventhub_sa_connectionstring[0]
   sensitive = true
 }
 
