@@ -23,7 +23,7 @@ public class GetMenuByIdQueryHandler : IQueryHandler<GetMenuById, Menu>
             return null;
 
         //You might prefer using AutoMapper in here
-        var result = new Menu()
+        var result = new Menu
         {
             Id = menu.Id,
             TenantId = menu.TenantId,
