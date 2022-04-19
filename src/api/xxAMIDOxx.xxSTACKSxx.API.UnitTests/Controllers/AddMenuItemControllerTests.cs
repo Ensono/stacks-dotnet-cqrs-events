@@ -14,15 +14,15 @@ using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
 
 namespace xxAMIDOxx.xxSTACKSxx.API.UnitTests.Controllers;
 
-public class UpdateMenuCategoryControllerTests
+public class AddMenuItemControllerTests
 {
     [Fact]
-    public void UpdateMenuCategoryController_Should_BeDerivedFrom_ApiControllerBase()
+    public void AddMenuItemController_Should_BeDerivedFrom_ApiControllerBase()
     {
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(AddMenuItemController)
             .Should()
             .BeDerivedFrom<ApiControllerBase>();
     }
@@ -32,7 +32,7 @@ public class UpdateMenuCategoryControllerTests
     {
         // Arrange
         // Act
-        Action action = () => new UpdateMenuCategoryController(null);
+        Action action = () => new AddMenuItemController(null);
 
         // Assert
         action
@@ -46,7 +46,7 @@ public class UpdateMenuCategoryControllerTests
     {
         // Arrange
         // Act
-        Action action = () => new UpdateMenuCategoryController(Substitute.For<ICommandHandler<UpdateCategory, bool>>());
+        Action action = () => new AddMenuItemController(Substitute.For<ICommandHandler<CreateMenuItem, Guid>>());
 
         // Assert
         action
@@ -60,7 +60,7 @@ public class UpdateMenuCategoryControllerTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(AddMenuItemController)
             .Should()
             .BeDecoratedWith<ConsumesAttribute>();
     }
@@ -71,7 +71,7 @@ public class UpdateMenuCategoryControllerTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(AddMenuItemController)
             .Should()
             .BeDecoratedWith<ProducesAttribute>();
     }
@@ -82,46 +82,46 @@ public class UpdateMenuCategoryControllerTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(AddMenuItemController)
             .Should()
             .BeDecoratedWith<ApiExplorerSettingsAttribute>();
     }
 
     [Fact]
-    public void UpdateCategory_Should_BeDecoratedWith_HttpPutAttribute()
+    public void CreateMenuItem_Should_BeDecoratedWith_HttpPostAttribute()
     {
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(AddMenuItemController)
             .Methods()
-            .First(x => x.Name == "UpdateMenuCategory")
+            .First(x => x.Name == "AddMenuItem")
             .Should()
-            .BeDecoratedWith<HttpPutAttribute>(attribute => attribute.Template == "/v1/menu/{id}/category/{categoryId}");
+            .BeDecoratedWith<HttpPostAttribute>(attribute => attribute.Template == "/v1/menu/{id}/category/{categoryId}/items/");
     }
 
     [Fact]
-    public void UpdateCategory_Should_BeDecoratedWith_AuthorizeAttribute()
+    public void CreateMenuItem_Should_BeDecoratedWith_AuthorizeAttribute()
     {
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(AddMenuItemController)
             .Methods()
-            .First(x => x.Name == "UpdateMenuCategory")
+            .First(x => x.Name == "AddMenuItem")
             .Should()
             .BeDecoratedWith<AuthorizeAttribute>();
     }
 
     [Fact]
-    public async Task UpdateCategory_Should_Return_StatusCodeNoContent()
+    public async Task CreateMenuItem_Should_Return_StatusCreated()
     {
         // Arrange
-        var fakeCommandHandler = Substitute.For<ICommandHandler<UpdateCategory, bool>>();
+        var fakeCommandHandler = Substitute.For<ICommandHandler<CreateMenuItem, Guid>>();
         var correlationId = Guid.NewGuid();
-        fakeCommandHandler.HandleAsync(Arg.Any<UpdateCategory>()).Returns(Task.FromResult(true));
+        fakeCommandHandler.HandleAsync(Arg.Any<CreateMenuItem>()).Returns(Task.FromResult(Guid.Empty));
 
-        var body = new UpdateCategoryRequest
+        var body = new CreateItemRequest
         {
             Name = "testName",
             Description = "testDescription"
@@ -130,7 +130,7 @@ public class UpdateMenuCategoryControllerTests
         var httpContext = new DefaultHttpContext();
         httpContext.Request.Headers["x-correlation-id"] = correlationId.ToString();
 
-        var sut = new UpdateMenuCategoryController(fakeCommandHandler)
+        var sut = new AddMenuItemController(fakeCommandHandler)
         {
             ControllerContext = new ControllerContext()
             {
@@ -139,17 +139,17 @@ public class UpdateMenuCategoryControllerTests
         };
 
         // Act
-        var result = await sut.UpdateMenuCategory(Guid.Empty, Guid.Empty, body);
+        var result = await sut.AddMenuItem(Guid.Empty, Guid.Empty, body);
 
         // Assert
-        await fakeCommandHandler.Received().HandleAsync(Arg.Any<UpdateCategory>());
+        await fakeCommandHandler.Received().HandleAsync(Arg.Any<CreateMenuItem>());
 
         result
             .Should()
-            .BeOfType<StatusCodeResult>()
+            .BeOfType<ObjectResult>()
             .Which
             .StatusCode
             .Should()
-            .Be(204);
+            .Be(201);
     }
 }

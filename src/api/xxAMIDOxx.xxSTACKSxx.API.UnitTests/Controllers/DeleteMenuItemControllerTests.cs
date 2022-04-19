@@ -9,20 +9,19 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Xunit;
 using xxAMIDOxx.xxSTACKSxx.API.Controllers;
-using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
 
 namespace xxAMIDOxx.xxSTACKSxx.API.UnitTests.Controllers;
 
-public class UpdateMenuCategoryControllerTests
+public class DeleteMenuItemControllerTests
 {
     [Fact]
-    public void UpdateMenuCategoryController_Should_BeDerivedFrom_ApiControllerBase()
+    public void DeleteMenuItemController_Should_BeDerivedFrom_ApiControllerBase()
     {
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(DeleteMenuItemController)
             .Should()
             .BeDerivedFrom<ApiControllerBase>();
     }
@@ -32,7 +31,7 @@ public class UpdateMenuCategoryControllerTests
     {
         // Arrange
         // Act
-        Action action = () => new UpdateMenuCategoryController(null);
+        Action action = () => new DeleteMenuItemController(null);
 
         // Assert
         action
@@ -46,7 +45,7 @@ public class UpdateMenuCategoryControllerTests
     {
         // Arrange
         // Act
-        Action action = () => new UpdateMenuCategoryController(Substitute.For<ICommandHandler<UpdateCategory, bool>>());
+        Action action = () => new DeleteMenuItemController(Substitute.For<ICommandHandler<DeleteMenuItem, bool>>());
 
         // Assert
         action
@@ -60,7 +59,7 @@ public class UpdateMenuCategoryControllerTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(DeleteMenuItemController)
             .Should()
             .BeDecoratedWith<ConsumesAttribute>();
     }
@@ -71,7 +70,7 @@ public class UpdateMenuCategoryControllerTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(DeleteMenuItemController)
             .Should()
             .BeDecoratedWith<ProducesAttribute>();
     }
@@ -82,55 +81,49 @@ public class UpdateMenuCategoryControllerTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(DeleteMenuItemController)
             .Should()
             .BeDecoratedWith<ApiExplorerSettingsAttribute>();
     }
 
     [Fact]
-    public void UpdateCategory_Should_BeDecoratedWith_HttpPutAttribute()
+    public void DeleteMenuItem_Should_BeDecoratedWith_HttpPutAttribute()
     {
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(DeleteMenuItemController)
             .Methods()
-            .First(x => x.Name == "UpdateMenuCategory")
+            .First(x => x.Name == "DeleteMenuItem")
             .Should()
-            .BeDecoratedWith<HttpPutAttribute>(attribute => attribute.Template == "/v1/menu/{id}/category/{categoryId}");
+            .BeDecoratedWith<HttpDeleteAttribute>(attribute => attribute.Template == "/v1/menu/{id}/category/{categoryId}/items/{itemId}");
     }
 
     [Fact]
-    public void UpdateCategory_Should_BeDecoratedWith_AuthorizeAttribute()
+    public void DeleteMenuItem_Should_BeDecoratedWith_AuthorizeAttribute()
     {
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuCategoryController)
+        typeof(DeleteMenuItemController)
             .Methods()
-            .First(x => x.Name == "UpdateMenuCategory")
+            .First(x => x.Name == "DeleteMenuItem")
             .Should()
             .BeDecoratedWith<AuthorizeAttribute>();
     }
 
     [Fact]
-    public async Task UpdateCategory_Should_Return_StatusCodeNoContent()
+    public async Task DeleteMenuItem_Should_Return_StatusCodeNoContent()
     {
         // Arrange
-        var fakeCommandHandler = Substitute.For<ICommandHandler<UpdateCategory, bool>>();
+        var fakeCommandHandler = Substitute.For<ICommandHandler<DeleteMenuItem, bool>>();
         var correlationId = Guid.NewGuid();
-        fakeCommandHandler.HandleAsync(Arg.Any<UpdateCategory>()).Returns(Task.FromResult(true));
-
-        var body = new UpdateCategoryRequest
-        {
-            Name = "testName",
-            Description = "testDescription"
-        };
+        fakeCommandHandler.HandleAsync(Arg.Any<DeleteMenuItem>()).Returns(Task.FromResult(true));
 
         var httpContext = new DefaultHttpContext();
         httpContext.Request.Headers["x-correlation-id"] = correlationId.ToString();
 
-        var sut = new UpdateMenuCategoryController(fakeCommandHandler)
+        var sut = new DeleteMenuItemController(fakeCommandHandler)
         {
             ControllerContext = new ControllerContext()
             {
@@ -139,10 +132,10 @@ public class UpdateMenuCategoryControllerTests
         };
 
         // Act
-        var result = await sut.UpdateMenuCategory(Guid.Empty, Guid.Empty, body);
+        var result = await sut.DeleteMenuItem(Guid.Empty, Guid.Empty, Guid.Empty);
 
         // Assert
-        await fakeCommandHandler.Received().HandleAsync(Arg.Any<UpdateCategory>());
+        await fakeCommandHandler.Received().HandleAsync(Arg.Any<DeleteMenuItem>());
 
         result
             .Should()
