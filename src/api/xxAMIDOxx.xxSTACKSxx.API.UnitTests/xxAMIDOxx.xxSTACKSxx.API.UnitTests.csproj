@@ -23,10 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\xxAMIDOxx.xxSTACKSxx.API\xxAMIDOxx.xxSTACKSxx.API.csproj" />
     </ItemGroup>
 
