@@ -26,11 +26,11 @@ public class CosmosDbChangeFeedEvent : IApplicationEvent
 
     public int EventCode => (int)Enums.EventCode.EntityUpdated;
 
-    public int OperationCode { get; private set; }
+    public int OperationCode { get; }
 
-    public Guid CorrelationId { get; private set; }
+    public Guid CorrelationId { get; }
 
-    public Guid EntityId { get; private set; }
+    public Guid EntityId { get; }
 
-    public string ETag { get; private set; }
+    public string ETag { get; }
 }

@@ -32,9 +32,9 @@ public class MenuItemCreatedEvent : IApplicationEvent
 
     public Guid CorrelationId { get; }
 
-    public Guid MenuId { get; set; }
+    public Guid MenuId { get; }
 
-    public Guid CategoryId { get; set; }
+    public Guid CategoryId { get; }
 
-    public Guid MenuItemId { get; set; }
+    public Guid MenuItemId { get; }
 }
