@@ -61,7 +61,7 @@ public class UpdateItemRequestTests
     }
 
     [Fact]
-    public void Price_Should_ReturnString()
+    public void Price_Should_ReturnDouble()
     {
         // Arrange
         // Act
@@ -87,7 +87,7 @@ public class UpdateItemRequestTests
     }
 
     [Fact]
-    public void Available_Should_ReturnString()
+    public void Available_Should_ReturnBool()
     {
         // Arrange
         // Act

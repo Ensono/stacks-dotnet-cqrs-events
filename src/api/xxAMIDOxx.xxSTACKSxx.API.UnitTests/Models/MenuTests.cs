@@ -1,21 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
-using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
+using xxAMIDOxx.xxSTACKSxx.API.Models.Responses;
 
 namespace xxAMIDOxx.xxSTACKSxx.API.UnitTests.Models;
 
-public class UpdateMenuRequestTests
+public class MenuTests
 {
+    [Fact]
+    public void Id_Should_BeDecoratedWith_RequiredAttribute()
+    {
+        // Arrange
+        // Act
+        // Assert
+        typeof(Menu)
+            .Properties()
+            .First(x => x.Name == "Id")
+            .Should()
+            .BeDecoratedWith<RequiredAttribute>();
+    }
+
+    [Fact]
+    public void Id_Should_ReturnGuid()
+    {
+        // Arrange
+        // Act
+        // Assert
+        typeof(Menu)
+            .Properties()
+            .First(x => x.Name == "Id")
+            .Should()
+            .Return<Guid?>();
+    }
+
     [Fact]
     public void Name_Should_BeDecoratedWith_RequiredAttribute()
     {
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuRequest)
+        typeof(Menu)
             .Properties()
             .First(x => x.Name == "Name")
             .Should()
@@ -28,7 +55,7 @@ public class UpdateMenuRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuRequest)
+        typeof(Menu)
             .Properties()
             .First(x => x.Name == "Name")
             .Should()
@@ -41,7 +68,7 @@ public class UpdateMenuRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuRequest)
+        typeof(Menu)
             .Properties()
             .First(x => x.Name == "Description")
             .Should()
@@ -49,29 +76,16 @@ public class UpdateMenuRequestTests
     }
 
     [Fact]
-    public void TenantId_Should_BeDecoratedWith_RequiredAttribute()
+    public void Categories_Should_ReturnList()
     {
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuRequest)
+        typeof(Menu)
             .Properties()
-            .First(x => x.Name == "RestaurantId")
+            .First(x => x.Name == "Categories")
             .Should()
-            .BeDecoratedWith<RequiredAttribute>();
-    }
-
-    [Fact]
-    public void TenantId_Should_ReturnGuid()
-    {
-        // Arrange
-        // Act
-        // Assert
-        typeof(UpdateMenuRequest)
-            .Properties()
-            .First(x => x.Name == "RestaurantId")
-            .Should()
-            .Return<Guid>();
+            .Return<List<Category>>();
     }
 
     [Fact]
@@ -80,7 +94,7 @@ public class UpdateMenuRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuRequest)
+        typeof(Menu)
             .Properties()
             .First(x => x.Name == "Enabled")
             .Should()
@@ -93,10 +107,10 @@ public class UpdateMenuRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(UpdateMenuRequest)
+        typeof(Menu)
             .Properties()
             .First(x => x.Name == "Enabled")
             .Should()
-            .Return<bool>();
+            .Return<bool?>();
     }
 }

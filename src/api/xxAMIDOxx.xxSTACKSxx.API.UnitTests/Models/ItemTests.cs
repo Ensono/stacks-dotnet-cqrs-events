@@ -1,20 +1,47 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
-using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
+using xxAMIDOxx.xxSTACKSxx.API.Models.Responses;
 
 namespace xxAMIDOxx.xxSTACKSxx.API.UnitTests.Models;
 
-public class CreateItemRequestTests
+public class ItemTests
 {
+    [Fact]
+    public void Id_Should_BeDecoratedWith_RequiredAttribute()
+    {
+        // Arrange
+        // Act
+        // Assert
+        typeof(Item)
+            .Properties()
+            .First(x => x.Name == "Id")
+            .Should()
+            .BeDecoratedWith<RequiredAttribute>();
+    }
+
+    [Fact]
+    public void Id_Should_ReturnGuid()
+    {
+        // Arrange
+        // Act
+        // Assert
+        typeof(Item)
+            .Properties()
+            .First(x => x.Name == "Id")
+            .Should()
+            .Return<Guid?>();
+    }
+
     [Fact]
     public void Name_Should_BeDecoratedWith_RequiredAttribute()
     {
         // Arrange
         // Act
         // Assert
-        typeof(CreateItemRequest)
+        typeof(Item)
             .Properties()
             .First(x => x.Name == "Name")
             .Should()
@@ -27,7 +54,7 @@ public class CreateItemRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(CreateItemRequest)
+        typeof(Item)
             .Properties()
             .First(x => x.Name == "Name")
             .Should()
@@ -40,7 +67,7 @@ public class CreateItemRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(CreateItemRequest)
+        typeof(Item)
             .Properties()
             .First(x => x.Name == "Description")
             .Should()
@@ -53,7 +80,7 @@ public class CreateItemRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(CreateItemRequest)
+        typeof(Item)
             .Properties()
             .First(x => x.Name == "Price")
             .Should()
@@ -66,11 +93,11 @@ public class CreateItemRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(CreateItemRequest)
+        typeof(Item)
             .Properties()
             .First(x => x.Name == "Price")
             .Should()
-            .Return<double>();
+            .Return<double?>();
     }
 
     [Fact]
@@ -79,7 +106,7 @@ public class CreateItemRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(CreateItemRequest)
+        typeof(Item)
             .Properties()
             .First(x => x.Name == "Available")
             .Should()
@@ -92,10 +119,10 @@ public class CreateItemRequestTests
         // Arrange
         // Act
         // Assert
-        typeof(CreateItemRequest)
+        typeof(Item)
             .Properties()
             .First(x => x.Name == "Available")
             .Should()
-            .Return<bool>();
+            .Return<bool?>();
     }
 }

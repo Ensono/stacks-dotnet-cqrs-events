@@ -62,7 +62,7 @@ public class CreateMenuRequestTests
     }
 
     [Fact]
-    public void TenantId_Should_ReturnString()
+    public void TenantId_Should_ReturnGuid()
     {
         // Arrange
         // Act
@@ -88,7 +88,7 @@ public class CreateMenuRequestTests
     }
 
     [Fact]
-    public void Enabled_Should_ReturnString()
+    public void Enabled_Should_ReturnBool()
     {
         // Arrange
         // Act
