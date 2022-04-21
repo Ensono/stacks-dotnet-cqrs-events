@@ -56,7 +56,7 @@ public class DynamoDbMenuRepositoryTests
         var result = await repository.SaveAsync(menu);
 
         // Assert
-        await fakeMenuRepository.Received().SaveAsync(menu);
+        await fakeMenuRepository.Received().SaveAsync(menu.Id.ToString(), menu);
 
         result.Should().Be(true);
     }
@@ -83,7 +83,7 @@ public class DynamoDbMenuRepositoryTests
 
         menuRepository.GetByIdAsync(Arg.Any<string>())
             .Returns(Task.FromResult(fakeTypeResponse));
-        menuRepository.SaveAsync(menu)
+        menuRepository.SaveAsync(menu.Id.ToString(), menu)
             .Returns(Task.FromResult(fakeTypeResponse));
         menuRepository.DeleteAsync(Arg.Any<string>())
             .Returns(Task.FromResult(fakeNonTypeResponse));

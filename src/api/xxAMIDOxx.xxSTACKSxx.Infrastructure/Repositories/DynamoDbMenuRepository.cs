@@ -31,7 +31,7 @@ public class DynamoDbMenuRepository : IMenuRepository
 
     public async Task<bool> SaveAsync(Menu entity)
     {
-        var result = await objectStorage.SaveAsync(entity);
+        var result = await objectStorage.SaveAsync(entity.Id.ToString(), entity);
 
         return result.IsSuccessful;
     }
