@@ -23,7 +23,7 @@ public class SearchMenuController : ApiControllerBase
 
     public SearchMenuController(IQueryHandler<SearchMenu, SearchMenuResult> queryHandler)
     {
-        this.queryHandler = queryHandler;
+        this.queryHandler = queryHandler ?? throw new ArgumentNullException(nameof(queryHandler));
     }
 
 
@@ -41,9 +41,9 @@ public class SearchMenuController : ApiControllerBase
     [Authorize]
     [ProducesResponseType(typeof(SearchMenuResponse), 200)]
     public async Task<IActionResult> SearchMenu(
-        [FromQuery]string searchTerm, 
-        [FromQuery]Guid? RestaurantId, 
-        [FromQuery][Range(0, 50)]int? pageSize = 20, 
+        [FromQuery]string searchTerm,
+        [FromQuery]Guid? RestaurantId,
+        [FromQuery][Range(0, 50)]int? pageSize = 20,
         [FromQuery]int? pageNumber = 1)
     {
         // NOTE: Please ensure the API returns the response codes annotated above
@@ -59,7 +59,7 @@ public class SearchMenuController : ApiControllerBase
         var result = await queryHandler.ExecuteAsync(criteria);
 
         var response = SearchMenuResponse.FromMenuResultItem(result);
-            
+
         return new ObjectResult(response);
     }
 }

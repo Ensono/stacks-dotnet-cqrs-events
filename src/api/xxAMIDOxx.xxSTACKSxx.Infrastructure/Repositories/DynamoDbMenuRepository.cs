@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DataModel;
-using Amido.Stacks.Data.Documents.Abstractions;
-using Amido.Stacks.DynamoDB;
 using Amido.Stacks.DynamoDB.Abstractions;
 using xxAMIDOxx.xxSTACKSxx.Application.Integration;
 using xxAMIDOxx.xxSTACKSxx.Domain;

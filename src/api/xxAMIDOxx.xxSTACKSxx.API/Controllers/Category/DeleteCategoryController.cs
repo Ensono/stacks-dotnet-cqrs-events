@@ -21,7 +21,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
 
         public DeleteCategoryController(ICommandHandler<DeleteCategory, bool> commandHandler)
         {
-            this.commandHandler = commandHandler;
+            this.commandHandler = commandHandler ?? throw new ArgumentNullException(nameof(commandHandler));
         }
 
 
