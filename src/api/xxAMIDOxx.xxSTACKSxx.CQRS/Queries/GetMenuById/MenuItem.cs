@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Entity = xxAMIDOxx.xxSTACKSxx.Domain.Entities;
 
 namespace xxAMIDOxx.xxSTACKSxx.CQRS.Queries.GetMenuById;
 
@@ -18,4 +19,16 @@ public class MenuItem
 
     [Required]
     public bool Available { get; set; }
+
+    public static MenuItem FromEntity(Entity.MenuItem i)
+    {
+        return new MenuItem()
+        {
+            Id = i.Id,
+            Name = i.Name,
+            Description = i.Description,
+            Price = i.Price,
+            Available = i.Available
+        };
+    }
 }
